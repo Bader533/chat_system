@@ -467,6 +467,13 @@ return [
     "update_boarding_successfully" => "تم تعديل العنصر بنجاح",
     "delete_boarding_successfully" => "تم حذف العنصر بنجاح",
 
+
+    "create_successfully" => "تم انشاء عنصر جديد",
+    "update_successfully" => "تم تعديل العنصر بنجاح",
+    "delete_successfully" => "تم حذف العنصر بنجاح",
+
+    "done_successfully" => "تم العملية بنجاح",
+
     "all_boarding" => "كل الواجهات",
     "boardings" => "الواجهات",
     "boarding" => "الواجهة",
@@ -481,6 +488,8 @@ return [
     "are_you_sure" => "هل انت متاكد ؟",
     "you_won_be_able_to_revert_this" => "! لن تكون قادرا على التراجع عن هذا",
     "yes_delete_it" => "نعم , احذفه",
+
+    "privacy" => "الخصوصية",
 
 
 

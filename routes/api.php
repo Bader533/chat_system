@@ -2,6 +2,10 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BoardingController;
+use App\Http\Controllers\Api\ConditionController;
+use App\Http\Controllers\Api\DurationAgreementController;
+use App\Http\Controllers\Api\PrivacyController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +32,9 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
 // ============= end Auth =============
 
 Route::get('/boarding', [BoardingController::class, 'index']);
+
+Route::get('/privacy', [PrivacyController::class, 'show']);
+
+Route::get('/condition', [ConditionController::class, 'show']);
+
+Route::get('/duration-agreement', [DurationAgreementController::class, 'show']);
