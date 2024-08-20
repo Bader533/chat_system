@@ -73,7 +73,7 @@
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                         <!--begin::Add customer-->
-                        <a href="{{ route('boarding.create') }}" class="btn btn-primary">{{__('site.add_new_boarding')}}
+                        <a href="{{ route('ads.create') }}" class="btn btn-primary">{{__('site.add_new_ads')}}
                         </a>
                         <!--end::Add customer-->
                     </div>
@@ -108,14 +108,14 @@
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script>
-    getUser();
+    getAds();
 
-    buttonSideBar()
+    // buttonSideBar()
 
-    function buttonSideBar() {
-        const button = document.getElementById('users');
-        button.classList.add('active');
-    }
+    // function buttonSideBar() {
+    //     const button = document.getElementById('ads');
+    //     button.classList.add('active');
+    // }
 
     function confirmDelete(id, reference) {
         Swal.fire({
@@ -135,7 +135,7 @@
     } //end message confirm delete
 
     function performDelete(id, reference) {
-        axios.delete('/boarding/' + id)
+        axios.delete('/ads/' + id)
             .then(function(response) {
                 //2xx
                 console.log(response);
@@ -156,8 +156,12 @@
     } //end detete
 
 
-    function getUser(){
-        axios.get('/getuser')
+    function getAds(page=1){
+        axios.get('/getAds',{
+            params: {
+                page: page
+            }
+        })
         .then(function (response) {
             $('#table-content').html(response.data);
             }).catch(function (error) {
@@ -168,7 +172,7 @@
     document.getElementById('search_data').addEventListener('input', function() {
         const searchQuery = this.value;
 
-        axios.get('{{ route('user.data') }}', {
+        axios.get('{{ route('ads.data') }}', {
             params: {
                 query: searchQuery
             }
@@ -186,7 +190,6 @@
                 console.error('There was an error!', error);
             });
     });
-
 
 </script>
 @endsection

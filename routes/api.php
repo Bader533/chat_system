@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BoardingController;
 use App\Http\Controllers\Api\ConditionController;
+use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\DurationAgreementController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\UserController;
@@ -38,3 +39,5 @@ Route::get('/privacy', [PrivacyController::class, 'show']);
 Route::get('/condition', [ConditionController::class, 'show']);
 
 Route::get('/duration-agreement', [DurationAgreementController::class, 'show']);
+
+Route::post('/contact', [ContactUsController::class, 'store']);

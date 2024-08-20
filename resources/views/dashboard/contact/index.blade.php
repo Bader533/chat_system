@@ -1,8 +1,8 @@
 @extends('dashboard.parent')
 
-@section('title',__('site.all_boarding'))
+@section('title',__('site.contact'))
 
-@section('page_name',__('site.boardings'))
+@section('page_name',__('site.contact'))
 
 @section('css')
 @endsection
@@ -20,7 +20,7 @@
     </li>
     <!--end::Item-->
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">{{__('site.all_boarding')}}</li>
+    <li class="breadcrumb-item text-muted">{{__('site.contact')}}</li>
     <!--end::Item-->
 </ul>
 @endsection
@@ -71,12 +71,12 @@
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
                     <!--begin::Toolbar-->
-                    <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                    {{-- <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                         <!--begin::Add customer-->
                         <a href="{{ route('boarding.create') }}" class="btn btn-primary">{{__('site.add_new_boarding')}}
                         </a>
                         <!--end::Add customer-->
-                    </div>
+                    </div> --}}
                     <!--end::Toolbar-->
                     <!--begin::Group actions-->
                     {{-- <div class="d-flex justify-content-end align-items-center d-none"
@@ -108,14 +108,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script>
-    getUser();
-
-    buttonSideBar()
-
-    function buttonSideBar() {
-        const button = document.getElementById('users');
-        button.classList.add('active');
-    }
+    getContact();
 
     function confirmDelete(id, reference) {
         Swal.fire({
@@ -135,7 +128,7 @@
     } //end message confirm delete
 
     function performDelete(id, reference) {
-        axios.delete('/boarding/' + id)
+        axios.delete('/contact/' + id)
             .then(function(response) {
                 //2xx
                 console.log(response);
@@ -156,8 +149,8 @@
     } //end detete
 
 
-    function getUser(){
-        axios.get('/getuser')
+    function getContact(){
+        axios.get('/getContact')
         .then(function (response) {
             $('#table-content').html(response.data);
             }).catch(function (error) {
@@ -168,7 +161,7 @@
     document.getElementById('search_data').addEventListener('input', function() {
         const searchQuery = this.value;
 
-        axios.get('{{ route('user.data') }}', {
+        axios.get('{{ route('contact.data') }}', {
             params: {
                 query: searchQuery
             }

@@ -1,8 +1,8 @@
 @extends('dashboard.parent')
 
-@section('title',__('site.condition'))
+@section('title',__('site.contact'))
 
-@section('page_name',__('site.condition'))
+@section('page_name',__('site.contact'))
 
 @section('css')
 @endsection
@@ -20,7 +20,15 @@
     </li>
     <!--end::Item-->
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">{{__('site.condition')}}</li>
+    <li class="breadcrumb-item text-muted">{{__('site.contact')}}</li>
+    <!--end::Item-->
+    <!--begin::Item-->
+    <li class="breadcrumb-item">
+        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+    </li>
+    <!--end::Item-->
+    <!--begin::Item-->
+    <li class="breadcrumb-item text-muted">{{__('site.show')}}</li>
     <!--end::Item-->
 </ul>
 @endsection
@@ -49,46 +57,67 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
-                            <!--begin::title-->
+                            <!--begin::f_name-->
                             <div class="mb-10 fv-row">
                                 <!--begin::Label-->
-                                <label class="required form-label">{{__('site.title')}}</label>
+                                <label class="form-label">{{__('site.f_name')}}</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <input type="text" name="title" id="title" class="form-control mb-2"
-                                    placeholder="{{__('site.title')}}" @if($condition) value="{{$condition->title}}"
-                                    @endif required />
+                                <input type="text" class="form-control mb-2" value="{{$contact->f_name}}" disabled />
                                 <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
                             </div>
-                            <!--end::title-->
+                            <!--end::f_name-->
 
-                            <!--begin::description-->
+                            <!--begin::l_name-->
                             <div class="mb-10 fv-row">
                                 <!--begin::Label-->
-                                <label class="required form-label">{{__('site.description')}}</label>
+                                <label class="form-label">{{__('site.l_name')}}</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
-                                <textarea id="kt_docs_tinymce_basic">
-                                    @if($condition)
-                                    {!! $condition->description !!}
-                                    @endif
+                                <input type="text" class="form-control mb-2" value="{{$contact->l_name}}" disabled />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::l_name-->
+
+                            <!--begin::email-->
+                            <div class="mb-10 fv-row">
+                                <!--begin::Label-->
+                                <label class="form-label">{{__('site.email')}}</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control mb-2" value="{{$contact->email}}" disabled />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::email-->
+
+                            <!--begin::subject-->
+                            <div class="mb-10 fv-row">
+                                <!--begin::Label-->
+                                <label class="form-label">{{__('site.subject')}}</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <input type="text" class="form-control mb-2" value="{{$contact->subject}}" disabled />
+                                <!--end::Input-->
+                            </div>
+                            <!--end::subject-->
+
+                            <!--begin::message-->
+                            <div class="mb-10 fv-row">
+                                <!--begin::Label-->
+                                <label class="form-label">{{__('site.message')}}</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <textarea class="form-control mb-2" disabled>
+                                    {!! $contact->message !!}
                                 </textarea>
                                 <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
                             </div>
-                            <!--end::description-->
+                            <!--end::message-->
                         </div>
                         <!--end::Card header-->
                     </div>
                     <!--end::General options-->
-                    <div class="d-flex justify-content-end">
+                    {{-- <div class="d-flex justify-content-end">
                         <!--begin::Button-->
                         <a href="{{route('boarding.index')}}" id="kt_ecommerce_add_product_cancel"
                             class="btn btn-light me-5">{{__('site.cancel')}}</a>
@@ -101,7 +130,7 @@
                                 <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
                         <!--end::Button-->
-                    </div>
+                    </div> --}}
                 </div>
                 <!--end::Main column-->
             </form>
@@ -113,43 +142,5 @@
 @endsection
 
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
-<script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
-<script src="{{asset('assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>
-<script>
-    buttonSideBar()
 
-    function buttonSideBar() {
-        const button = document.getElementById('term_condition');
-        button.classList.add('active');
-    }
-
-    function store() {
-        axios.post('/condition',{
-            title: document.getElementById('title').value,
-            description: tinymce.get("kt_docs_tinymce_basic").getContent(),
-        })
-        .then(function (response) {
-            toastr.options = {
-                positionClass: 'toast-top-left',
-            };
-            toastr.success(response.data.message);
-        }).catch(function (error) {
-            // console.log(error);
-            toastr.options = {
-                positionClass: 'toast-top-left',
-            };
-            toastr.error(error.response.data.message);
-        });
-    }
-
-    var options = {selector: "#kt_docs_tinymce_basic", height : "480"};
-
-    if ( KTThemeMode.getMode() === "dark" ) {
-    options["skin"] = "oxide-dark";
-    options["content_css"] = "dark";
-    }
-
-    tinymce.init(options);
-</script>
 @endsection

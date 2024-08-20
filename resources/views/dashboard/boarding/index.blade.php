@@ -233,6 +233,13 @@
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script>
+    buttonSideBar()
+
+    function buttonSideBar() {
+        const button = document.getElementById('boarding');
+        button.classList.add('here', 'show');
+    }
+
     $('#search_data').on('keyup', function() {
 
         $value = $(this).val();

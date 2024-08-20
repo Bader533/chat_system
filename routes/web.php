@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AdsController;
 use App\Http\Controllers\BoardingController;
 use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DurationAgreementController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PrivacyController;
@@ -19,8 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('home', function () {
-    return view('dashboard.parent');
+Route::get('/', function () {
+    return view('dashboard.home.home');
 })->name('home');
 
 // borading
@@ -44,3 +46,13 @@ Route::resource('/condition', ConditionController::class);
 // condition
 Route::resource('/duration-agreement', DurationAgreementController::class);
 //end condition
+
+// contact
+Route::resource('/contact', ContactUsController::class);
+Route::get('/getContact', [ContactUsController::class, 'getContact'])->name('contact.data');
+//end contact
+
+// contact
+Route::resource('/ads', AdsController::class);
+Route::get('/getAds', [AdsController::class, 'getAds'])->name('ads.data');
+//end contact

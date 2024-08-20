@@ -117,6 +117,8 @@
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script src="{{asset('assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>
 <script>
+    buttonSideBar()
+
     function store() {
         axios.post('/duration-agreement',{
             title: document.getElementById('title').value,
@@ -134,6 +136,12 @@
             };
             toastr.error(error.response.data.message);
         });
+    }
+
+    function buttonSideBar() {
+        const button = document.getElementById('duration-agreement');
+        button.classList.add('active');
+        //button.classList.add('here', 'show');
     }
 
     var options = {selector: "#kt_docs_tinymce_basic", height : "480"};

@@ -117,6 +117,13 @@
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
 <script src="{{asset('assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>
 <script>
+    buttonSideBar()
+
+    function buttonSideBar() {
+        const button = document.getElementById('privacy');
+        button.classList.add('active');
+    }
+
     function store() {
         axios.post('/privacy',{
             title: document.getElementById('title').value,
