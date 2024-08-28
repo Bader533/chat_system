@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
 
         if ($this->route()->getActionMethod() === 'register') {
             $rules = [
-                'name' => 'required | String | max:20',
+                'name' => 'required | String | max:100',
                 'email' => 'required | email | unique:users,email',
                 'password' => 'required | String ',
             ];

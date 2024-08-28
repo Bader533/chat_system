@@ -5,7 +5,6 @@
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class="min-w-125px">{{__('site.name')}}</th>
             <th class="min-w-125px">{{__('site.status')}}</th>
-            <th class="min-w-125px">{{__('site.is_home')}}</th>
             <th class="min-w-125px">{{__('site.created_at')}}</th>
             <th class="text-end min-w-70px">{{__('site.actions')}}</th>
         </tr>
@@ -14,9 +13,9 @@
     <!--end::Table head-->
     <!--begin::Table body-->
     <tbody class="fw-semibold text-gray-600" id="table_data">
-        @if (!$ads->isEmpty())
+        @if (!$contacts->isEmpty())
 
-        @foreach ($ads as $item)
+        @foreach ($contacts as $item)
         <tr>
             <!--begin::Name=-->
             <td>
@@ -38,20 +37,6 @@
             </td>
             <!--end::status=-->
 
-            <!--begin::is_home=-->
-            <td>
-                @if ($item->is_home == 1)
-                <div class="badge badge-light-success fw-bold">
-                    {{__('site.yes')}}
-                </div>
-                @else
-                <div class="badge badge-light-danger fw-bold">
-                    {{__('site.no')}}
-                </div>
-                @endif
-            </td>
-            <!--end::is_home=-->
-
             <!--begin::Date=-->
             <td>{{ date('m/d/Y', strtotime($item->created_at)) }}</td>
             <!--end::Date=-->
@@ -61,7 +46,8 @@
 
                 <!--begin::Edit-->
 
-                <a class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
+                <a href="{{route('city.edit',$item->slug)}}"
+                    class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
                     <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="{{ __('site.edit') }}">
                         <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                         <span class="svg-icon svg-icon-3">
@@ -82,7 +68,7 @@
                 <!--end::Edit-->
 
                 <!--begin::Delete-->
-                <a onclick="confirmDelete('{{$item->id}}',this)"
+                {{-- <a onclick="confirmDelete('{{$item->id}}',this)"
                     class="btn btn-icon btn-active-light-danger w-30px h-30px me-3" data-bs-toggle="tooltip"
                     title="Delete" data-kt-customer-payment-method="delete">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
@@ -99,7 +85,7 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                </a>
+                </a> --}}
                 <!--end::Delete-->
 
             </td>
@@ -125,16 +111,17 @@
         <div class="col-sm">
             <div class="pagination">
                 <!-- زر الصفحة السابقة -->
-                @if ($ads->onFirstPage())
+                @if ($contacts->onFirstPage())
                 <li class="page-item disabled"><span class="page-link">‹</span></li>
                 @else
-                <li class="page-item"><a class="page-link" onclick="getAds('{{ $ads->currentPage() - 1 }}')">‹</a>
+                <li class="page-item"><a class="page-link"
+                        onclick="getCountries('{{ $contacts->currentPage() - 1 }}')">‹</a>
                 </li>
                 @endif
                 @php
                 use App\Helpers\Helper;
 
-                $pagination = Helper::getPagination($ads->currentPage(), $ads->lastPage());
+                $pagination = Helper::getPagination($contacts->currentPage(), $contacts->lastPage());
                 @endphp
                 @php
                 $startPage = $pagination['startPage'];
@@ -143,7 +130,7 @@
 
                 <!-- عرض الصفحة الأولى إذا كانت الصفحة الحالية ليست قريبة منها -->
                 @if ($startPage > 1)
-                <li class="page-item"><a class="page-link" onclick="getAds(1)">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="getCountries(1)">1</a></li>
                 @if ($startPage > 2)
                 <li class="page-item disabled"><span class="page-link">...</span></li>
                 @endif
@@ -151,24 +138,25 @@
 
                 <!-- عرض الصفحات الحالية -->
                 @for ($i = $startPage; $i <= $endPage; $i++) <li
-                    class="page-item {{ $i == $ads->currentPage() ? 'active' : '' }}">
-                    <a class="page-link" onclick="getAds('{{ $i }}')">{{ $i }}</a>
+                    class="page-item {{ $i == $contacts->currentPage() ? 'active' : '' }}">
+                    <a class="page-link" onclick="getCountries('{{ $i }}')">{{ $i }}</a>
                     </li>
                     @endfor
 
                     <!-- عرض الصفحة الأخيرة إذا كانت الصفحة الحالية ليست قريبة منها -->
-                    @if ($endPage < $ads->lastPage())
-                        @if ($endPage < $ads->lastPage() - 1)
+                    @if ($endPage < $contacts->lastPage())
+                        @if ($endPage < $contacts->lastPage() - 1)
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
-                            <li class="page-item"><a class="page-link" onclick="getAds('{{ $ads->lastPage() }}')">{{
-                                    $ads->lastPage() }}</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    onclick="getCountries('{{ $contacts->lastPage() }}')">{{
+                                    $contacts->lastPage() }}</a></li>
                             @endif
 
                             <!-- زر الصفحة التالية -->
-                            @if ($ads->hasMorePages())
+                            @if ($contacts->hasMorePages())
                             <li class="page-item"><a class="page-link"
-                                    onclick="getAds('{{ $ads->currentPage() + 1 }}')">›</a></li>
+                                    onclick="getCountries('{{ $contacts->currentPage() + 1 }}')">›</a></li>
                             @else
                             <li class="page-item disabled"><span class="page-link">›</span></li>
                             @endif

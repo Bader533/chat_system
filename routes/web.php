@@ -2,11 +2,18 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\BoardingController;
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DurationAgreementController;
+use App\Http\Controllers\GlaEventController;
+use App\Http\Controllers\GlaTeamController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +63,42 @@ Route::get('/getContact', [ContactUsController::class, 'getContact'])->name('con
 Route::resource('/ads', AdsController::class);
 Route::get('/getAds', [AdsController::class, 'getAds'])->name('ads.data');
 //end contact
+
+// country
+Route::resource('/country', CountryController::class);
+Route::get('/getCountry', [CountryController::class, 'getCountries'])->name('country.data');
+//end country
+
+// city
+Route::resource('/city', CityController::class);
+Route::get('/getCity', [CityController::class, 'getCities'])->name('city.data');
+//end city
+
+// room-type
+Route::resource('/roomtype', RoomTypeController::class);
+Route::get('/getRoomType', [RoomTypeController::class, 'getRoomTpyes'])->name('roomtype.data');
+//end room-type
+
+// room
+Route::get('/room/{kind?}', [RoomController::class, 'index'])->name('room.index');
+Route::get('/status/room', [RoomController::class, 'changeStatus'])->name('room.status');
+Route::get('/home/room', [RoomController::class, 'changeIsHome'])->name('room.home');
+Route::get('/favorite/room', [RoomController::class, 'changeIsFavorite'])->name('room.favorite');
+Route::get('/getRoom', [RoomController::class, 'getRooms'])->name('room.data');
+//end room
+
+// group
+Route::get('/group', [GroupController::class, 'index'])->name('group.index');
+Route::get('/getGroup', [GroupController::class, 'getGroups'])->name('group.data');
+Route::get('/status/group', [GroupController::class, 'changeStatus'])->name('group.status');
+//end group
+
+// gla-event
+Route::resource('/gla-event', GlaEventController::class);
+Route::get('/getEvent', [GlaEventController::class, 'getEvents'])->name('event.data');
+//end gla-event
+
+// gla-team
+Route::resource('/gla-team', GlaTeamController::class);
+Route::get('/getTeam', [GlaTeamController::class, 'getTeams'])->name('team.data');
+//end gla-team

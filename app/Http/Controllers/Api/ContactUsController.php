@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactUsRequest;
 use App\Models\ContactUs;
+use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,14 +24,24 @@ class ContactUsController extends Controller
      */
     public function store(ContactUsRequest $request)
     {
-        $contactUs = ContactUs::create([
-            'message' => $request->message,
-            'subject' => $request->subject,
-            'email' => $request->email,
-            'f_name' => $request->f_name,
-            'l_name' => $request->l_name
-        ]);
-        return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
+        try {
+
+            $validatedData = $request->validated();
+            $contactUs = ContactUs::create($validatedData);
+            return response()->json([
+                'message' => __('site.create_successfully'),
+                'code' => Response::HTTP_CREATED,
+                'error' => false,
+                'data' => $contactUs
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
     }
 
     /**

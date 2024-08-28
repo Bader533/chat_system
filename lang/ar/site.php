@@ -502,4 +502,37 @@ return [
     "subject" => "الموضوع",
     "message" => "الرسالة",
 
+    "avatar" => "صورة",
+
+    "ads" => "الاعلانات",
+    "add_new_ads" => "اضافة اعلان جديد",
+    "is_home" => "عرض فى الرئيسية",
+
+    "countries" => "الدول",
+    "country" => "الدولة",
+    "add_new_country" => "اضافة دولة جديدة",
+
+    "cities" => "المدن",
+    "cities" => "المدن",
+
+    "failed_to_save" => "فشل فى الحفظ",
+    "saved_successfully" => "تم الحفظ بنجاح",
+
+    "roomtypes" => "انواع الغرف",
+    "roomtype" => "نوع الغرفة",
+    "add_new_roomtype" => "اضافة نوع غرفة جديدة",
+
+    "rooms" => "الغرف",
+    "is_favorite" => "المميزة",
+    "favorite" => "مميز",
+
+    "groups" => "مجموعات",
+
+    "gla_event" => "احداث غلا",
+    "add_new_event" => "اضافة حدث جديد",
+
+
+    "gla_team" => "فريق غلا",
+    "add_new_team" => "اضافة فريق جديد",
+
 ];
