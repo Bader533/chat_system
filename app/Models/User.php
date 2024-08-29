@@ -52,4 +52,36 @@ class User extends Authenticatable
     {
         return $this->hasMany(Group::class);
     }
+
+    public function scopeForCurrentUser($query)
+    {
+        return $query->where('id', auth()->user()->id);
+    }
+
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
+    public function favoriteRooms()
+    {
+        return $this->belongsToMany(Room::class, 'favorite_rooms');
+    }
+
+    public function scopeGetUser($query)
+    {
+        return $query->forCurrentUser()->isActive()->firstOrFail();
+    }
+
+    // المتابعون
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id');
+    }
+
+    // المستخدمين الذين يتابعهم
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
+    }
 }

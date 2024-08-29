@@ -57,5 +57,8 @@ class Ads extends Model
         }
     }
 
-    
+    public function scopeIsHome($query)
+    {
+        return $query->where('is_home', 1);
+    }
 }

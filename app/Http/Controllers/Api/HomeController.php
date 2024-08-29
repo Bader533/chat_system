@@ -14,8 +14,8 @@ class HomeController extends Controller
     public function index()
     {
         try {
-            $data['ads'] = Ads::select('id', 'name', 'avatar')->take(10)->get();
-            $data['rooms'] = Room::select('id', 'name', 'avatar', 'country_id')->take(10)->get();
+            $data['ads'] = Ads::select('id', 'name', 'avatar')->isHome()->take(10)->get();
+            $data['rooms'] = Room::select('id', 'name', 'avatar', 'country_id')->isHome()->take(10)->get();
 
             return response()->json([
                 'message' => 'home page data',

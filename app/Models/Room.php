@@ -101,6 +101,14 @@ class Room extends Model
         return $query->where('is_home', 1);
     }
 
+    /**
+     * scope to filter rooms based on status
+     */
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -109,5 +117,10 @@ class Room extends Model
     public function roomType()
     {
         return $this->belongsTo(RoomType::class);
+    }
+
+    public function favoredByUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorite_rooms');
     }
 }

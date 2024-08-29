@@ -7,12 +7,14 @@ use App\Http\Controllers\Api\ConditionController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\DurationAgreementController;
+use App\Http\Controllers\Api\FollowController;
 use App\Http\Controllers\Api\GlaEventController;
 use App\Http\Controllers\Api\GlaTeamController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\RoomController;
+use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -58,7 +60,12 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/cities', [CityController::class, 'index']);
 
+    //room
     Route::resource('/room', RoomController::class);
+    Route::get('/search/room', [RoomController::class, 'search']);
+    Route::get('/favorite/room', [RoomController::class, 'favorite']);
+    Route::get('/add-favorite/room', [RoomController::class, 'setFavoriteRoom']);
+    //end room
 
     Route::resource('/group', GroupController::class);
 
@@ -72,5 +79,13 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/gla-team/{id}', [GlaTeamController::class, 'show']);
     // end gla teams
 
+    // user
+    Route::get('/user', [ApiUserController::class, 'show']);
+    Route::get('/search/user', [ApiUserController::class, 'search']);
+    Route::get('/follow/user', [ApiUserController::class, 'follow']);
+    // end user
 
+    // follow
+    Route::get('/follow', [FollowController::class, 'index']);
+    // end follow
 });
