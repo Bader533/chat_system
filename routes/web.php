@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdsController;
+use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\BoardingController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ConditionController;
@@ -102,3 +103,8 @@ Route::get('/getEvent', [GlaEventController::class, 'getEvents'])->name('event.d
 Route::resource('/gla-team', GlaTeamController::class);
 Route::get('/getTeam', [GlaTeamController::class, 'getTeams'])->name('team.data');
 //end gla-team
+
+// agency
+Route::resource('/agency', AgencyController::class);
+Route::get('/getAgency', [AgencyController::class, 'getAgencies'])->name('agency.data');
+//end agency

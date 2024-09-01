@@ -4,14 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class Ads extends Model
+class Agency extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'avatar', 'name', 'description', 'status', 'is_home'];
+    protected $fillable = [
+        'name',
+        'description',
+        'avatar',
+        'status',
+        'is_home'
+    ];
 
     protected $attributes = ['slug' => ''];
 
@@ -24,10 +30,13 @@ class Ads extends Model
         });
     }
 
-    private function generateSlug($name)
+    /**
+     * generate slug
+     */
+    private function generateSlug($data)
     {
-        if (static::whereSlug($slug = Str::slug($name))->exists()) {
-            $max = static::where('name', $name)->latest('id')->skip(1)->value('slug');
+        if (static::whereSlug($slug = Str::slug($data))->exists()) {
+            $max = static::where('name', $data)->latest('id')->skip(1)->value('slug');
             if (isset($max[-1]) && is_numeric($max[-1])) {
                 return preg_replace_callback('/(\d+)$/', function ($mathces) {
                     return $mathces[1] + 1;
@@ -38,22 +47,40 @@ class Ads extends Model
         return $slug;
     }
 
+    /**
+     * store and update avatar
+     */
     public function updateAvatar($request)
     {
         if ($request->hasFile('avatar')) {
             // Delete old avatar if exists
-            if ($this->avatar && File::exists($this->avatar)) {
-                File::delete($this->avatar);
+            if ($this->avatar && Storage::exists($this->avatar)) {
+                Storage::delete($this->avatar);
             }
 
             // Store new avatar
             $file = $request->file('avatar');
-            $file_name = time() . '.' . $file->getClientOriginalExtension();
-            $file->move('images', $file_name);
-            $this->avatar = 'images/' . $file_name;
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+            // Store file in the 'public/avatars' directory
+            $path = $file->storeAs('avatars', $fileName, 'public');
+
+            $this->avatar = $path;
 
             // Save model
             $this->save();
+        }
+    }
+
+    /**
+     * get country avatar
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar != null) {
+            return asset('storage/' . $this->avatar);
+        } else {
+            return 'assets/media/svg/files/blank-image.svg';
         }
     }
 

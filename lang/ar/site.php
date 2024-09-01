@@ -535,4 +535,8 @@ return [
     "gla_team" => "فريق غلا",
     "add_new_team" => "اضافة فريق جديد",
 
+    "agencies" => "وكالات",
+    "agency" => "وكالة",
+    "add_new_agency" => "اضافة وكالة جديدة",
+
 ];

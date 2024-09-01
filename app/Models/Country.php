@@ -81,6 +81,11 @@ class Country extends Model
         }
     }
 
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function cities()
     {
         return $this->hasMany(City::class);
