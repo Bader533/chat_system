@@ -57,6 +57,15 @@ class Ads extends Model
         }
     }
 
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar != null) {
+            return asset($this->avatar);
+        } else {
+            return 'assets/media/svg/files/blank-image.svg';
+        }
+    }
+
     public function scopeIsHome($query)
     {
         return $query->where('is_home', 1);

@@ -120,8 +120,8 @@
     buttonSideBar()
 
     function buttonSideBar() {
-        const button = document.getElementById('privacy');
-        button.classList.add('active');
+    const button = document.getElementById('pages');
+    button.classList.add('active','show');
     }
 
     function store() {

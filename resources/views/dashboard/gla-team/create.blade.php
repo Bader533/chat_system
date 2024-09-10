@@ -60,7 +60,7 @@
     buttonSideBar()
 
     function buttonSideBar() {
-        const button = document.getElementById('gla_team');
+        const button = document.getElementById('articles');
         button.classList.add('here', 'show');
     }
 

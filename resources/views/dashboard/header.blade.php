@@ -39,38 +39,38 @@
                 <div class="menu menu-rounded menu-column menu-lg-row my-5 my-lg-0 align-items-stretch fw-semibold px-2 px-lg-0"
                     id="kt_app_header_menu" data-kt-menu="true">
                     <!--begin:Menu item-->
-                    {{-- <a href="{{route('home')}}" class="menu-item menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
+                    <a href="{{route('home')}}" class="menu-item menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
-                            <span class="menu-title">Dashboards</span>
+                            <span class="menu-title">{{__('site.home')}}</span>
                             <span class="menu-arrow d-lg-none"></span>
                         </span>
                         <!--end:Menu link-->
-                    </a> --}}
+                    </a>
                     <!--end:Menu item-->
 
                     <!--begin:Menu item-->
-                    {{-- <a href="{{route('plan.index')}}"
+                    <a href="{{route('room.index')}}"
                         class="menu-item menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
-                            <span class="menu-title">Plans</span>
+                            <span class="menu-title">{{__('site.rooms')}}</span>
                             <span class="menu-arrow d-lg-none"></span>
                         </span>
                         <!--end:Menu link-->
-                    </a> --}}
+                    </a>
                     <!--end:Menu item-->
 
                     <!--begin:Menu item-->
-                    {{-- <a href="{{route('user.index')}}"
+                    <a href="{{route('wallet.index')}}"
                         class="menu-item menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
-                            <span class="menu-title">Users</span>
+                            <span class="menu-title">{{__('site.wallet')}}</span>
                             <span class="menu-arrow d-lg-none"></span>
                         </span>
                         <!--end:Menu link-->
-                    </a> --}}
+                    </a>
                     <!--end:Menu item-->
 
                     <!--begin:Menu item-->

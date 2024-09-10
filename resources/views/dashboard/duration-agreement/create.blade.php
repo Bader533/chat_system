@@ -139,8 +139,8 @@
     }
 
     function buttonSideBar() {
-        const button = document.getElementById('duration-agreement');
-        button.classList.add('active');
+        const button = document.getElementById('pages');
+        button.classList.add('active','show');
         //button.classList.add('here', 'show');
     }
 

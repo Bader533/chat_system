@@ -6,16 +6,21 @@ use App\Http\Controllers\BoardingController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DurationAgreementController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GlaEventController;
 use App\Http\Controllers\GlaTeamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +34,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/test', function () {
+    return view('test');
+})->name('test');
+
 Route::get('/', function () {
     return view('dashboard.home.home');
 })->name('home');
@@ -40,8 +49,17 @@ Route::get('search/boarding', [BoardingController::class, 'search'])->name('sear
 
 // users
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 Route::get('/getuser', [UserController::class, 'getUser'])->name('user.data');
+Route::get('/getdata', [UserController::class, 'getData']);
+Route::get('/status/user', [UserController::class, 'changeStatus'])->name('user.status');
 //end users
+
+// employee
+Route::resource('/employee', EmployeeController::class);
+Route::get('/getEmployee', [EmployeeController::class, 'getEmplyees'])->name('employee.data');
+Route::get('/status/employee', [EmployeeController::class, 'changeStatus'])->name('employee.status');
+//end employee
 
 // privacy
 Route::resource('/privacy', PrivacyController::class);
@@ -107,4 +125,21 @@ Route::get('/getTeam', [GlaTeamController::class, 'getTeams'])->name('team.data'
 // agency
 Route::resource('/agency', AgencyController::class);
 Route::get('/getAgency', [AgencyController::class, 'getAgencies'])->name('agency.data');
+Route::get('/getData', [AgencyController::class, 'getData']);
 //end agency
+
+// wallet
+Route::resource('/wallet', WalletController::class);
+Route::get('/getWallet', [WalletController::class, 'getWallets'])->name('wallet.data');
+//end wallet
+
+// settings
+Route::get('/settings/create', [SettingsController::class, 'create']);
+Route::post('/settings', [SettingsController::class, 'store']);
+//end settings
+
+// post
+Route::resource('/post', PostController::class);
+Route::get('/getPost', [PostController::class, 'getPost'])->name('post.data');
+Route::get('/status/post', [PostController::class, 'changeStatus'])->name('post.status');
+//end post

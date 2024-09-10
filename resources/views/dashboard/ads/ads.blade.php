@@ -61,7 +61,8 @@
 
                 <!--begin::Edit-->
 
-                <a class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
+                <a href="{{route('ads.edit',$item->slug)}}"
+                    class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
                     <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="{{ __('site.edit') }}">
                         <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
                         <span class="svg-icon svg-icon-3">
@@ -82,7 +83,7 @@
                 <!--end::Edit-->
 
                 <!--begin::Delete-->
-                <a onclick="confirmDelete('{{$item->id}}',this)"
+                <a onclick="confirmDelete('{{$item->slug}}',this)"
                     class="btn btn-icon btn-active-light-danger w-30px h-30px me-3" data-bs-toggle="tooltip"
                     title="Delete" data-kt-customer-payment-method="delete">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->

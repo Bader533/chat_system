@@ -59,9 +59,10 @@ class AgencyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Agency $agency)
+    public function show($slug)
     {
-        //
+        $agency = Agency::whereSlug($slug)->firstOrFail();
+        return view('dashboard.agency.show', ['agency' => $agency]);
     }
 
     /**
@@ -91,5 +92,22 @@ class AgencyController extends Controller
     public function destroy(Agency $agency)
     {
         //
+    }
+
+    public function getData(Request $request)
+    {
+        // Retrieve input values with sensible defaults
+        $query = $request->input('query');
+        $perPage = $request->input('per_page', 10);
+        $userId = $request->input('userId');
+
+        // Start building the query
+        $data = Agency::findOrFail($userId);
+
+        if ($data) {
+            $contacts = $data->wallets()->paginate($perPage);
+            // Return the view with the data
+            return view('dashboard.agency.table.wallet', ['contacts' => $contacts]);
+        }
     }
 }

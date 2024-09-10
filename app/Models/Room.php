@@ -66,7 +66,7 @@ class Room extends Model
     }
 
     /**
-     * get roomtype avatar
+     * get room avatar
      */
     public function getAvatarUrlAttribute()
     {

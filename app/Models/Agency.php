@@ -80,7 +80,7 @@ class Agency extends Model
         if ($this->avatar != null) {
             return asset('storage/' . $this->avatar);
         } else {
-            return 'assets/media/svg/files/blank-image.svg';
+            return asset('assets/media/svg/files/blank-image.svg');
         }
     }
 
@@ -92,5 +92,28 @@ class Agency extends Model
     public function scopeIsActive($query)
     {
         return $query->where('status', 1);
+    }
+
+    public function wallets()
+    {
+        return $this->hasMany(Wallet::class);
+    }
+
+    public function getTotalDollarAttribute()
+    {
+        // جمع جميع قيم 'dollar' في علاقة wallets
+        return $this->wallets->sum('dollar');
+    }
+
+    public function getTotalDiamondsAttribute()
+    {
+        // جمع جميع قيم 'diamonds' في علاقة wallets
+        return $this->wallets->where('type', 'diamonds')->sum('quantity');
+    }
+
+    public function getTotalGoldAttribute()
+    {
+        // جمع جميع قيم 'gold' في علاقة wallets
+        return $this->wallets->where('type', 'gold')->sum('quantity');
     }
 }

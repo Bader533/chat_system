@@ -1,10 +1,131 @@
 @extends('dashboard.parent')
 
-@section('title',__('site.all_boarding'))
+@section('title',__('site.users'))
 
-@section('page_name',__('site.boardings'))
+@section('page_name',__('site.users'))
 
 @section('css')
+<style>
+    /* From Uiverse.io by Dev-MdTuhin */
+    .checkbox-wrapper-10 .tgl {
+        display: none;
+    }
+
+    .checkbox-wrapper-10 .tgl,
+    .checkbox-wrapper-10 .tgl:after,
+    .checkbox-wrapper-10 .tgl:before,
+    .checkbox-wrapper-10 .tgl *,
+    .checkbox-wrapper-10 .tgl *:after,
+    .checkbox-wrapper-10 .tgl *:before,
+    .checkbox-wrapper-10 .tgl+.tgl-btn {
+        box-sizing: border-box;
+    }
+
+    .checkbox-wrapper-10 .tgl::-moz-selection,
+    .checkbox-wrapper-10 .tgl:after::-moz-selection,
+    .checkbox-wrapper-10 .tgl:before::-moz-selection,
+    .checkbox-wrapper-10 .tgl *::-moz-selection,
+    .checkbox-wrapper-10 .tgl *:after::-moz-selection,
+    .checkbox-wrapper-10 .tgl *:before::-moz-selection,
+    .checkbox-wrapper-10 .tgl+.tgl-btn::-moz-selection,
+    .checkbox-wrapper-10 .tgl::selection,
+    .checkbox-wrapper-10 .tgl:after::selection,
+    .checkbox-wrapper-10 .tgl:before::selection,
+    .checkbox-wrapper-10 .tgl *::selection,
+    .checkbox-wrapper-10 .tgl *:after::selection,
+    .checkbox-wrapper-10 .tgl *:before::selection,
+    .checkbox-wrapper-10 .tgl+.tgl-btn::selection {
+        background: none;
+    }
+
+    .checkbox-wrapper-10 .tgl+.tgl-btn {
+        outline: 0;
+        display: block;
+        width: 4em;
+        height: 2em;
+        position: relative;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    .checkbox-wrapper-10 .tgl+.tgl-btn:after,
+    .checkbox-wrapper-10 .tgl+.tgl-btn:before {
+        position: relative;
+        display: block;
+        content: "";
+        width: 50%;
+        height: 100%;
+    }
+
+    .checkbox-wrapper-10 .tgl+.tgl-btn:after {
+        left: 0;
+    }
+
+    .checkbox-wrapper-10 .tgl+.tgl-btn:before {
+        display: none;
+    }
+
+    .checkbox-wrapper-10 .tgl:checked+.tgl-btn:after {
+        left: 50%;
+    }
+
+    .checkbox-wrapper-10 .tgl-flip+.tgl-btn {
+        padding: 2px;
+        transition: all 0.2s ease;
+        font-family: sans-serif;
+        perspective: 100px;
+    }
+
+    .checkbox-wrapper-10 .tgl-flip+.tgl-btn:after,
+    .checkbox-wrapper-10 .tgl-flip+.tgl-btn:before {
+        display: inline-block;
+        transition: all 0.4s ease;
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        line-height: 2em;
+        font-weight: bold;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 4px;
+    }
+
+    .checkbox-wrapper-10 .tgl-flip+.tgl-btn:after {
+        content: attr(data-tg-on);
+        background: #02C66F;
+        transform: rotateY(-180deg);
+    }
+
+    .checkbox-wrapper-10 .tgl-flip+.tgl-btn:before {
+        background: #FF3A19;
+        content: attr(data-tg-off);
+    }
+
+    .checkbox-wrapper-10 .tgl-flip+.tgl-btn:active:before {
+        transform: rotateY(-20deg);
+    }
+
+    .checkbox-wrapper-10 .tgl-flip:checked+.tgl-btn:before {
+        transform: rotateY(180deg);
+    }
+
+    .checkbox-wrapper-10 .tgl-flip:checked+.tgl-btn:after {
+        transform: rotateY(0);
+        left: 0;
+        background: #7FC6A6;
+    }
+
+    .checkbox-wrapper-10 .tgl-flip:checked+.tgl-btn:active:after {
+        transform: rotateY(20deg);
+    }
+</style>
 @endsection
 
 @section('bread_crumb')
@@ -20,22 +141,13 @@
     </li>
     <!--end::Item-->
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">{{__('site.all_boarding')}}</li>
+    <li class="breadcrumb-item text-muted">{{__('site.users')}}</li>
     <!--end::Item-->
 </ul>
 @endsection
 
 @section('actions')
-{{-- <div class="d-flex align-items-center gap-2 gap-lg-3">
-    <!--begin::Secondary button-->
-    <a href="#" class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary" data-bs-toggle="modal"
-        data-bs-target="#kt_modal_create_app">Rollover</a>
-    <!--end::Secondary button-->
-    <!--begin::Primary button-->
-    <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_new_target">Add
-        Target</a>
-    <!--end::Primary button-->
-</div> --}}
+
 @endsection
 
 @section('content')
@@ -71,12 +183,12 @@
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
                     <!--begin::Toolbar-->
-                    <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                    {{-- <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
                         <!--begin::Add customer-->
                         <a href="{{ route('boarding.create') }}" class="btn btn-primary">{{__('site.add_new_boarding')}}
                         </a>
                         <!--end::Add customer-->
-                    </div>
+                    </div> --}}
                     <!--end::Toolbar-->
                     <!--begin::Group actions-->
                     {{-- <div class="d-flex justify-content-end align-items-center d-none"
@@ -114,7 +226,7 @@
 
     function buttonSideBar() {
         const button = document.getElementById('users');
-        button.classList.add('active');
+        button.classList.add('active','show');
     }
 
     function confirmDelete(id, reference) {
@@ -156,8 +268,13 @@
     } //end detete
 
 
-    function getUser(){
-        axios.get('/getuser')
+    function getUser(page = 1, query = null){
+        axios.get('/getuser', {
+            params: {
+                page: page,
+                query: query,
+            }
+        })
         .then(function (response) {
             $('#table-content').html(response.data);
             }).catch(function (error) {
@@ -165,27 +282,29 @@
             });
     }
 
-    document.getElementById('search_data').addEventListener('input', function() {
+    document.getElementById('search_data').addEventListener('input', function () {
         const searchQuery = this.value;
+        if (searchQuery) {
+            console.log('data');
+            getUser(1, searchQuery);
+        } else {
+            console.log('empty');
+            getUser();
+        }
+    });
 
-        axios.get('{{ route('user.data') }}', {
+    function changeStatus(itemId) {
+        axios.get('/status/user', {
             params: {
-                query: searchQuery
+                id: itemId
             }
         })
-        .then(function (response) {
-            console.log(searchQuery);
-            if(searchQuery){
-                console.log('data');
-                $('#table-content').html(response.data);
-            }else{
-                console.log('empty');
-                getUser();
-            }
+            .then(function (response) {
+                console.log(response.data.message);
             }).catch(function (error) {
                 console.error('There was an error!', error);
             });
-    });
+    }
 
 
 </script>

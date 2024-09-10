@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'status',
+        'type',
         'email',
         'password',
     ];
@@ -43,6 +45,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * get user avatar
+     */
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->avatar != null) {
+            return asset('images/' . $this->avatar);
+        } else {
+            return asset('assets/media/svg/files/blank-image.svg');
+        }
+    }
+
     public function rooms()
     {
         return $this->hasMany(Room::class);
@@ -61,6 +75,11 @@ class User extends Authenticatable
     public function scopeIsActive($query)
     {
         return $query->where('status', 1);
+    }
+
+    public function scopeIsEmployee($query)
+    {
+        return $query->whereIn('type', [0, 1]);
     }
 
     public function favoriteRooms()
@@ -83,5 +102,33 @@ class User extends Authenticatable
     public function following()
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
+    }
+
+    public function wallets()
+    {
+        return $this->hasMany(Wallet::class);
+    }
+
+    public function getTotalDollarAttribute()
+    {
+        // جمع جميع قيم 'dollar' في علاقة wallets
+        return $this->wallets->sum('dollar');
+    }
+
+    public function getTotalDiamondsAttribute()
+    {
+        // جمع جميع قيم 'diamonds' في علاقة wallets
+        return $this->wallets->where('type', 'diamonds')->sum('quantity');
+    }
+
+    public function getTotalGoldAttribute()
+    {
+        // جمع جميع قيم 'gold' في علاقة wallets
+        return $this->wallets->where('type', 'gold')->sum('quantity');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }

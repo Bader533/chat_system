@@ -100,6 +100,7 @@ class AdsController extends Controller
     public function destroy($slug)
     {
         $ads = Ads::where('slug', $slug)->firstOrFail();
+        // dd($ads);
         $deleted = $ads->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);
     }

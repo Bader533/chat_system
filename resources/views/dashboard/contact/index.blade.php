@@ -110,6 +110,13 @@
 <script>
     getContact();
 
+    buttonSideBar()
+
+        function buttonSideBar() {
+        const button = document.getElementById('pages');
+        button.classList.add('active','show');
+        }
+
     function confirmDelete(id, reference) {
         Swal.fire({
             title: "{{__('site.are_you_sure')}}",

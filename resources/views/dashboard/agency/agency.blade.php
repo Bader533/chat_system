@@ -20,7 +20,8 @@
         <tr>
             <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a>
+                <a href="{{route('agency.show',$item->slug)}}" class="text-gray-800 text-hover-primary mb-1">{{
+                    $item->name }}</a>
             </td>
             <!--end::Name=-->
 

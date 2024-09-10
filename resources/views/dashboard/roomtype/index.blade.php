@@ -94,7 +94,7 @@
     buttonSideBar()
 
     function buttonSideBar() {
-        const button = document.getElementById('roomtype');
+        const button = document.getElementById('room');
         button.classList.add('here', 'show');
     }
 
