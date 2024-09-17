@@ -82,6 +82,35 @@
                 </div>
                 <!--end::title-->
 
+                <!--begin::role-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="required form-label">{{__('site.role')}}</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <div class="text-center">
+
+                        <select class="form-select mb-2" data-control="select2" data-hide-search="true"
+                            data-placeholder="Select an option" name="role[]" id="role" multiple required>
+                            <option></option>
+                            @foreach ($roles as $role)
+                            <option value="{{ $role->id }}" @if(in_array($role->id,
+                                $employee->roles->pluck('id')->toArray()))
+                                selected
+                                @endif>
+                                {{ $role->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <!--end::Input-->
+                    <!--begin::Description-->
+                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
+                    </div> --}}
+                    <!--end::Description-->
+                </div>
+                <!--end::role-->
+
                 <!--begin::email-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->

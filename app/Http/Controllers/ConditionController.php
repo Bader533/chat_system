@@ -22,6 +22,7 @@ class ConditionController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Condition');
         $condition = Condition::first();
         return view('dashboard.condition.create', ['condition' => $condition]);
     }
@@ -31,6 +32,7 @@ class ConditionController extends Controller
      */
     public function store(ConditionRequest $request)
     {
+        $this->authorize('Create-Condition');
         $condition = Condition::first();
 
         if (!$condition) {

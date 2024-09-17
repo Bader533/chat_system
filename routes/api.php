@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\GlaTeamController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\UserController;
@@ -88,4 +89,10 @@ Route::middleware('auth:api')->group(function () {
     // follow
     Route::get('/follow', [FollowController::class, 'index']);
     // end follow
+
+    // posts
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/post/like/{id}', [PostController::class, 'like']);
+    Route::post('/post/comment/{id}', [PostController::class, 'comment']);
+    // end posts
 });

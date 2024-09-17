@@ -22,6 +22,8 @@ class PrivacyController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Privacy');
+
         $privacy = Privacy::first();
         return view('dashboard.privacy.create', ['privacy' => $privacy]);
     }
@@ -31,6 +33,8 @@ class PrivacyController extends Controller
      */
     public function store(PrivacyRequest $request)
     {
+        $this->authorize('Create-Privacy');
+
         $privacy = Privacy::first();
 
         if (!$privacy) {

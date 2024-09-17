@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\BoardingController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ConditionController;
@@ -34,112 +36,132 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-    return view('test');
-})->name('test');
-
 Route::get('/', function () {
-    return view('dashboard.home.home');
-})->name('home');
+    return redirect()->route('login');
+});
 
-// borading
-Route::resource('boarding', BoardingController::class);
-Route::get('search/boarding', [BoardingController::class, 'search'])->name('search.boarding');
-//end borading
+// ==================================== login ====================================
+Route::get('login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
+Route::post('login', [AuthController::class, 'Login'])->middleware('guest');
+// ==================================== end login ====================================
 
-// users
-Route::get('/user', [UserController::class, 'index'])->name('user.index');
-Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
-Route::get('/getuser', [UserController::class, 'getUser'])->name('user.data');
-Route::get('/getdata', [UserController::class, 'getData']);
-Route::get('/status/user', [UserController::class, 'changeStatus'])->name('user.status');
-//end users
+Route::middleware('auth:web')->group(
+    function () {
 
-// employee
-Route::resource('/employee', EmployeeController::class);
-Route::get('/getEmployee', [EmployeeController::class, 'getEmplyees'])->name('employee.data');
-Route::get('/status/employee', [EmployeeController::class, 'changeStatus'])->name('employee.status');
-//end employee
+        Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// privacy
-Route::resource('/privacy', PrivacyController::class);
-//end privacy
+        // borading
+        Route::resource('boarding', BoardingController::class);
+        Route::get('search/boarding', [BoardingController::class, 'search'])->name('search.boarding');
+        //end borading
 
-// condition
-Route::resource('/condition', ConditionController::class);
-//end condition
+        // users
+        Route::get('/user', [UserController::class, 'index'])->name('user.index');
+        Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+        Route::get('/getuser', [UserController::class, 'getUser'])->name('user.data');
+        Route::get('/getdata', [UserController::class, 'getData']);
+        Route::get('/status/user', [UserController::class, 'changeStatus'])->name('user.status');
+        //end users
 
-// condition
-Route::resource('/duration-agreement', DurationAgreementController::class);
-//end condition
+        // employee
+        Route::resource('/employee', EmployeeController::class);
+        Route::get('/getEmployee', [EmployeeController::class, 'getEmplyees'])->name('employee.data');
+        Route::get('/status/employee', [EmployeeController::class, 'changeStatus'])->name('employee.status');
+        //end employee
 
-// contact
-Route::resource('/contact', ContactUsController::class);
-Route::get('/getContact', [ContactUsController::class, 'getContact'])->name('contact.data');
-//end contact
+        // privacy
+        Route::resource('/privacy', PrivacyController::class);
+        //end privacy
 
-// contact
-Route::resource('/ads', AdsController::class);
-Route::get('/getAds', [AdsController::class, 'getAds'])->name('ads.data');
-//end contact
+        // condition
+        Route::resource('/condition', ConditionController::class);
+        //end condition
 
-// country
-Route::resource('/country', CountryController::class);
-Route::get('/getCountry', [CountryController::class, 'getCountries'])->name('country.data');
-//end country
+        // condition
+        Route::resource('/duration-agreement', DurationAgreementController::class);
+        //end condition
 
-// city
-Route::resource('/city', CityController::class);
-Route::get('/getCity', [CityController::class, 'getCities'])->name('city.data');
-//end city
+        // contact
+        Route::resource('/contact', ContactUsController::class);
+        Route::get('/getContact', [ContactUsController::class, 'getContact'])->name('contact.data');
+        //end contact
 
-// room-type
-Route::resource('/roomtype', RoomTypeController::class);
-Route::get('/getRoomType', [RoomTypeController::class, 'getRoomTpyes'])->name('roomtype.data');
-//end room-type
+        // contact
+        Route::resource('/ads', AdsController::class);
+        Route::get('/getAds', [AdsController::class, 'getAds'])->name('ads.data');
+        //end contact
 
-// room
-Route::get('/room/{kind?}', [RoomController::class, 'index'])->name('room.index');
-Route::get('/status/room', [RoomController::class, 'changeStatus'])->name('room.status');
-Route::get('/home/room', [RoomController::class, 'changeIsHome'])->name('room.home');
-Route::get('/favorite/room', [RoomController::class, 'changeIsFavorite'])->name('room.favorite');
-Route::get('/getRoom', [RoomController::class, 'getRooms'])->name('room.data');
-//end room
+        // country
+        Route::resource('/country', CountryController::class);
+        Route::get('/getCountry', [CountryController::class, 'getCountries'])->name('country.data');
+        //end country
 
-// group
-Route::get('/group', [GroupController::class, 'index'])->name('group.index');
-Route::get('/getGroup', [GroupController::class, 'getGroups'])->name('group.data');
-Route::get('/status/group', [GroupController::class, 'changeStatus'])->name('group.status');
-//end group
+        // city
+        Route::resource('/city', CityController::class);
+        Route::get('/getCity', [CityController::class, 'getCities'])->name('city.data');
+        //end city
 
-// gla-event
-Route::resource('/gla-event', GlaEventController::class);
-Route::get('/getEvent', [GlaEventController::class, 'getEvents'])->name('event.data');
-//end gla-event
+        // room-type
+        Route::resource('/roomtype', RoomTypeController::class);
+        Route::get('/getRoomType', [RoomTypeController::class, 'getRoomTpyes'])->name('roomtype.data');
+        //end room-type
 
-// gla-team
-Route::resource('/gla-team', GlaTeamController::class);
-Route::get('/getTeam', [GlaTeamController::class, 'getTeams'])->name('team.data');
-//end gla-team
+        // room
+        Route::get('/room/{kind?}', [RoomController::class, 'index'])->name('room.index');
+        Route::get('/status/room', [RoomController::class, 'changeStatus'])->name('room.status');
+        Route::get('/home/room', [RoomController::class, 'changeIsHome'])->name('room.home');
+        Route::get('/favorite/room', [RoomController::class, 'changeIsFavorite'])->name('room.favorite');
+        Route::get('/getRoom', [RoomController::class, 'getRooms'])->name('room.data');
+        //end room
 
-// agency
-Route::resource('/agency', AgencyController::class);
-Route::get('/getAgency', [AgencyController::class, 'getAgencies'])->name('agency.data');
-Route::get('/getData', [AgencyController::class, 'getData']);
-//end agency
+        // group
+        Route::get('/group', [GroupController::class, 'index'])->name('group.index');
+        Route::get('/getGroup', [GroupController::class, 'getGroups'])->name('group.data');
+        Route::get('/status/group', [GroupController::class, 'changeStatus'])->name('group.status');
+        //end group
 
-// wallet
-Route::resource('/wallet', WalletController::class);
-Route::get('/getWallet', [WalletController::class, 'getWallets'])->name('wallet.data');
-//end wallet
+        // gla-event
+        Route::resource('/gla-event', GlaEventController::class);
+        Route::get('/getEvent', [GlaEventController::class, 'getEvents'])->name('event.data');
+        //end gla-event
 
-// settings
-Route::get('/settings/create', [SettingsController::class, 'create']);
-Route::post('/settings', [SettingsController::class, 'store']);
-//end settings
+        // gla-team
+        Route::resource('/gla-team', GlaTeamController::class);
+        Route::get('/getTeam', [GlaTeamController::class, 'getTeams'])->name('team.data');
+        //end gla-team
 
-// post
-Route::resource('/post', PostController::class);
-Route::get('/getPost', [PostController::class, 'getPost'])->name('post.data');
-Route::get('/status/post', [PostController::class, 'changeStatus'])->name('post.status');
-//end post
+        // agency
+        Route::resource('/agency', AgencyController::class);
+        Route::get('/getAgency', [AgencyController::class, 'getAgencies'])->name('agency.data');
+        Route::get('/getData', [AgencyController::class, 'getData']);
+        //end agency
+
+        // wallet
+        Route::resource('/wallet', WalletController::class);
+        Route::get('/getWallet', [WalletController::class, 'getWallets'])->name('wallet.data');
+        //end wallet
+
+        // settings
+        Route::get('/settings/create', [SettingsController::class, 'create']);
+        Route::post('/settings', [SettingsController::class, 'store']);
+        //end settings
+
+        // post
+        Route::resource('/post', PostController::class);
+        Route::get('/getPost', [PostController::class, 'getPost'])->name('post.data');
+        Route::get('/status/post', [PostController::class, 'changeStatus'])->name('post.status');
+        //end post
+
+        // rule & permission
+        Route::get('/rule', [AuthorizationController::class, 'Rules'])->name('rule.index');
+        Route::get('/getrule', [AuthorizationController::class, 'getRules']);
+        Route::get('/permission', [AuthorizationController::class, 'Permissions'])->name('permission.index');
+        Route::get('/getpermission', [AuthorizationController::class, 'getPermissions']);
+        //end rule & permission
+
+        // logout
+        Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+        // end logout
+
+    }
+);

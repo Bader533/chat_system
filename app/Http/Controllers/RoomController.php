@@ -16,6 +16,7 @@ class RoomController extends Controller
      */
     public function index($data = null)
     {
+        $this->authorize('any-room-permission');
         $kindData = $data;
         return view('dashboard.room.index', ['data' => $kindData]);
     }
@@ -25,6 +26,7 @@ class RoomController extends Controller
      */
     public function getRooms(Request $request)
     {
+        $this->authorize('any-room-permission');
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -110,6 +112,8 @@ class RoomController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Update-Room-Status');
+
         $room = Room::findOrFail($request->id);
 
         $room->status = !$room->status;
@@ -126,6 +130,8 @@ class RoomController extends Controller
      */
     public function changeIsHome(Request $request)
     {
+        $this->authorize('Update-Room-Home');
+
         $room = Room::findOrFail($request->id);
 
         $room->is_home = !$room->is_home;
@@ -142,6 +148,8 @@ class RoomController extends Controller
      */
     public function changeIsFavorite(Request $request)
     {
+        $this->authorize('Update-Room-Favorite');
+
         $room = Room::findOrFail($request->id);
 
         $room->is_favorite = !$room->is_favorite;

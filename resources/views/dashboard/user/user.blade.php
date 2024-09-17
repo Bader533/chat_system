@@ -30,6 +30,7 @@
             <!--end::email=-->
 
             <!--begin::price=-->
+            @can('Update-User-Status')
             <td>
                 <div class="checkbox-wrapper-10">
                     <input @if ($user->status == 1) checked value="1" @else value="0" @endif type="checkbox"
@@ -40,6 +41,7 @@
                         class="tgl-btn"></label>
                 </div>
             </td>
+            @endcan
             <!--end::price=-->
 
             <!--begin::Date=-->

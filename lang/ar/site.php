@@ -558,4 +558,14 @@ return [
 
     "pages" => "صفحات",
 
+    "quick_actions" => "اعدادات سريعة",
+
+    "transactions" => "الحولات",
+
+    "room_active_count" => "عدد الغرف الفعالين",
+
+    "authorization" => "الصلاحيات",
+    "permission" => "الأذونات",
+    "rule" => "المسميات",
+
 ];

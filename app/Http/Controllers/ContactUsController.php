@@ -13,11 +13,13 @@ class ContactUsController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Contact-Us');
         return view('dashboard.contact.index');
     }
 
     public function getContact(Request $request)
     {
+        $this->authorize('Read-Contact-Us');
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
         $data = ContactUs::query();
@@ -55,6 +57,7 @@ class ContactUsController extends Controller
      */
     public function show($slug)
     {
+        $this->authorize('Read-Contact-Us');
         $contact = ContactUs::where('slug', $slug)->firstOrFail();
         return view('dashboard.contact.show', ['contact' => $contact]);
     }

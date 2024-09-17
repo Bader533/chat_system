@@ -14,6 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Posts');
+
         return view('dashboard.post.index');
     }
 
@@ -22,6 +24,8 @@ class PostController extends Controller
      */
     public function getPost(Request $request)
     {
+        $this->authorize('Read-Posts');
+
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -46,6 +50,8 @@ class PostController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Post');
+
         return view('dashboard.post.create');
     }
 
@@ -54,6 +60,8 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
+        $this->authorize('Create-Post');
+
         $validatedData = $request->validated();
         $validatedData['user_id'] = 1;
         $data = Post::create($validatedData);
@@ -74,6 +82,8 @@ class PostController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-Post');
+
         $post = Post::where('slug', $slug)->firstOrFail();
         return view('dashboard.post.edit', ['post' => $post]);
     }
@@ -83,6 +93,8 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $slug)
     {
+        $this->authorize('Update-Post');
+
         $post = Post::where('slug', $slug)->firstOrFail();
         $validatedData = $request->validated();
         $validatedData['user_id'] = 1;
@@ -96,6 +108,8 @@ class PostController extends Controller
      */
     public function destroy($slug)
     {
+        $this->authorize('Delete-Post');
+
         $event = Post::where('slug', $slug)->firstOrFail();
         $event->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);
@@ -106,6 +120,8 @@ class PostController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Update-Post-Status');
+
         $post = Post::findOrFail($request->id);
 
         $post->status = !$post->status;

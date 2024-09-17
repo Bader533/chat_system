@@ -2540,7 +2540,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="" class="menu-link px-5">Sign Out</a>
+                            <a href="{{route('logout')}}" class="menu-link px-5">@lang('site.Logout')</a>
                         </div>
                         <!--end::Menu item-->
                     </div>

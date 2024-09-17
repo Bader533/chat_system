@@ -27,6 +27,7 @@ class EmployeeRequest extends FormRequest
             'password' => 'required | String | confirmed',
             'type' => 'required | numeric | in:0,1',
             'status' => 'required | numeric | in:0,1',
+            'role' => 'required|exists:roles,id',
         ];
 
         if ($this->isMethod('put')) {
@@ -35,6 +36,7 @@ class EmployeeRequest extends FormRequest
             $rules['password'] = 'nullable|String|confirmed';
             $rules['type'] = 'nullable|numeric|in:0,1';
             $rules['status'] = 'nullable|numeric|in:0,1';
+            $rules['role'] = 'nullable|exists:roles,id';
         }
 
         return $rules;

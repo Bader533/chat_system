@@ -14,15 +14,17 @@ class AgencyController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Egencies');
         return view('dashboard.agency.index');
     }
 
     /**
      * get all countries to show it using js
      */
-
     public function getAgencies(Request $request)
     {
+        $this->authorize('Read-Egencies');
+
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
         $data = Agency::query();
@@ -42,6 +44,8 @@ class AgencyController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Egency');
+
         return view('dashboard.agency.create');
     }
 
@@ -50,6 +54,7 @@ class AgencyController extends Controller
      */
     public function store(AgencyRequest $request)
     {
+        $this->authorize('Create-Egency');
         $validatedData = $request->validated();
         $country = Agency::create($validatedData);
         $country->updateAvatar($request);
@@ -61,6 +66,7 @@ class AgencyController extends Controller
      */
     public function show($slug)
     {
+        $this->authorize('Show-Egency');
         $agency = Agency::whereSlug($slug)->firstOrFail();
         return view('dashboard.agency.show', ['agency' => $agency]);
     }
@@ -70,6 +76,8 @@ class AgencyController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-Egency');
+
         $agency = Agency::whereSlug($slug)->firstOrFail();
         return view('dashboard.agency.edit', ['agency' => $agency]);
     }
@@ -79,6 +87,7 @@ class AgencyController extends Controller
      */
     public function update(AgencyRequest $request, $slug)
     {
+        $this->authorize('Update-Egency');
         $country = Agency::whereSlug($slug)->firstOrFail();
         $validatedData = $request->validated();
         $country->update($validatedData);
@@ -96,6 +105,8 @@ class AgencyController extends Controller
 
     public function getData(Request $request)
     {
+        $this->authorize('Show-Egency');
+
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);

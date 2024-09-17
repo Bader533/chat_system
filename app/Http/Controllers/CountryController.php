@@ -14,6 +14,8 @@ class CountryController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Countries');
+
         return view('dashboard.country.index');
     }
 
@@ -23,6 +25,7 @@ class CountryController extends Controller
 
     public function getCountries(Request $request)
     {
+        $this->authorize('Read-Countries');
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
         $data = Country::query();
@@ -42,6 +45,7 @@ class CountryController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Country');
         return view('dashboard.country.create');
     }
 
@@ -50,6 +54,8 @@ class CountryController extends Controller
      */
     public function store(CountryRequest $request)
     {
+        $this->authorize('Create-Country');
+
         $validatedData = $request->validated();
         $country = Country::create($validatedData);
         $country->updateAvatar($request);
@@ -69,6 +75,8 @@ class CountryController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-Country');
+
         $country = Country::whereSlug($slug)->firstOrFail();
         return view('dashboard.country.edit', ['country' => $country]);
     }
@@ -78,6 +86,7 @@ class CountryController extends Controller
      */
     public function update(CountryRequest $request, $slug)
     {
+        $this->authorize('Update-Country');
         $country = Country::whereSlug($slug)->firstOrFail();
         $validatedData = $request->validated();
         $country->update($validatedData);
@@ -90,6 +99,7 @@ class CountryController extends Controller
      */
     public function destroy($slug)
     {
+        $this->authorize('Read-Countries');
         $country = Country::whereSlug($slug)->firstOrFail();
         $country->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);

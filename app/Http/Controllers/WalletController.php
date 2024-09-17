@@ -16,6 +16,7 @@ class WalletController extends Controller
      */
     public function index($data = null)
     {
+        $this->authorize('Read-Wallets');
         return view('dashboard.wallet.index');
     }
 
@@ -24,6 +25,8 @@ class WalletController extends Controller
      */
     public function getWallets(Request $request)
     {
+        $this->authorize('Read-Wallets');
+
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -53,6 +56,8 @@ class WalletController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Wallet');
+
         return view('dashboard.wallet.create');
     }
 
@@ -61,6 +66,8 @@ class WalletController extends Controller
      */
     public function store(WalletRequest $request)
     {
+        $this->authorize('Create-Wallet');
+
         $user = User::findOrFail($request->user_id);
         $validatedData = $request->validated();
         $validatedData['user_id'] = $user->id;
@@ -75,6 +82,8 @@ class WalletController extends Controller
      */
     public function show($slug)
     {
+        $this->authorize('Read-Wallets');
+
         $data = Wallet::where('slug', $slug)->firstOrFail();
         return view('dashboard.wallet.show', ['data' => $data]);
     }

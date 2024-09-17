@@ -44,6 +44,7 @@
                 data-kt-menu="true" data-kt-menu-expand="false">
 
                 <!--begin:Dashboard-->
+                @can('Read-Dashboard')
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link" href="{{route('home')}}">
@@ -64,9 +65,77 @@
                     </a>
                     <!--end:Menu link-->
                 </div>
+                @endcan
                 <!--end:Dashboard-->
 
+                <!--begin:authorization-->
+                @role(['Rule','Permission'])
+                <div data-kt-menu-trigger="click" id="authorization" class="menu-item menu-accordion">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen025.svg-->
+                            <span class="svg-icon svg-icon-2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M11.2929 2.70711C11.6834 2.31658 12.3166 2.31658 12.7071 2.70711L15.2929 5.29289C15.6834 5.68342 15.6834 6.31658 15.2929 6.70711L12.7071 9.29289C12.3166 9.68342 11.6834 9.68342 11.2929 9.29289L8.70711 6.70711C8.31658 6.31658 8.31658 5.68342 8.70711 5.29289L11.2929 2.70711Z"
+                                        fill="currentColor" />
+                                    <path
+                                        d="M11.2929 14.7071C11.6834 14.3166 12.3166 14.3166 12.7071 14.7071L15.2929 17.2929C15.6834 17.6834 15.6834 18.3166 15.2929 18.7071L12.7071 21.2929C12.3166 21.6834 11.6834 21.6834 11.2929 21.2929L8.70711 18.7071C8.31658 18.3166 8.31658 17.6834 8.70711 17.2929L11.2929 14.7071Z"
+                                        fill="currentColor" />
+                                    <path opacity="0.3"
+                                        d="M5.29289 8.70711C5.68342 8.31658 6.31658 8.31658 6.70711 8.70711L9.29289 11.2929C9.68342 11.6834 9.68342 12.3166 9.29289 12.7071L6.70711 15.2929C6.31658 15.6834 5.68342 15.6834 5.29289 15.2929L2.70711 12.7071C2.31658 12.3166 2.31658 11.6834 2.70711 11.2929L5.29289 8.70711Z"
+                                        fill="currentColor" />
+                                    <path opacity="0.3"
+                                        d="M17.2929 8.70711C17.6834 8.31658 18.3166 8.31658 18.7071 8.70711L21.2929 11.2929C21.6834 11.6834 21.6834 12.3166 21.2929 12.7071L18.7071 15.2929C18.3166 15.6834 17.6834 15.6834 17.2929 15.2929L14.7071 12.7071C14.3166 12.3166 14.3166 11.6834 14.7071 11.2929L17.2929 8.70711Z"
+                                        fill="currentColor" />
+                                </svg>
+                            </span>
+                            <!--end::Svg Icon-->
+                        </span>
+                        <span class="menu-title">{{__('site.authorization')}}</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @role('Role')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="{{route('rule.index')}}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">{{__('site.rule')}}</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        @endrole
+                        <!--end:Menu item-->
+                        <!--begin:Menu item-->
+                        @role('Permission')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="{{route('permission.index')}}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">{{__('site.permission')}}</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        @endrole
+                        <!--end:Menu item-->
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+                @endrole
+                <!--end:authorization-->
+
                 <!--begin:users-->
+                @role(['User','Employee'])
                 <div data-kt-menu-trigger="click" id="users" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -98,6 +167,7 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
+                        @role('Employee')
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('employee.index')}}">
@@ -108,8 +178,10 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
+                        @role('User')
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('user.index')}}">
@@ -120,13 +192,16 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:users-->
 
                 <!--begin:boarding-->
+                @role(['Boarding'])
                 <div data-kt-menu-trigger="click" id="boarding" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -176,9 +251,11 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:boarding-->
 
                 <!--begin:ads-->
+                @role(['Ads'])
                 <div data-kt-menu-trigger="click" id="ads" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -230,9 +307,11 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:ads-->
 
                 <!--begin:agency-->
+                @role(['Egency'])
                 <div data-kt-menu-trigger="click" id="agency" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -282,9 +361,11 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:agency-->
 
                 <!--begin:wallet-->
+                @role(['Wallet'])
                 <div data-kt-menu-trigger="click" id="wallet" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -334,9 +415,11 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:wallet-->
 
                 <!--begin:country-->
+                @role(['Country'])
                 <div data-kt-menu-trigger="click" id="country" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -388,9 +471,11 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:country-->
 
                 <!--begin:city-->
+                @role(['City'])
                 <div data-kt-menu-trigger="click" id="city" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -440,9 +525,11 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:city-->
 
                 <!--begin:room-->
+                @role(['Room Type','Room','Home','Favorite'])
                 <div data-kt-menu-trigger="click" id="room" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -468,6 +555,7 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
+                        @role(['Room Type'])
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('roomtype.index')}}">
@@ -478,8 +566,10 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
+                        @role('Room')
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('room.index', ['kind' => null])}}">
@@ -490,8 +580,10 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
+                        @role(['Home'])
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('room.index', ['kind' => 'home'])}}">
@@ -502,8 +594,10 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                         <!--begin:Menu item-->
+                        @role(['Favorite'])
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('room.index', ['kind' => 'favorite'])}}">
@@ -514,13 +608,16 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:room-->
 
                 <!--begin:groups-->
+                @role(['Group'])
                 <div class="menu-item">
                     <!--begin:Menu link-->
                     <a class="menu-link" id="groups" href="{{route('group.index')}}">
@@ -543,9 +640,11 @@
                     </a>
                     <!--end:Menu link-->
                 </div>
+                @endrole
                 <!--end:groups-->
 
                 <!--begin:articles-->
+                @role(['Post','Events','Team'])
                 <div data-kt-menu-trigger="click" id="articles" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -571,6 +670,7 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
+                        @role(['Team'])
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('gla-team.index')}}">
@@ -581,8 +681,11 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
+
                         <!--begin:Menu item-->
+                        @role(['Events'])
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('gla-event.index')}}">
@@ -593,9 +696,11 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
 
                         <!--begin:Menu item-->
+                        @role(['Post'])
                         <div class="menu-item">
                             <!--begin:Menu link-->
                             <a class="menu-link" href="{{route('post.index')}}">
@@ -606,13 +711,16 @@
                             </a>
                             <!--end:Menu link-->
                         </div>
+                        @endrole
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:articles-->
 
-                <!--begin:articles-->
+                <!--begin:pages-->
+                @role(['Pages'])
                 <div data-kt-menu-trigger="click" id="pages" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -688,6 +796,7 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
+                @endrole
                 <!--end:pages-->
 
 

@@ -15,6 +15,8 @@ class CityController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Cities');
+
         return view('dashboard.city.index');
     }
 
@@ -24,6 +26,8 @@ class CityController extends Controller
 
     public function getCities(Request $request)
     {
+        $this->authorize('Read-Cities');
+
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
         $data = City::query();
@@ -43,6 +47,7 @@ class CityController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-City');
         $countries = Country::select(['id', 'name'])->get();
         return view('dashboard.city.create', ['countries' => $countries]);
     }
@@ -52,6 +57,7 @@ class CityController extends Controller
      */
     public function store(CityRequest $request)
     {
+        $this->authorize('Create-City');
         $validatedData = $request->validated();
         $city = City::create($validatedData);
         $city->updateAvatar($request);
@@ -71,6 +77,8 @@ class CityController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-City');
+
         $countries = Country::select(['id', 'name'])->get();
         $city = City::whereSlug($slug)->firstOrFail();
         return view('dashboard.city.edit', ['city' => $city, 'countries' => $countries]);
@@ -81,6 +89,7 @@ class CityController extends Controller
      */
     public function update(CityRequest $request, $slug)
     {
+        $this->authorize('Update-City');
         $city = City::whereSlug($slug)->firstOrFail();
         $validatedData = $request->validated();
         $city->update($validatedData);
@@ -93,6 +102,8 @@ class CityController extends Controller
      */
     public function destroy($slug)
     {
+        $this->authorize('Read-Cities');
+
         $city = City::whereSlug($slug)->firstOrFail();
         $city->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);

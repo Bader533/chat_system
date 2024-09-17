@@ -75,8 +75,23 @@ class Post extends Model
         }
     }
 
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function likeUsers()
+    {
+        return $this->belongsToMany(User::class, 'likes', 'user_id', 'post_id');
+    }
+
+    public function commentUsers()
+    {
+        return $this->belongsToMany(User::class, 'comments', 'user_id', 'post_id');
     }
 }

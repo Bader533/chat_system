@@ -14,6 +14,7 @@ class GlaEventController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Events');
         return view('dashboard.gla-event.index');
     }
 
@@ -22,6 +23,7 @@ class GlaEventController extends Controller
      */
     public function getEvents(Request $request)
     {
+        $this->authorize('Read-Events');
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -46,6 +48,7 @@ class GlaEventController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Event');
         return view('dashboard.gla-event.create');
     }
 
@@ -54,6 +57,7 @@ class GlaEventController extends Controller
      */
     public function store(GlaEventRequest $request)
     {
+        $this->authorize('Create-Event');
         $validatedData = $request->validated();
         $event = GlaEvent::create($validatedData);
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
@@ -72,6 +76,7 @@ class GlaEventController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-Event');
         $event = GlaEvent::where('slug', $slug)->firstOrFail();
         return view('dashboard.gla-event.edit', ['event' => $event]);
     }
@@ -81,6 +86,7 @@ class GlaEventController extends Controller
      */
     public function update(GlaEventRequest $request, $slug)
     {
+        $this->authorize('Update-Event');
         $event = GlaEvent::where('slug', $slug)->firstOrFail();
         $validatedData = $request->validated();
         $event->update($validatedData);
@@ -92,6 +98,7 @@ class GlaEventController extends Controller
      */
     public function destroy($slug)
     {
+        $this->authorize('Read-Events');
         $event = GlaEvent::where('slug', $slug)->firstOrFail();
         $event->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);
@@ -102,6 +109,7 @@ class GlaEventController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Read-Events');
         $event = GlaEvent::findOrFail($request->id);
 
         $event->status = !$event->status;

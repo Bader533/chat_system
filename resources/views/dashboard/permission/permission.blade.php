@@ -3,19 +3,11 @@
     <thead>
         <!--begin::Table row-->
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+            <th class="min-w-125px">{{__('site.id')}}</th>
             <th class="min-w-125px">{{__('site.name')}}</th>
-            <th class="min-w-125px">{{__('site.user')}}</th>
-            <th class="min-w-125px">{{__('site.roomtype')}}</th>
-            @can('Update-Room-Status')
-            <th class="min-w-125px">{{__('site.status')}}</th>
-            @endcan
-            @can('Update-Room-Home')
-            <th class="min-w-125px">{{__('site.home')}}</th>
-            @endcan
-            @can('Update-Room-Favorite')
-            <th class="min-w-125px">{{__('site.favorite')}}</th>
-            @endcan
+            <th class="min-w-125px">{{__('site.rule')}}</th>
             <th class="min-w-125px">{{__('site.created_at')}}</th>
+            {{-- <th class="text-end min-w-70px">{{__('site.actions')}}</th> --}}
         </tr>
         <!--end::Table row-->
     </thead>
@@ -26,66 +18,23 @@
 
         @foreach ($contacts as $item)
         <tr>
+            <!--begin::id=-->
+            <td>
+                <a class="text-gray-800 text-hover-primary mb-1">{{$item->id }}</a>
+            </td>
+            <!--end::id=-->
+
             <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{$item->name }}</a>
             </td>
             <!--end::Name=-->
 
-            <!--begin::user=-->
+            <!--begin::permissin-count=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->user->name }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{$item->roles()->first()->name }}</a>
             </td>
-            <!--end::user=-->
-
-            <!--begin::type=-->
-            <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->roomType->name }}</a>
-            </td>
-            <!--end::type=-->
-
-            <!--begin::status=-->
-            @can('Update-Room-Status')
-            <td>
-                <div class="checkbox-wrapper-10">
-                    <input @if ($item->status == 1) checked value="1" @else value="0" @endif type="checkbox"
-                    id="cb_{{$item->id}}"
-                    class="tgl tgl-flip">
-                    <label onclick="changeStatus('{{$item->id}}')" for="cb_{{$item->id}}"
-                        data-tg-on="{{__('site.active')}}" data-tg-off="{{__('site.non_active')}}"
-                        class="tgl-btn"></label>
-                </div>
-            </td>
-            @endcan
-            <!--end::status=-->
-
-            <!--begin::is_home=-->
-            @can('Update-Room-Home')
-            <td>
-                <div class="checkbox-wrapper-10">
-                    <input @if ($item->is_home == 1) checked value="1" @else value="0" @endif type="checkbox"
-                    id="home_{{$item->id}}"
-                    class="tgl tgl-flip">
-                    <label onclick="changeIsHome('{{$item->id}}')" for="home_{{$item->id}}"
-                        data-tg-on="{{__('site.yes')}}" data-tg-off="{{__('site.no')}}" class="tgl-btn"></label>
-                </div>
-            </td>
-            @endcan
-            <!--end::is_home=-->
-
-            <!--begin::is_favorite=-->
-            @can('Update-Room-Favorite')
-            <td>
-                <div class="checkbox-wrapper-10">
-                    <input @if ($item->is_favorite == 1) checked value="1" @else value="0" @endif type="checkbox"
-                    id="favorite_{{$item->id}}"
-                    class="tgl tgl-flip">
-                    <label onclick="changeIsFavorite('{{$item->id}}')" for="favorite_{{$item->id}}"
-                        data-tg-on="{{__('site.yes')}}" data-tg-off="{{__('site.no')}}" class="tgl-btn"></label>
-                </div>
-            </td>
-            @endcan
-            <!--end::is_favorite=-->
+            <!--end::permissin-count=-->
 
             <!--begin::Date=-->
             <td>{{ date('m/d/Y', strtotime($item->created_at)) }}</td>
@@ -114,7 +63,7 @@
                 <li class="page-item disabled"><span class="page-link">‹</span></li>
                 @else
                 <li class="page-item"><a class="page-link"
-                        onclick="getRooms('{{ $contacts->currentPage() - 1 }}')">‹</a>
+                        onclick="getPermission('{{ $contacts->currentPage() - 1 }}')">‹</a>
                 </li>
                 @endif
                 @php
@@ -129,7 +78,7 @@
 
                 <!-- عرض الصفحة الأولى إذا كانت الصفحة الحالية ليست قريبة منها -->
                 @if ($startPage > 1)
-                <li class="page-item"><a class="page-link" onclick="getRooms(1)">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="getPermission(1)">1</a></li>
                 @if ($startPage > 2)
                 <li class="page-item disabled"><span class="page-link">...</span></li>
                 @endif
@@ -138,7 +87,7 @@
                 <!-- عرض الصفحات الحالية -->
                 @for ($i = $startPage; $i <= $endPage; $i++) <li
                     class="page-item {{ $i == $contacts->currentPage() ? 'active' : '' }}">
-                    <a class="page-link" onclick="getRooms('{{ $i }}')">{{ $i }}</a>
+                    <a class="page-link" onclick="getPermission('{{ $i }}')">{{ $i }}</a>
                     </li>
                     @endfor
 
@@ -148,14 +97,14 @@
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item"><a class="page-link"
-                                    onclick="getRooms('{{ $contacts->lastPage() }}')">{{
+                                    onclick="getPermission('{{ $contacts->lastPage() }}')">{{
                                     $contacts->lastPage() }}</a></li>
                             @endif
 
                             <!-- زر الصفحة التالية -->
                             @if ($contacts->hasMorePages())
                             <li class="page-item"><a class="page-link"
-                                    onclick="getRooms('{{ $contacts->currentPage() + 1 }}')">›</a></li>
+                                    onclick="getPermission('{{ $contacts->currentPage() + 1 }}')">›</a></li>
                             @else
                             <li class="page-item disabled"><span class="page-link">›</span></li>
                             @endif

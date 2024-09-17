@@ -14,11 +14,15 @@ class AdsController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Adses');
+
         return view('dashboard.ads.index');
     }
 
     public function getAds(Request $request)
     {
+        $this->authorize('Read-Adses');
+
         $query = $request->input('query');
         $perPage = $request->input('per_page', 5);
         $data = Ads::query();
@@ -38,6 +42,8 @@ class AdsController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Ads');
+
         return view('dashboard.ads.create');
     }
 
@@ -46,6 +52,7 @@ class AdsController extends Controller
      */
     public function store(AdsRequest $request)
     {
+        $this->authorize('Create-Ads');
         $ads = Ads::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -71,6 +78,7 @@ class AdsController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-Ads');
         $ads = Ads::where('slug', $slug)->firstOrFail();
         return view('dashboard.ads.edit', ['ads' => $ads]);
     }
@@ -80,6 +88,8 @@ class AdsController extends Controller
      */
     public function update(AdsRequest $request, $slug)
     {
+        $this->authorize('Update-Ads');
+
         $ads = Ads::where('slug', $slug)->firstOrFail();
 
         $ads->update([
@@ -99,6 +109,8 @@ class AdsController extends Controller
      */
     public function destroy($slug)
     {
+        $this->authorize('Delete-Ads');
+
         $ads = Ads::where('slug', $slug)->firstOrFail();
         // dd($ads);
         $deleted = $ads->delete();

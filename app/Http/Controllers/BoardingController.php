@@ -14,6 +14,7 @@ class BoardingController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Boardings');
         $boardings = Boarding::paginate(10);
         return view('dashboard.boarding.index', ['boardings' => $boardings]);
     }
@@ -23,6 +24,8 @@ class BoardingController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Employee');
+
         return view('dashboard.boarding.create');
     }
 
@@ -31,6 +34,8 @@ class BoardingController extends Controller
      */
     public function store(BoardingRequest $request)
     {
+        $this->authorize('Create-Employee');
+
         $boarding = Boarding::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -45,6 +50,8 @@ class BoardingController extends Controller
      */
     public function show($id)
     {
+        $this->authorize('Read-Boardings');
+
         $boarding = Boarding::findOrFail($id);
         return view('dashboard.boarding.show', ['boarding' => $boarding]);
     }
@@ -54,6 +61,8 @@ class BoardingController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('Update-Employee');
+
         $boarding = Boarding::findOrFail($id);
         return view('dashboard.boarding.edit', ['boarding' => $boarding]);
     }
@@ -63,6 +72,8 @@ class BoardingController extends Controller
      */
     public function update(BoardingRequest $request, $id)
     {
+        $this->authorize('Update-Employee');
+
         $boarding = Boarding::findOrFail($id);
 
         $updated = $boarding->update([
@@ -79,6 +90,8 @@ class BoardingController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('Read-Boardings');
+
         $boarding = Boarding::findOrFail($id);
         $deleted = $boarding->delete();
         return response()->json(['message' => __('site.delete_boarding_successfully')], Response::HTTP_CREATED);
@@ -86,6 +99,8 @@ class BoardingController extends Controller
 
     public function search(Request $request)
     {
+        $this->authorize('Read-Boardings');
+
         $query = $request->get('search');
         $boardings = Boarding::where('title', 'like', '%' . $query . '%')
             ->orderBy('id', 'desc')->get();

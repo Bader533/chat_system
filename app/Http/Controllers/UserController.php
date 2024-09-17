@@ -13,6 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Users');
         return view('dashboard.user.index');
     }
 
@@ -21,6 +22,7 @@ class UserController extends Controller
      */
     public function getUser(Request $request)
     {
+        $this->authorize('Read-Users');
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
         $data = User::query();
@@ -40,12 +42,14 @@ class UserController extends Controller
      */
     public function show($slug)
     {
+        $this->authorize('Read-Users');
         $user = User::findOrFail($slug);
         return view('dashboard.user.show', ['user' => $user]);
     }
 
     public function getData(Request $request)
     {
+        $this->authorize('Read-Users');
         $type = $request->input('type');
         $userId = $request->input('user_id');
         $perPage = $request->input('per_page', 10);
@@ -77,6 +81,7 @@ class UserController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Update-User-Status');
         $user = User::findOrFail($request->id);
 
         $user->status = !$user->status;

@@ -22,6 +22,8 @@ class DurationAgreementController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Duration-Agreement');
+
         $duration = DurationAgreement::first();
         return view('dashboard.duration-agreement.create', ['duration' => $duration]);
     }
@@ -31,6 +33,8 @@ class DurationAgreementController extends Controller
      */
     public function store(DurationAgreementRequest $request)
     {
+        $this->authorize('Create-Duration-Agreement');
+
         $duration = DurationAgreement::first();
 
         if (!$duration) {

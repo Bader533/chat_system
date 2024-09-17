@@ -13,6 +13,7 @@ class GroupController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Groups');
         return view('dashboard.group.index');
     }
 
@@ -21,6 +22,7 @@ class GroupController extends Controller
      */
     public function getGroups(Request $request)
     {
+        $this->authorize('Read-Groups');
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -93,6 +95,8 @@ class GroupController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Update-Group-Status');
+
         $group = Group::findOrFail($request->id);
 
         $group->status = !$group->status;

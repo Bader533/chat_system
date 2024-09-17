@@ -44,7 +44,7 @@
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
             {{-- form --}}
-            @include('dashboard.employee._form', ['function' => 'store'])
+            @include('dashboard.employee._form', ['roles' => $roles ,'function' => 'store'])
             {{-- end form --}}
         </div>
         <!--end::Content container-->
@@ -69,6 +69,11 @@
 
         formData.append("name", document.getElementById('name').value);
         formData.append("status", document.getElementById('status').value);
+        // Handle multi-select roles
+        let roleSelect = document.getElementById('role');
+        let selectedRoles = Array.from(roleSelect.selectedOptions).map(option => option.value);
+        selectedRoles.forEach(role => formData.append('roles[]', role));
+        formData.append("role", selectedRoles);
         formData.append("type", document.getElementById('type').value);
         formData.append("email", document.getElementById('email').value);
         formData.append('password', document.getElementById('password').value),

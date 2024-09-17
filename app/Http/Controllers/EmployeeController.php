@@ -6,6 +6,7 @@ use App\Http\Requests\EmployeeRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class EmployeeController extends Controller
@@ -15,6 +16,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Employees');
         return view('dashboard.employee.index');
     }
 
@@ -23,6 +25,7 @@ class EmployeeController extends Controller
      */
     public function getEmplyees(Request $request)
     {
+        $this->authorize('Read-Employees');
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -47,7 +50,10 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('dashboard.employee.create');
+        $this->authorize('Create-Employee');
+
+        $roles = Role::get();
+        return view('dashboard.employee.create', ['roles' => $roles]);
     }
 
     /**
@@ -55,7 +61,10 @@ class EmployeeController extends Controller
      */
     public function store(EmployeeRequest $request)
     {
+        $this->authorize('Create-Employee');
+
         $validatedData = $request->validated();
+
         $data = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
@@ -63,6 +72,13 @@ class EmployeeController extends Controller
             'type' => $validatedData['type'],
             'status' => $validatedData['status'],
         ]);
+
+        // Convert the comma-separated string of role IDs to an array
+        $roleIds = explode(',', $request->input('role'));
+
+        // Attach roles to the user
+        $data->roles()->sync($roleIds);
+
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }
 
@@ -79,8 +95,11 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('Update-Employee');
+        $roles = Role::get();
         $employee = User::isEmployee()->findOrFail($id);
-        return view('dashboard.employee.edit', ['employee' => $employee]);
+        // dd($employee->roles);
+        return view('dashboard.employee.edit', ['roles' => $roles, 'employee' => $employee]);
     }
 
     /**
@@ -88,6 +107,8 @@ class EmployeeController extends Controller
      */
     public function update(EmployeeRequest $request, $id)
     {
+        $this->authorize('Update-Employee');
+
         $employee = User::isEmployee()->findOrFail($id);
         $validatedData = $request->validated();
 
@@ -102,6 +123,13 @@ class EmployeeController extends Controller
         }
 
         $employee->update($filteredData);
+
+        // Convert the comma-separated string of role IDs to an array
+        $roleIds = explode(',', $request->input('role'));
+
+        // Sync roles with the user
+        $employee->roles()->sync($roleIds);
+
         return response()->json(['message' => __('site.update_successfully')], Response::HTTP_CREATED);
     }
 
@@ -118,6 +146,8 @@ class EmployeeController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Read-Employees');
+
         $employee = User::isEmployee()->findOrFail($request->id);
 
         $employee->status = !$employee->status;

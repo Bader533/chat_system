@@ -14,6 +14,8 @@ class GlaTeamController extends Controller
      */
     public function index()
     {
+        $this->authorize('Read-Teams');
+
         return view('dashboard.gla-team.index');
     }
 
@@ -22,6 +24,8 @@ class GlaTeamController extends Controller
      */
     public function getTeams(Request $request)
     {
+        $this->authorize('Read-Teams');
+
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
@@ -46,6 +50,8 @@ class GlaTeamController extends Controller
      */
     public function create()
     {
+        $this->authorize('Create-Team');
+
         return view('dashboard.gla-team.create');
     }
 
@@ -54,6 +60,8 @@ class GlaTeamController extends Controller
      */
     public function store(GlaTeamRequest $request)
     {
+        $this->authorize('Create-Team');
+
         $validatedData = $request->validated();
         $team = GlaTeam::create($validatedData);
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
@@ -72,6 +80,8 @@ class GlaTeamController extends Controller
      */
     public function edit($slug)
     {
+        $this->authorize('Update-Team');
+
         $team = GlaTeam::where('slug', $slug)->firstOrFail();
         return view('dashboard.gla-team.edit', ['team' => $team]);
     }
@@ -81,6 +91,8 @@ class GlaTeamController extends Controller
      */
     public function update(GlaTeamRequest $request, $slug)
     {
+        $this->authorize('Update-Team');
+
         $team = GlaTeam::where('slug', $slug)->firstOrFail();
         $validatedData = $request->validated();
         $team->update($validatedData);
@@ -92,6 +104,8 @@ class GlaTeamController extends Controller
      */
     public function destroy($slug)
     {
+        $this->authorize('Read-Teams');
+
         $team = GlaTeam::where('slug', $slug)->firstOrFail();
         $team->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);
@@ -102,6 +116,8 @@ class GlaTeamController extends Controller
      */
     public function changeStatus(Request $request)
     {
+        $this->authorize('Read-Teams');
+
         $team = GlaTeam::findOrFail($request->id);
 
         $team->status = !$team->status;
