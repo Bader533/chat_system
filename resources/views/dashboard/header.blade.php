@@ -2379,11 +2379,11 @@
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
                                 <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5">bader
+                                    <div class="fw-bold d-flex align-items-center fs-15">{{auth()->user()->name}}
                                         <span class="badge badge-light-success fw-bold fs-8 px-2 py-1 ms-2">Pro</span>
                                     </div>
                                     <a href="#"
-                                        class="fw-semibold text-muted text-hover-primary fs-7">bader@gmail.com</a>
+                                        class="fw-semibold text-muted text-hover-primary fs-7">{{auth()->user()->email}}</a>
                                 </div>
                                 <!--end::Username-->
                             </div>
@@ -2394,7 +2394,7 @@
                         <!--end::Menu separator-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="" class="menu-link px-5">My
+                            <a href="{{route('employee.edit',auth()->user()->id)}}" class="menu-link px-5">My
                                 Profile</a>
                         </div>
                         <!--end::Menu item-->
