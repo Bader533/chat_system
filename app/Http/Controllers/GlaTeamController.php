@@ -35,7 +35,8 @@ class GlaTeamController extends Controller
 
         // Filter by search query if provided
         if (!empty($query)) {
-            $teamsQuery->where('title', 'like', '%' . $query . '%');
+            $teamsQuery->where('title_en', 'like', '%' . $query . '%')
+                ->orWhere('title_en', 'like', '%' . $query . '%');
         }
 
         // Paginate the results

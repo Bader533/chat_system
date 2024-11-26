@@ -18,7 +18,7 @@
                 <!--begin::Image input placeholder-->
                 <style>
                     .image-input-placeholder {
-                        background-image: url('{{asset("assets/media/svg/files/blank-image.svg")}}');
+                        background-image: url('{{$agency->avatar_url ?? asset("assets/media/svg/files/blank-image.svg")}}');
                     }
                 </style>
                 <!--end::Image input placeholder-->
@@ -134,35 +134,51 @@
             <div class="card-body pt-0">
 
                 <!--begin::name-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">{{__('site.name')}}</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" name="name" id="name" value="{{$agency->name ?? null}}" class="form-control mb-2"
-                        placeholder="{{__('site.name')}}" required />
-                    <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
+                <div class="row">
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_en')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_en" id="name_en" value="{{$agency->name_en ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.name_en')}}" required />
+                        <!--end::Input-->
+                    </div>
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_ar')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_ar" id="name_ar" value="{{$agency->name_ar ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.name_ar')}}" required />
+                        <!--end::Input-->
+                    </div>
                 </div>
                 <!--end::name-->
 
                 <!--begin::description-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">{{__('site.description')}}</label>
+                    <label class="required form-label">{{__('site.description_en')}}</label>
                     <!--end::Label-->
                     <!--begin::Input-->
                     <textarea class="form-control mb-2" id="kt_docs_tinymce_basic">
-                            {!! $agency->name ?? null !!}
+                            {!! $agency->description_en ?? null !!}
                     </textarea>
                     <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
+                </div>
+                <!--end::description-->
+
+                <!--begin::description-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="required form-label">{{__('site.description_ar')}}</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <textarea class="form-control mb-2" id="kt_docs_tinymce_basic_ar">
+                            {!! $agency->description_ar ?? null !!}
+                    </textarea>
+                    <!--end::Input-->
                 </div>
                 <!--end::description-->
             </div>
@@ -171,7 +187,7 @@
         <!--end::General options-->
         <div class="d-flex justify-content-end">
             <!--begin::Button-->
-            <a href="{{route('ads.index')}}" id="kt_ecommerce_add_product_cancel"
+            <a href="{{route('agency.index')}}" id="kt_ecommerce_add_product_cancel"
                 class="btn btn-light me-5">{{__('site.cancel')}}</a>
             <!--end::Button-->
             <!--begin::Button-->

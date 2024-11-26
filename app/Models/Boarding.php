@@ -10,8 +10,10 @@ class Boarding extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'description',
+        'title_en',
+        'title_ar',
+        'description_en',
+        'description_ar',
         'place',
         'status',
         'avatar'

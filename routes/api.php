@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ConditionController;
 use App\Http\Controllers\Api\ContactUsController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\DurationAgreementController;
+use App\Http\Controllers\Api\FirebaseController;
 use App\Http\Controllers\Api\FollowController;
 use App\Http\Controllers\Api\GlaEventController;
 use App\Http\Controllers\Api\GlaTeamController;
@@ -34,7 +35,8 @@ use Illuminate\Support\Facades\Route;
 // ============= Auth =============
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
-    Route::post('login', [AuthController::class, 'loginPersonal']);
+    // Route::post('login', [AuthController::class, 'loginPersonal']);
+    Route::post('login', [FirebaseController::class, 'loginWithGoogle']);
 });
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {

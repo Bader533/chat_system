@@ -62,8 +62,10 @@
         let formData = new FormData();
         formData.append("status", document.getElementById('status').value);
         formData.append("is_home", document.getElementById('is_home').value);
-        formData.append("name", document.getElementById('name').value);
-        formData.append("description", tinymce.get("kt_docs_tinymce_basic").getContent());
+        formData.append("name_en", document.getElementById('name_en').value);
+        formData.append("name_ar", document.getElementById('name_ar').value);
+        formData.append("description_en", tinymce.get("kt_docs_tinymce_basic").getContent());
+        formData.append("description_ar", tinymce.get("kt_docs_tinymce_basic_ar").getContent());
         formData.append("avatar",document.getElementById('avatar').files[0]);
 
         formData.append("_method", "PUT");
@@ -85,17 +87,14 @@
 
     function buttonSideBar() {
         const button = document.getElementById('agency');
-        // button.classList.add('active');
         button.classList.add('here', 'show');
     }
 
     var options = {selector: "#kt_docs_tinymce_basic", height : "480"};
-
-    if ( KTThemeMode.getMode() === "dark" ) {
-    options["skin"] = "oxide-dark";
-    options["content_css"] = "dark";
-    }
-
     tinymce.init(options);
+
+    var kt_docs_tinymce_basic_ar = {selector: "#kt_docs_tinymce_basic_ar", height : "480"};
+    tinymce.init(kt_docs_tinymce_basic_ar);
+    
 </script>
 @endsection

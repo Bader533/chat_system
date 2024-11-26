@@ -11,15 +11,17 @@ class Ads extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'avatar', 'name', 'description', 'status', 'is_home'];
+    protected $fillable = ['id', 'avatar', 'name_en', 'name_ar', 'description_en', 'description_ar', 'status', 'is_home'];
 
     protected $attributes = ['slug' => ''];
+
+    protected $appends = ['avatar_url'];
 
     protected static function boot()
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->name);
+            $data->slug = $data->generateSlug($data->name_en);
             $data->save();
         });
     }

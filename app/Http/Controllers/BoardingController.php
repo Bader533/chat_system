@@ -37,8 +37,10 @@ class BoardingController extends Controller
         $this->authorize('Create-Employee');
 
         $boarding = Boarding::create([
-            'title' => $request->title,
-            'description' => $request->description,
+            'title_en' => $request->title_en,
+            'title_ar' => $request->title_ar,
+            'description_en' => $request->description_en,
+            'description_ar' => $request->description_ar,
             'status' => $request->status,
             'place' => $request->place
         ]);
@@ -77,8 +79,10 @@ class BoardingController extends Controller
         $boarding = Boarding::findOrFail($id);
 
         $updated = $boarding->update([
-            'title' => $request->title,
-            'description' => $request->description,
+            'title_en' => $request->title_en,
+            'title_ar' => $request->title_ar,
+            'description_en' => $request->description_en,
+            'description_ar' => $request->description_ar,
             'status' => $request->status,
             'place' => $request->place
         ]);
@@ -102,8 +106,10 @@ class BoardingController extends Controller
         $this->authorize('Read-Boardings');
 
         $query = $request->get('search');
-        $boardings = Boarding::where('title', 'like', '%' . $query . '%')
-            ->orderBy('id', 'desc')->get();
+        $boardings = Boarding::where('title_en', 'like', '%' . $query . '%')
+            ->orWhere('title_ar', 'like', '%' . $query . '%')
+            ->orderBy('id', 'desc')
+            ->get();
         return view('dashboard.boarding.search', ['boardings' => $boardings]);
     }
 }

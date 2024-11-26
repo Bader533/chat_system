@@ -22,15 +22,19 @@ class AgencyRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:100',
-            'description' => 'required|string',
+            'name_en' => 'required|string|max:100',
+            'name_ar' => 'required|string|max:100',
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
             'status' => 'required|numeric|in:0,1',
             'is_home' => 'required|numeric|in:0,1',
         ];
 
         if ($this->isMethod('put')) {
-            $rules['name'] = 'nullable|string|max:100';
-            $rules['description'] = 'nullable|string';
+            $rules['name_en'] = 'nullable|string|max:100';
+            $rules['name_ar'] = 'nullable|string|max:100';
+            $rules['description_en'] = 'nullable|string';
+            $rules['description_ar'] = 'nullable|string';
             $rules['status'] = 'nullable|numeric|in:0,1';
             $rules['is_home'] = 'nullable|numeric|in:0,1';
         }

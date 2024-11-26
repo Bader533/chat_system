@@ -22,8 +22,10 @@ class AdsRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|min:2|max:200',
-            'description' => 'required|string',
+            'name_en' => 'required|string|min:2|max:200',
+            'name_ar' => 'required|string|min:2|max:200',
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
             'status' => 'required|numeric|in:0,1',
             'is_home' => 'required|numeric|in:0,1'
         ];

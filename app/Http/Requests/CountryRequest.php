@@ -22,12 +22,14 @@ class CountryRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:100',
+            'name_en' => 'required|string|max:100',
+            'name_ar' => 'required|string|max:100',
             'status' => 'required|numeric|in:0,1',
         ];
 
         if ($this->isMethod('put')) {
-            $rules['name'] = 'nullable|string|max:100';
+            $rules['name_en'] = 'nullable|string|max:100';
+            $rules['name_ar'] = 'nullable|string|max:100';
             $rules['status'] = 'nullable|numeric|in:0,1';
         }
 

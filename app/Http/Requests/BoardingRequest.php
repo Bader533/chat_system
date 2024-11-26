@@ -22,8 +22,10 @@ class BoardingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:2|max:200',
-            'description' => 'required|string',
+            'title_en' => 'required|string|min:2|max:200',
+            'title_ar' => 'required|string|min:2|max:200',
+            'description_en' => 'required|string',
+            'description_ar' => 'required|string',
             'status' => 'required|in:0,1',
             'place' => 'required|numeric'
         ];

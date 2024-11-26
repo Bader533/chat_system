@@ -50,38 +50,57 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
                             <!--begin::title-->
-                            <div class="mb-10 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label">{{__('site.title')}}</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="title" id="title" class="form-control mb-2"
-                                    placeholder="{{__('site.title')}}" @if($duration) value="{{$duration->title}}"
-                                    @endif required />
-                                <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
+                            <div class="row">
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.title_en')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="title_en" id="title_en" class="form-control mb-2"
+                                        placeholder="{{__('site.title_en')}}" @if($duration) value="{{$duration->title_en}}"
+                                        @endif required />
+                                    <!--end::Input-->
+                                </div>
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.title_ar')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="title_ar" id="title_ar" class="form-control mb-2"
+                                        placeholder="{{__('site.title_ar')}}" @if($duration) value="{{$duration->title_ar}}"
+                                        @endif required />
+                                    <!--end::Input-->
+                                </div>
                             </div>
                             <!--end::title-->
 
                             <!--begin::description-->
                             <div class="mb-10 fv-row">
                                 <!--begin::Label-->
-                                <label class="required form-label">{{__('site.description')}}</label>
+                                <label class="required form-label">{{__('site.description_en')}}</label>
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <textarea id="kt_docs_tinymce_basic">
                                     @if($duration)
-                                    {!! $duration->description !!}
+                                    {!! $duration->description_en !!}
                                     @endif
                                 </textarea>
                                 <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
+                            </div>
+                            <!--end::description-->
+
+                            <!--begin::description-->
+                            <div class="mb-10 fv-row">
+                                <!--begin::Label-->
+                                <label class="required form-label">{{__('site.description_ar')}}</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <textarea id="description_ar">
+                                    @if($duration)
+                                    {!! $duration->description_ar !!}
+                                    @endif
+                                </textarea>
+                                <!--end::Input-->
                             </div>
                             <!--end::description-->
                         </div>
@@ -90,7 +109,7 @@
                     <!--end::General options-->
                     <div class="d-flex justify-content-end">
                         <!--begin::Button-->
-                        <a href="{{route('boarding.index')}}" id="kt_ecommerce_add_product_cancel"
+                        <a href="{{route('duration-agreement.index')}}" id="kt_ecommerce_add_product_cancel"
                             class="btn btn-light me-5">{{__('site.cancel')}}</a>
                         <!--end::Button-->
                         <!--begin::Button-->
@@ -121,8 +140,10 @@
 
     function store() {
         axios.post('/duration-agreement',{
-            title: document.getElementById('title').value,
-            description: tinymce.get("kt_docs_tinymce_basic").getContent(),
+            title_en: document.getElementById('title_en').value,
+            title_ar: document.getElementById('title_ar').value,
+            description_en: tinymce.get("kt_docs_tinymce_basic").getContent(),
+            description_ar: tinymce.get("description_ar").getContent(),
         })
         .then(function (response) {
             toastr.options = {
@@ -141,16 +162,12 @@
     function buttonSideBar() {
         const button = document.getElementById('pages');
         button.classList.add('active','show');
-        //button.classList.add('here', 'show');
     }
 
     var options = {selector: "#kt_docs_tinymce_basic", height : "480"};
-
-    if ( KTThemeMode.getMode() === "dark" ) {
-    options["skin"] = "oxide-dark";
-    options["content_css"] = "dark";
-    }
-
     tinymce.init(options);
+
+    var description_ar = {selector: "#description_ar", height : "480"};
+    tinymce.init(description_ar);
 </script>
 @endsection

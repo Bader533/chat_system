@@ -30,7 +30,8 @@ class AdsController extends Controller
         if ($query == null) {
             $ads = $data->paginate($perPage);
         } else {
-            $ads = $data->where('name', 'like', '%' . $query . '%')
+            $ads = $data->where('name_en', 'like', '%' . $query . '%')
+                ->where('name_ar', 'like', '%' . $query . '%')
                 ->paginate($perPage);
         }
 
@@ -54,8 +55,10 @@ class AdsController extends Controller
     {
         $this->authorize('Create-Ads');
         $ads = Ads::create([
-            'name' => $request->name,
-            'description' => $request->description,
+            'name_en' => $request->name_en,
+            'name_ar' => $request->name_ar,
+            'description_en' => $request->description_en,
+            'description_ar' => $request->description_ar,
             'status' => $request->status,
             'is_home' => $request->is_home
         ]);
@@ -93,8 +96,10 @@ class AdsController extends Controller
         $ads = Ads::where('slug', $slug)->firstOrFail();
 
         $ads->update([
-            'name' => $request->name,
-            'description' => $request->description,
+            'name_en' => $request->name_en,
+            'name_ar' => $request->name_ar,
+            'description_en' => $request->description_en,
+            'description_ar' => $request->description_ar,
             'status' => $request->status,
             'is_home' => $request->is_home
         ]);
@@ -112,7 +117,6 @@ class AdsController extends Controller
         $this->authorize('Delete-Ads');
 
         $ads = Ads::where('slug', $slug)->firstOrFail();
-        // dd($ads);
         $deleted = $ads->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);
     }

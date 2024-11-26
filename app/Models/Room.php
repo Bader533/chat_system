@@ -12,9 +12,11 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'name', 'description', 'user_id', 'country_id', 'is_home', 'is_favorite', 'city_id', 'room_type_id', 'status'];
+    protected $fillable = ['id', 'avatar', 'name', 'description', 'user_id', 'country_id', 'is_home', 'is_favorite', 'city_id', 'room_type_id', 'status'];
 
     protected $attributes = ['slug' => '', 'user_id' => null];
+
+    protected $appends = ['avatar_url'];
 
     protected static function boot()
     {

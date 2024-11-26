@@ -67,7 +67,8 @@
     function update() {
         let formData = new FormData();
 
-        formData.append("name", document.getElementById('name').value);
+        formData.append("name_en", document.getElementById('name_en').value);
+        formData.append("name_ar", document.getElementById('name_ar').value);
         formData.append("status", document.getElementById('status').value);
         formData.append("avatar", document.getElementById('avatar').files[0]);
         formData.append("_method", "PUT");
@@ -79,7 +80,6 @@
             toastr.success(response.data.message);
             window.location.href = '/country';
         }).catch(function (error) {
-            // console.log(error);
             toastr.options = {
                 positionClass: 'toast-top-left',
             };

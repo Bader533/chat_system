@@ -65,20 +65,19 @@
         button.classList.add('here', 'show');
     }
 
-    var options = {selector: "#description", height : "480"};
-
-    if ( KTThemeMode.getMode() === "dark" ) {
-    options["skin"] = "oxide-dark";
-    options["content_css"] = "dark";
-    }
-
+    var options = {selector: "#description_en", height : "480"};
     tinymce.init(options);
+
+    var description_ar = {selector: "#description_ar", height : "480"};
+    tinymce.init(description_ar);
 
     function update() {
         let formData = new FormData();
 
-        formData.append("title", document.getElementById('title').value);
-        formData.append("description", tinymce.get("description").getContent());
+        formData.append("title_en", document.getElementById('title_en').value);
+        formData.append("title_ar", document.getElementById('title_ar').value);
+        formData.append("description_en", tinymce.get("description_en").getContent());
+        formData.append("description_ar", tinymce.get("description_ar").getContent());
         formData.append("status", document.getElementById('status').value);
         formData.append("avatar", document.getElementById('avatar').files[0]);
 

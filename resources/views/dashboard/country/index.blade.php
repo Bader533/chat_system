@@ -98,45 +98,6 @@
         button.classList.add('here', 'show');
     }
 
-    // function confirmDelete(id, reference) {
-    //     Swal.fire({
-    //         title: "{{__('site.are_you_sure')}}",
-    //         text: "{{__('site.you_won_be_able_to_revert_this')}}",
-    //         icon: 'warning',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#3085d6',
-    //         cancelButtonColor: '#d33',
-    //         cancelButtonText: "{{__('site.cancel')}}",
-    //         confirmButtonText: "{{__('site.yes_delete_it')}}"
-    //     }).then((result) => {
-    //         if (result.isConfirmed) {
-    //             performDelete(id, reference);
-    //         }
-    //     });
-    // } //end message confirm delete
-
-    // function performDelete(id, reference) {
-    //     axios.delete('/ads/' + id)
-    //         .then(function(response) {
-    //             //2xx
-    //             console.log(response);
-    //             toastr.options = {
-    //                 positionClass: 'toast-top-left',
-    //             };
-    //             toastr.success(response.data.message);
-    //             reference.closest('tr').remove();
-    //         })
-    //         .catch(function(error) {
-    //             //4xx - 5xx
-    //             console.log(error.response.data.message);
-    //             toastr.options = {
-    //                 positionClass: 'toast-top-left',
-    //             };
-    //             toastr.error(error.response.data.message);
-    //         });
-    // } //end detete
-
-
     function getCountries(page=1 , query=null){
         axios.get('/getCountry',{
             params: {

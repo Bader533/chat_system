@@ -67,7 +67,8 @@
     function store() {
         let formData = new FormData();
 
-        formData.append("name", document.getElementById('name').value);
+        formData.append("name_en", document.getElementById('name_en').value);
+        formData.append("name_ar", document.getElementById('name_ar').value);
         formData.append("country_id", document.getElementById('country_id').value);
         formData.append("status", document.getElementById('status').value);
         formData.append("avatar", document.getElementById('avatar').files[0]);

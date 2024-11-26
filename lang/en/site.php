@@ -427,4 +427,10 @@ return [
     "update_boarding_successfully" => "Update Boarding Successfully",
     "delete_boarding_successfully" => "Delete Boarding Successfully",
 
+    'title_en' => 'English Title',
+    'title_ar' => 'Arabic Title',
+    'description_ar' => 'Arabic Description',
+    'description_en' => 'English Description',
+    'my_profile' => 'My Profile',
+
 ];

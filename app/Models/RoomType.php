@@ -20,6 +20,8 @@ class RoomType extends Model
 
     protected $attributes = ['slug' => ''];
 
+    protected $appends = ['avatar_url'];
+
     protected static function boot()
     {
         parent::boot();

@@ -10,7 +10,7 @@ class GlaTeam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'title', 'description', 'status', 'avatar', 'slug'];
+    protected $fillable = ['id', 'title_en', 'title_ar', 'description_en', 'description_ar', 'status', 'avatar', 'slug'];
 
     protected $attributes = ['slug' => ''];
 
@@ -18,7 +18,7 @@ class GlaTeam extends Model
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->title);
+            $data->slug = $data->generateSlug($data->title_en);
             $data->save();
         });
     }
@@ -26,7 +26,7 @@ class GlaTeam extends Model
     private function generateSlug($title)
     {
         if (static::whereSlug($slug = Str::slug($title))->exists()) {
-            $max = static::where('title', $title)->latest('id')->skip(1)->value('slug');
+            $max = static::where('title_en', $title)->latest('id')->skip(1)->value('slug');
             if (isset($max[-1]) && is_numeric($max[-1])) {
                 return preg_replace_callback('/(\d+)$/', function ($mathces) {
                     return $mathces[1] + 1;

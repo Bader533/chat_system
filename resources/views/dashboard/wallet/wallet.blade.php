@@ -35,7 +35,7 @@
 
             <!--begin::agency name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->agency->name }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->agency->name_ar }}</a>
             </td>
             <!--end::agency name=-->
 

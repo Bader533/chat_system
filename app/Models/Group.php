@@ -13,8 +13,10 @@ class Group extends Model
 
     protected $fillable = ['id', 'name', 'description', 'user_id', 'avatar', 'status'];
 
-
     protected $attributes = ['slug' => '', 'user_id' => null];
+    
+    protected $appends = ['avatar_url'];
+
 
     protected static function boot()
     {

@@ -32,7 +32,8 @@ class AgencyController extends Controller
         if ($query == null) {
             $contacts = $data->paginate($perPage);
         } else {
-            $contacts = $data->where('name', 'like', '%' . $query . '%')
+            $contacts = $data->where('name_en', 'like', '%' . $query . '%')
+                ->orWhere('name_ar', 'like', '%' . $query . '%')
                 ->paginate($perPage);
         }
 

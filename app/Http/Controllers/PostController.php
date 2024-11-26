@@ -35,7 +35,8 @@ class PostController extends Controller
 
         // Filter by search query if provided
         if (!empty($query)) {
-            $eventsQuery->where('title', 'like', '%' . $query . '%');
+            $eventsQuery->where('title_en', 'like', '%' . $query . '%')
+                ->orWhere('title_ar', 'like', '%' . $query . '%');
         }
 
         // Paginate the results

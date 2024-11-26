@@ -14,18 +14,21 @@ class Country extends Model
     protected $fillable = [
         'id',
         'slug',
-        'name',
+        'name_en',
+        'name_ar',
         'status',
         'avatar'
     ];
 
     protected $attributes = ['slug' => ''];
 
+    protected $appends = ['avatar_url'];
+
     protected static function boot()
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->name);
+            $data->slug = $data->generateSlug($data->name_en);
             $data->save();
         });
     }

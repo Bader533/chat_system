@@ -67,8 +67,10 @@
     function update() {
         let formData = new FormData();
 
-        formData.append("title", document.getElementById('title').value);
-        formData.append("description", document.getElementById('description').value);
+        formData.append("title_en", document.getElementById('title_en').value);
+        formData.append("title_ar", document.getElementById('title_ar').value);
+        formData.append("description_en", document.getElementById('description_en').value);
+        formData.append("description_ar", document.getElementById('description_ar').value);
         formData.append("status", document.getElementById('status').value);
         // formData.append("avatar", document.getElementById('avatar').files[0]);
         formData.append("_method", "PUT");

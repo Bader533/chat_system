@@ -10,7 +10,7 @@ class GlaEvent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'title', 'description', 'status', 'avatar', 'slug'];
+    protected $fillable = ['id', 'title_en', 'title_ar', 'description_en', 'description_ar', 'status', 'avatar', 'slug'];
 
     protected $attributes = ['slug' => ''];
 
@@ -18,7 +18,7 @@ class GlaEvent extends Model
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->title);
+            $data->slug = $data->generateSlug($data->title_en);
             $data->save();
         });
     }

@@ -134,34 +134,48 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
                             <!--begin::title-->
-                            <div class="mb-10 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label">{{__('site.title')}}</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="title" id="title" class="form-control mb-2"
-                                    placeholder="{{__('site.title')}}" required />
-                                <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
+                            <div class="row">
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.title_en')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="title_en" id="title_en" class="form-control mb-2"
+                                        placeholder="{{__('site.title_en')}}" required />
+                                    <!--end::Input-->
+                                </div>
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.title_ar')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="title_ar" id="title_ar" class="form-control mb-2"
+                                        placeholder="{{__('site.title_ar')}}" required />
+                                    <!--end::Input-->
+                                </div>
                             </div>
                             <!--end::title-->
 
                             <!--begin::description-->
-                            <div class="mb-10 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label">{{__('site.description')}}</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" class="form-control mb-2" name="description" id="description"
-                                    placeholder="{{__('site.description')}}">
-                                <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
+                            <div class="row">
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.description_en')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control mb-2" name="description_en" id="description_en"
+                                        placeholder="{{__('site.description_en')}}">
+                                    <!--end::Input-->
+                                </div>
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.description_ar')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" class="form-control mb-2" name="description_ar" id="description_ar"
+                                        placeholder="{{__('site.description_ar')}}">
+                                    <!--end::Input-->
+                                </div>
                             </div>
                             <!--end::description-->
                         </div>
@@ -205,8 +219,10 @@
 
     function store() {
         axios.post('/boarding',{
-            title: document.getElementById('title').value,
-            description: document.getElementById('description').value,
+            title_en: document.getElementById('title_en').value,
+            title_ar: document.getElementById('title_ar').value,
+            description_en: document.getElementById('description_en').value,
+            description_ar: document.getElementById('description_ar').value,
             status: document.getElementById('status').value,
             place: document.getElementById('place').value,
         })

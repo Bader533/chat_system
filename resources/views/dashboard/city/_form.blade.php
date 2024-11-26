@@ -81,18 +81,25 @@
             <!--begin::Card body-->
             <div class="card-body pt-0">
                 <!--begin::title-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">{{__('site.name')}}</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" name="name" id="name" value="{{$city->name ?? null}}" class="form-control mb-2"
-                        placeholder="{{__('site.name')}}" required />
-                    <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
+                <div class="row">
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_en')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_en" id="name_en" value="{{$city->name_en ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.name_en')}}" required />
+                        <!--end::Input-->
+                    </div>
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_ar')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_ar" id="name_ar" value="{{$city->name_ar ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.name_ar')}}" required />
+                        <!--end::Input-->
+                    </div>
                 </div>
                 <!--end::title-->
 
@@ -106,7 +113,7 @@
                         <option></option>
                         @foreach ($countries as $country)
                         <option value="{{$country->id}}" @selected(($city->country_id ?? null) ==
-                            $country->id)>{{$country->name}}</option>
+                            $country->id)>{{$country->name_ar}}</option>
                         @endforeach
                     </select>
 

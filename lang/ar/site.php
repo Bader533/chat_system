@@ -568,4 +568,10 @@ return [
     "permission" => "الأذونات",
     "rule" => "المسميات",
 
+    'title_en' => 'عنوان انجليزى',
+    'title_ar' => 'عنوان عربى',
+    'description_ar' => 'الوصف عربى',
+    'description_en' => 'الوصف انجليزى',
+    'my_profile' => 'حسابى',
+
 ];

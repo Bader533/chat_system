@@ -12,12 +12,17 @@ class Agency extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'description',
+        'name_en',
+        'name_ar',
+        'description_en',
+        'description_ar',
         'avatar',
         'status',
         'is_home'
     ];
+
+    protected $appends = ['avatar_url'];
+
 
     protected $attributes = ['slug' => ''];
 
@@ -25,7 +30,7 @@ class Agency extends Model
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->name);
+            $data->slug = $data->generateSlug($data->name_en);
             $data->save();
         });
     }

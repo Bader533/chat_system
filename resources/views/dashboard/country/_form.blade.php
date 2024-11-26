@@ -81,18 +81,25 @@
             <!--begin::Card body-->
             <div class="card-body pt-0">
                 <!--begin::title-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">{{__('site.name')}}</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" name="name" id="name" value="{{$country->name ?? null}}"
-                        class="form-control mb-2" placeholder="{{__('site.name')}}" required />
-                    <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
+                <div class="row">
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_en')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_en" id="name_en" value="{{$country->name_en ?? null}}"
+                            class="form-control mb-2" placeholder="{{__('site.name_en')}}" required />
+                        <!--end::Input-->
+                    </div>
+                        <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_ar')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_ar" id="name_ar" value="{{$country->name_ar ?? null}}"
+                            class="form-control mb-2" placeholder="{{__('site.name_ar')}}" required />
+                        <!--end::Input-->
+                    </div>
                 </div>
                 <!--end::title-->
 

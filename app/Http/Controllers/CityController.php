@@ -35,7 +35,8 @@ class CityController extends Controller
         if ($query == null) {
             $contacts = $data->paginate($perPage);
         } else {
-            $contacts = $data->where('name', 'like', '%' . $query . '%')
+            $contacts = $data->where('name_en', 'like', '%' . $query . '%')
+                ->orWhere('name_ar', 'like', '%' . $query . '%')
                 ->paginate($perPage);
         }
 
@@ -48,7 +49,7 @@ class CityController extends Controller
     public function create()
     {
         $this->authorize('Create-City');
-        $countries = Country::select(['id', 'name'])->get();
+        $countries = Country::select(['id', 'name_en', 'name_ar'])->get();
         return view('dashboard.city.create', ['countries' => $countries]);
     }
 
@@ -79,7 +80,7 @@ class CityController extends Controller
     {
         $this->authorize('Update-City');
 
-        $countries = Country::select(['id', 'name'])->get();
+        $countries = Country::select(['id', 'name_en', 'name_ar'])->get();
         $city = City::whereSlug($slug)->firstOrFail();
         return view('dashboard.city.edit', ['city' => $city, 'countries' => $countries]);
     }

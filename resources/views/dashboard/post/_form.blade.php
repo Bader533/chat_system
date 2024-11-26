@@ -114,36 +114,51 @@
             <div class="card-body pt-0">
 
                 <!--begin::title-->
-                <div class="mb-10 fv-row">
+                <div class="row">
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.title_en')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="title_en" id="title_en" value="{{$post->title_en ?? null}}"
+                            class="form-control mb-2" placeholder="{{__('site.title_en')}}" required />
+                        <!--end::Input-->
+                    </div>
+                    <div class="col-6 mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">{{__('site.title')}}</label>
+                    <label class="required form-label">{{__('site.title_ar')}}</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <input type="text" name="title" id="title" value="{{$post->title ?? null}}"
-                        class="form-control mb-2" placeholder="{{__('site.title')}}" required />
+                    <input type="text" name="title_ar" id="title_ar" value="{{$post->title_ar ?? null}}"
+                        class="form-control mb-2" placeholder="{{__('site.title_ar')}}" required />
                     <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A title is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
+                </div>
                 </div>
                 <!--end::title-->
 
-                <!--begin::title-->
+                <!--begin::description-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">{{__('site.description')}}</label>
+                    <label class="required form-label">{{__('site.description_en')}}</label>
                     <!--end::Label-->
                     <!--begin::Input-->
-                    <textarea class="form-control mb-2" name="description" id="description" cols="30"
-                        rows="10">{{$post->description ?? null}}</textarea>
+                    <textarea class="form-control mb-2" name="description_en" id="description_en" cols="30"
+                        rows="10">{{$post->description_en ?? null}}</textarea>
                     <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
                 </div>
-                <!--end::title-->
+                <!--end::description-->
+
+                <!--begin::description-->
+                <div class="mb-10 fv-row">
+                    <!--begin::Label-->
+                    <label class="required form-label">{{__('site.description_ar')}}</label>
+                    <!--end::Label-->
+                    <!--begin::Input-->
+                    <textarea class="form-control mb-2" name="description_ar" id="description_ar" cols="30"
+                        rows="10">{{$post->description_ar ?? null}}</textarea>
+                    <!--end::Input-->
+                </div>
+                <!--end::description-->
 
             </div>
             <!--end::Card header-->

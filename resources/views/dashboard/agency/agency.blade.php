@@ -21,7 +21,7 @@
             <!--begin::Name=-->
             <td>
                 <a href="{{route('agency.show',$item->slug)}}" class="text-gray-800 text-hover-primary mb-1">{{
-                    $item->name }}</a>
+                    $item->name_ar }}</a>
             </td>
             <!--end::Name=-->
 
