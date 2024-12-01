@@ -125,4 +125,9 @@ class Room extends Model
     {
         return $this->belongsToMany(User::class, 'favorite_rooms');
     }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

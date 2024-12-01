@@ -35,8 +35,8 @@ use Illuminate\Support\Facades\Route;
 // ============= Auth =============
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
-    // Route::post('login', [AuthController::class, 'loginPersonal']);
-    Route::post('login', [FirebaseController::class, 'loginWithGoogle']);
+    Route::post('login', [AuthController::class, 'loginPersonal']);
+    // Route::post('login', [FirebaseController::class, 'loginWithGoogle']);
 });
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {
@@ -47,7 +47,12 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('/home', [HomeController::class, 'index']);
+    Route::prefix('home')->group(function () {
+        Route::get('/agency', [HomeController::class, 'agency']);
+        Route::get('/ads', [HomeController::class, 'ads']);
+        Route::get('/countries', [HomeController::class, 'countries']);
+        Route::get('/rooms', [HomeController::class, 'rooms']);
+    });
 
     Route::get('/boarding', [BoardingController::class, 'index']);
 
@@ -59,7 +64,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/contact', [ContactUsController::class, 'store']);
 
-    Route::get('/countries', [CountryController::class, 'index']);
+    Route::prefix('countries')->group(function () {
+        Route::get('/', [CountryController::class, 'index']);
+        Route::get('/{id}/rooms', [CountryController::class, 'show']);
+    });
 
     Route::get('/cities', [CityController::class, 'index']);
 

@@ -30,4 +30,26 @@ class CountryController extends Controller
             ]);
         }
     }
+
+    public function show($id)
+    {
+        try {
+            $country = Country::findOrFail($id);
+            $rooms = $country->rooms()->select(['id', 'name', 'avatar', 'is_home', 'is_favorite'])->paginate(10);
+
+            return response()->json([
+                'message' => 'all rooms in country',
+                'code' => Response::HTTP_ACCEPTED,
+                'error' => false,
+                'data' => $rooms
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => $e,
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
 }

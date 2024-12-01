@@ -573,5 +573,6 @@ return [
     'description_ar' => 'الوصف عربى',
     'description_en' => 'الوصف انجليزى',
     'my_profile' => 'حسابى',
+    'your_diamonds_should' => 'يجب ان يكون الماسات اكثر من 25',
 
 ];

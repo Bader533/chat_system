@@ -44,6 +44,19 @@ class RoomController extends Controller
     {
         try {
 
+            $data = auth()->user()->wallets()
+                ->where('type', 'diamonds')
+                ->sum('quantity');
+
+            if ($data < 25) {
+                return response()->json([
+                    'message' => __('site.your_diamonds_should'),
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'error' => true,
+                    'data' => null
+                ]);
+            }
+
             $validatedData = $request->validated();
             $room = Room::create($validatedData);
             $room->updateAvatar($request);
@@ -55,7 +68,7 @@ class RoomController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'massege' => 'An error occurred',
+                'massege' => $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []

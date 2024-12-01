@@ -431,6 +431,7 @@ return [
     'title_ar' => 'Arabic Title',
     'description_ar' => 'Arabic Description',
     'description_en' => 'English Description',
-    'my_profile' => 'My Profile',
+    'my_profil' => 'My Profile',
+    'your_diamonds_should' => 'Your Diamonds Should be more than 25',
 
 ];
