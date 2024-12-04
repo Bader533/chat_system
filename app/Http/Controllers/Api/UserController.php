@@ -39,7 +39,7 @@ class UserController extends Controller
      * show current user data
      */
     public function show()
-    {
+    {   
         try {
 
             $user = User::getUser();

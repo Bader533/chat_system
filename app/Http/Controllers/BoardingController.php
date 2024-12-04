@@ -44,6 +44,9 @@ class BoardingController extends Controller
             'status' => $request->status,
             'place' => $request->place
         ]);
+
+        $boarding->updateAvatar($request);
+
         return response()->json(['message' => __('site.create_boarding_successfully')], Response::HTTP_CREATED);
     }
 
@@ -86,6 +89,9 @@ class BoardingController extends Controller
             'status' => $request->status,
             'place' => $request->place
         ]);
+
+        $boarding->updateAvatar($request);
+
         return response()->json(['message' => __('site.update_boarding_successfully')], Response::HTTP_CREATED);
     }
 

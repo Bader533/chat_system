@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class RoomType extends Model
 {
@@ -13,7 +13,8 @@ class RoomType extends Model
 
     protected $fillable = [
         'slug',
-        'name',
+        'name_en',
+        'name_ar',
         'avatar',
         'status',
     ];
@@ -26,7 +27,7 @@ class RoomType extends Model
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->name);
+            $data->slug = $data->generateSlug($data->name_en);
             $data->save();
         });
     }
@@ -34,7 +35,7 @@ class RoomType extends Model
     private function generateSlug($name)
     {
         if (static::whereSlug($slug = Str::slug($name))->exists()) {
-            $max = static::where('name', $name)->latest('id')->skip(1)->value('slug');
+            $max = static::where('name_en', $name)->latest('id')->skip(1)->value('slug');
             if (isset($max[-1]) && is_numeric($max[-1])) {
                 return preg_replace_callback('/(\d+)$/', function ($mathces) {
                     return $mathces[1] + 1;
@@ -45,30 +46,39 @@ class RoomType extends Model
         return $slug;
     }
 
-    /**
-     * store and update avatar
-     */
+
+
     public function updateAvatar($request)
     {
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($this->avatar && Storage::exists($this->avatar)) {
-                Storage::delete($this->avatar);
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($this->avatar && File::exists(public_path($this->avatar))) {
+                File::delete(public_path($this->avatar));
             }
 
-            // Store new avatar
+            // التحقق من وجود المجلد "images"
+            $destinationPath = public_path('images');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+
+            // تخزين الصورة الجديدة
             $file = $request->file('avatar');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file_name = time() . '.' . $file->getClientOriginalExtension();
 
-            // Store file in the 'public/avatars' directory
-            $path = $file->storeAs('avatars', $fileName, 'public');
+            try {
+                $file->move($destinationPath, $file_name);
+                $this->avatar = 'images/' . $file_name;
 
-            $this->avatar = $path;
-
-            // Save model
-            $this->save();
+                // حفظ النموذج
+                $this->save();
+            } catch (\Exception $e) {
+                // في حالة حدوث خطأ أثناء النقل
+                throw new \Exception('Failed to upload avatar: ' . $e->getMessage());
+            }
         }
     }
+
 
     /**
      * get roomtype avatar
@@ -76,10 +86,18 @@ class RoomType extends Model
     public function getAvatarUrlAttribute()
     {
         if ($this->avatar != null) {
-            return asset('storage/' . $this->avatar);
+            return asset($this->avatar);
         } else {
             return 'assets/media/svg/files/blank-image.svg';
         }
+    }
+
+    /**
+     * scope to filter rooms based on status
+     */
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', 1);
     }
 
     public function rooms()

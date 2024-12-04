@@ -133,6 +133,58 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
+                            <!--begin::avatar-->
+                            <div class="row">
+                                <!--begin::Card body-->
+                                    <div class="card-body text-center pt-0">
+                                        <!--begin::Image input-->
+                                        <!--begin::Image input placeholder-->
+                                        <style>
+                                            .image-input-placeholder {
+                                                background-image: url('{{asset("assets/media/svg/files/blank-image.svg")}}');
+                                            }
+                                        </style>
+                                        <!--end::Image input placeholder-->
+                                        <!--begin::Image input-->
+                                        <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                                            data-kt-image-input="true">
+                                            <!--begin::Preview existing avatar-->
+                                            <div class="image-input-wrapper w-150px h-150px"></div>
+                                            <!--end::Preview existing avatar-->
+                                            <!--begin::Label-->
+                                            <label
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                                <!--begin::Icon-->
+                                                <i class="bi bi-pencil-fill fs-7"></i>
+                                                <!--end::Icon-->
+                                                <!--begin::Inputs-->
+                                                <input type="file" name="avatar" id="avatar" accept=".png, .jpg, .jpeg" />
+                                                <input type="hidden" name="avatar_remove" />
+                                                <!--end::Inputs-->
+                                            </label>
+                                            <!--end::Label-->
+                                            <!--begin::Cancel-->
+                                            <span
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                                <i class="bi bi-x fs-2"></i>
+                                            </span>
+                                            <!--end::Cancel-->
+                                            <!--begin::Remove-->
+                                            <span
+                                                class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow"
+                                                data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                                <i class="bi bi-x fs-2"></i>
+                                            </span>
+                                            <!--end::Remove-->
+                                        </div>
+                                        <!--end::Image input-->
+                                    </div>
+                                    <!--end::Card body-->
+                            </div>
+                            <!--end::avatar-->
+
                             <!--begin::title-->
                             <div class="row">
                                 <div class="col-6 mb-10 fv-row">
@@ -218,14 +270,16 @@
     }
 
     function store() {
-        axios.post('/boarding',{
-            title_en: document.getElementById('title_en').value,
-            title_ar: document.getElementById('title_ar').value,
-            description_en: document.getElementById('description_en').value,
-            description_ar: document.getElementById('description_ar').value,
-            status: document.getElementById('status').value,
-            place: document.getElementById('place').value,
-        })
+        let formData = new FormData();
+        formData.append("title_en", document.getElementById('title_en').value);
+        formData.append("title_ar", document.getElementById('title_ar').value);
+        formData.append("status", document.getElementById('status').value);
+        formData.append("place", document.getElementById('place').value);
+        formData.append("description_en", document.getElementById("description_en").value);
+        formData.append("description_ar", document.getElementById("description_ar").value);
+        formData.append("avatar",document.getElementById('avatar').files[0]);
+
+        axios.post('/boarding',formData)
         .then(function (response) {
             toastr.options = {
                 positionClass: 'toast-top-left',

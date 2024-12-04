@@ -18,13 +18,13 @@
                 <!--begin::Image input-->
                 <!--begin::Image input placeholder-->
                 <style>
-                    .image-input-placeholder {
+                    .image-input-placeholderr {
                         background-image: url('{{asset($roomtype->avatar_url ?? "assets/media/svg/files/blank-image.svg")}}');
                     }
                 </style>
                 <!--end::Image input placeholder-->
                 <!--begin::Image input-->
-                <div class="image-input image-input-empty image-input-outline image-input-placeholder mb-3"
+                <div class="image-input image-input-empty image-input-outline image-input-placeholderr mb-3"
                     data-kt-image-input="true">
                     <!--begin::Preview existing avatar-->
                     <div class="image-input-wrapper w-150px h-150px"></div>
@@ -80,21 +80,28 @@
             <!--end::Card header-->
             <!--begin::Card body-->
             <div class="card-body pt-0">
-                <!--begin::title-->
-                <div class="mb-10 fv-row">
-                    <!--begin::Label-->
-                    <label class="required form-label">{{__('site.name')}}</label>
-                    <!--end::Label-->
-                    <!--begin::Input-->
-                    <input type="text" name="name" id="name" value="{{$roomtype->name ?? null}}"
-                        class="form-control mb-2" placeholder="{{__('site.name')}}" required />
-                    <!--end::Input-->
-                    <!--begin::Description-->
-                    {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                    </div> --}}
-                    <!--end::Description-->
+                <!--begin::name-->
+                <div class="row">
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_en')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_en" id="name_en" value="{{$roomtype->name_en ?? null}}"
+                        class="form-control mb-2" placeholder="{{__('site.name_en')}}" required />
+                        <!--end::Input-->
+                    </div>
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.name_ar')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="name_ar" id="name_ar" value="{{$roomtype->name_ar ?? null}}"
+                        class="form-control mb-2" placeholder="{{__('site.name_ar')}}" required />
+                        <!--end::Input-->
+                    </div>
                 </div>
-                <!--end::title-->
+                <!--end::name-->
 
                 <!--begin::status-->
                 <div class="mb-10 fv-row">

@@ -40,7 +40,7 @@ class HomeController extends Controller
     public function agency()
     {
         try {
-            $agencies = Agency::select('id', 'name_en', 'name_ar', 'avatar')->isHome()->isActive()->take(10)->get();
+            $agencies = Agency::select('id', 'name_en', 'name_ar', 'avatar')->isHome()->isActive()->take(3)->get();
 
             return response()->json([
                 'message' => 'home agency data',

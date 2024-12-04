@@ -84,16 +84,16 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function likeUsers()
     {
-        return $this->belongsToMany(User::class, 'likes', 'user_id', 'post_id');
+        return $this->belongsToMany(User::class, 'likes', 'post_id', 'user_id');
     }
 
     public function commentUsers()
     {
-        return $this->belongsToMany(User::class, 'comments', 'user_id', 'post_id');
+        return $this->belongsToMany(User::class, 'comments', 'post_id', 'user_id');
     }
 }

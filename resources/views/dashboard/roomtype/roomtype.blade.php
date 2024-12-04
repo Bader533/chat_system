@@ -19,7 +19,7 @@
         <tr>
             <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name_en }}</a>
             </td>
             <!--end::Name=-->
 

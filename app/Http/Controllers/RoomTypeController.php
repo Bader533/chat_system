@@ -51,8 +51,8 @@ class RoomTypeController extends Controller
     public function store(RoomTypeRequest $request)
     {
         $validatedData = $request->validated();
-        $country = RoomType::create($validatedData);
-        $country->updateAvatar($request);
+        $roomtype = RoomType::create($validatedData);
+        $roomtype->updateAvatar($request);
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }
 
@@ -78,10 +78,10 @@ class RoomTypeController extends Controller
      */
     public function update(RoomTypeRequest $request, $slug)
     {
-        $country = RoomType::whereSlug($slug)->firstOrFail();
+        $roomtype = RoomType::whereSlug($slug)->firstOrFail();
         $validatedData = $request->validated();
-        $country->update($validatedData);
-        $country->updateAvatar($request);
+        $roomtype->update($validatedData);
+        $roomtype->updateAvatar($request);
         return response()->json(['message' => __('site.update_successfully')], Response::HTTP_CREATED);
     }
 

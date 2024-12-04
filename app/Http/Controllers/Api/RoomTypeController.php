@@ -3,22 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Boarding;
-use Illuminate\Http\Request;
+use App\Models\RoomType;
 use Exception;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class BoardingController extends Controller
+class RoomTypeController extends Controller
 {
     public function index()
     {
         try {
-            $boardings = Boarding::where('status', 1)->select(['id', 'title_en', 'title_ar', 'description_en', 'description_ar', 'avatar'])->get();
+
+            $rooms = RoomType::isActive()->select(['id', 'name_en', 'name_ar', 'avatar'])->get();
             return response()->json([
-                'message' => 'on boardng data',
+                'message' => 'all rooms type',
                 'code' => Response::HTTP_ACCEPTED,
                 'error' => false,
-                'data' => $boardings
+                'data' => $rooms
             ]);
         } catch (Exception $e) {
             return response()->json([

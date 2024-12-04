@@ -20,7 +20,7 @@ class RoomController extends Controller
     {
         try {
 
-            $rooms = Room::forCurrentUser()->isActive()->select(['id', 'name', 'avatar', 'country_id'])->get();
+            $rooms = Room::forCurrentUser()->isActive()->select(['id', 'name', 'avatar', 'country_id'])->paginate(10);
             return response()->json([
                 'message' => 'rooms for login user',
                 'code' => Response::HTTP_ACCEPTED,
@@ -134,7 +134,7 @@ class RoomController extends Controller
     {
         try {
             $query = $request->get('search');
-            $data = Room::where('name', 'like', '%' . $query . '%')->isActive()->get();
+            $data = Room::where('name', 'like', '%' . $query . '%')->isActive()->paginate(10);
             return response()->json([
                 'message' => 'search result for rooms',
                 'code' => Response::HTTP_OK,
@@ -158,7 +158,7 @@ class RoomController extends Controller
     {
         try {
             $count = $request->get('count');
-            $favoriteRooms = Room::isFavorite()->isActive()->take($count)->get();
+            $favoriteRooms = Room::isFavorite()->isActive()->take($count)->paginate(10);
             return response()->json([
                 'message' => 'favorite Rooms',
                 'code' => Response::HTTP_OK,

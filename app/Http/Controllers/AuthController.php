@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         // Retrieve the user by email
         $user = User::where('email', $request->input('email'))->first();
-
+        
         if (!$user) {
             return response()->json(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
