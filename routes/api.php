@@ -46,6 +46,12 @@ Route::prefix('auth')->middleware('auth:api')->group(function () {
 });
 // ============= end Auth =============
 
+// splash route
+Route::get('/check', [SplashController::class, 'check']);
+Route::get('/check-maintenance', [SplashController::class, 'checkApp']);
+// end splash
+
+Route::get('/boarding', [BoardingController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
 
@@ -55,13 +61,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/countries', [HomeController::class, 'countries']);
         Route::get('/rooms', [HomeController::class, 'rooms']);
     });
-
-    // splash route
-    Route::get('/check', [SplashController::class, 'check']);
-    Route::get('/check-maintenance', [SplashController::class, 'checkApp']);
-    // end splash
-
-    Route::get('/boarding', [BoardingController::class, 'index']);
 
     Route::get('/privacy', [PrivacyController::class, 'show']);
 

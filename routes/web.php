@@ -88,7 +88,7 @@ Route::middleware('auth:web')->group(
 
         // contact
         Route::resource('/ads', AdsController::class);
-        Route::get('/getAds', [AdsController::class, 'getAds'])->name('ads.data');
+        Route::get('/get-ads', [AdsController::class, 'getAds'])->name('ads.data');
         //end contact
 
         // country

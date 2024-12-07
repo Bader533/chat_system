@@ -137,10 +137,11 @@
     } //end detete
 
 
-    function getAds(){
-        axios.get('/getAds',{
+    function getAds(page = 1, query = null){
+        axios.get('/get-ads', {
             params: {
-                page: page
+                page: page,
+                query: query,
             }
         })
         .then(function (response) {
@@ -150,26 +151,15 @@
             });
     }
 
-    document.getElementById('search_data').addEventListener('input', function() {
+    document.getElementById('search_data').addEventListener('input', function () {
         const searchQuery = this.value;
-
-        axios.get('{{ route('ads.data') }}', {
-            params: {
-                query: searchQuery
-            }
-        })
-        .then(function (response) {
-            console.log(searchQuery);
-            if(searchQuery){
-                console.log('data');
-                $('#table-content').html(response.data);
-            }else{
-                console.log('empty');
-                getUser();
-            }
-            }).catch(function (error) {
-                console.error('There was an error!', error);
-            });
+        if (searchQuery) {
+            console.log('data');
+            getAds(1, searchQuery);
+        } else {
+            console.log('empty');
+            getAds();
+        }
     });
 
 </script>

@@ -24,14 +24,14 @@ class AdsController extends Controller
         $this->authorize('Read-Adses');
 
         $query = $request->input('query');
-        $perPage = $request->input('per_page', 5);
+        $perPage = $request->input('per_page', 10);
         $data = Ads::query();
 
         if ($query == null) {
             $ads = $data->paginate($perPage);
         } else {
             $ads = $data->where('name_en', 'like', '%' . $query . '%')
-                ->where('name_ar', 'like', '%' . $query . '%')
+                ->orWhere('name_ar', 'like', '%' . $query . '%')
                 ->paginate($perPage);
         }
 
