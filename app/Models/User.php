@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -24,8 +25,13 @@ class User extends Authenticatable
         'status',
         'type',
         'email',
+        'phone',
+        'avatar',
         'password',
     ];
+
+    protected $appends = ['avatar_url'];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,15 +53,46 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function updateAvatar($request)
+    {
+        if ($request->hasFile('avatar')) {
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($this->avatar && File::exists(public_path($this->avatar))) {
+                File::delete(public_path($this->avatar));
+            }
+
+            // التحقق من وجود المجلد "images"
+            $destinationPath = public_path('images');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+
+            // تخزين الصورة الجديدة
+            $file = $request->file('avatar');
+            $file_name = time() . '.' . $file->getClientOriginalExtension();
+
+            try {
+                $file->move($destinationPath, $file_name);
+                $this->avatar = 'images/' . $file_name;
+
+                // حفظ النموذج
+                $this->save();
+            } catch (\Exception $e) {
+                // في حالة حدوث خطأ أثناء النقل
+                throw new \Exception('Failed to upload avatar: ' . $e->getMessage());
+            }
+        }
+    }
+
     /**
      * get user avatar
      */
     public function getAvatarUrlAttribute()
     {
         if ($this->avatar != null) {
-            return asset('images/' . $this->avatar);
+            return asset($this->avatar);
         } else {
-            return asset('assets/media/svg/files/blank-image.svg');
+            return 'assets/media/svg/files/blank-image.svg';
         }
     }
 
@@ -131,7 +168,7 @@ class User extends Authenticatable
 
     public function posts()
     {
-        return $this->hasMany(Post::class, 'user_id', 'id');
+        return $this->hasMany(Post::class, 'user_id', 'id')->select('id', 'title_en', 'title_ar', 'description_en', 'description_ar', 'avatar', 'user_id');
     }
 
     public function likePosts()

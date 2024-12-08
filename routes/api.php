@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\PostController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\RoomTypeController;
 use App\Http\Controllers\Api\SplashController;
@@ -54,6 +55,16 @@ Route::get('/check-maintenance', [SplashController::class, 'checkApp']);
 Route::get('/boarding', [BoardingController::class, 'index']);
 
 Route::middleware('auth:api')->group(function () {
+
+    Route::prefix('profile')->group(function () {
+        Route::get('/user-data', [ProfileController::class, 'showUser']);
+        Route::get('/followers-data', [ProfileController::class, 'followersData']);
+        Route::get('/following-data', [ProfileController::class, 'followingData']);
+        Route::get('/user-posts', [ProfileController::class, 'userPosts']);
+        Route::get('/user-diamonds', [ProfileController::class, 'userDiamonds']);
+        Route::get('/user-gold', [ProfileController::class, 'userGold']);
+        Route::post('/update', [ProfileController::class, 'update']);
+    });
 
     Route::prefix('home')->group(function () {
         Route::get('/agency', [HomeController::class, 'agency']);

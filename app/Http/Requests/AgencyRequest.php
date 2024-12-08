@@ -30,14 +30,14 @@ class AgencyRequest extends FormRequest
             'is_home' => 'required|numeric|in:0,1',
         ];
 
-        if ($this->isMethod('put')) {
-            $rules['name_en'] = 'nullable|string|max:100';
-            $rules['name_ar'] = 'nullable|string|max:100';
-            $rules['description_en'] = 'nullable|string';
-            $rules['description_ar'] = 'nullable|string';
-            $rules['status'] = 'nullable|numeric|in:0,1';
-            $rules['is_home'] = 'nullable|numeric|in:0,1';
-        }
+        // if ($this->isMethod('put')) {
+        //     $rules['name_en'] = 'nullable|string|max:100';
+        //     $rules['name_ar'] = 'nullable|string|max:100';
+        //     $rules['description_en'] = 'nullable|string';
+        //     $rules['description_ar'] = 'nullable|string';
+        //     $rules['status'] = 'nullable|numeric|in:0,1';
+        //     $rules['is_home'] = 'nullable|numeric|in:0,1';
+        // }
 
         // if the avatar not null
         if ($this->hasFile('avatar')) {

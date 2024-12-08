@@ -178,20 +178,26 @@
                         <!--end::Card header-->
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
-
-                            <!--begin::name-->
-                            <div class="mb-10 fv-row">
-                                <!--begin::Label-->
-                                <label class="required form-label">{{__('site.name')}}</label>
-                                <!--end::Label-->
-                                <!--begin::Input-->
-                                <input type="text" name="name" id="name" class="form-control mb-2"
-                                    placeholder="{{__('site.name')}}" value="{{$ads->name}}" required />
-                                <!--end::Input-->
-                                <!--begin::Description-->
-                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
-                                </div> --}}
-                                <!--end::Description-->
+                             <!--begin::name-->
+                            <div class="row">
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.name_en')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="name_en" id="name_en" class="form-control mb-2"
+                                        placeholder="{{__('site.name_en')}}" value="{{$ads->name_en}}" required />
+                                    <!--end::Input-->
+                                </div>
+                                <div class="col-6 mb-10 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="required form-label">{{__('site.name_ar')}}</label>
+                                    <!--end::Label-->
+                                    <!--begin::Input-->
+                                    <input type="text" name="name_ar" id="name_ar" class="form-control mb-2"
+                                        placeholder="{{__('site.name_ar')}}" value="{{$ads->name_ar}}" required />
+                                    <!--end::Input-->
+                                </div>
                             </div>
                             <!--end::name-->
 
@@ -202,7 +208,7 @@
                                 <!--end::Label-->
                                 <!--begin::Input-->
                                 <textarea class="form-control mb-2" id="kt_docs_tinymce_basic">
-                                {!! $ads->description !!}
+                                {!! $ads->description_en !!}
                                 </textarea>
                                 <!--end::Input-->
                                 <!--begin::Description-->
@@ -211,6 +217,23 @@
                                 <!--end::Description-->
                             </div>
                             <!--end::description-->
+
+                            <!--begin::description_ar-->
+                            <div class="mb-10 fv-row">
+                                <!--begin::Label-->
+                                <label class="required form-label">{{__('site.description_ar')}}</label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <textarea class="form-control mb-2" id="description_ar">
+                                {!! $ads->description_ar !!}
+                                </textarea>
+                                <!--end::Input-->
+                                <!--begin::Description-->
+                                {{-- <div class="text-muted fs-7">A name is required and recommended to be unique.
+                                </div> --}}
+                                <!--end::Description-->
+                            </div>
+                            <!--end::description_ar-->
                         </div>
                         <!--end::Card header-->
                     </div>
@@ -250,8 +273,10 @@
         let formData = new FormData();
         formData.append("status", document.getElementById('status').value);
         formData.append("is_home", document.getElementById('is_home').value);
-        formData.append("name", document.getElementById('name').value);
-        formData.append("description", tinymce.get("kt_docs_tinymce_basic").getContent());
+        formData.append("name_en", document.getElementById('name_en').value);
+        formData.append("name_ar", document.getElementById('name_ar').value);
+        formData.append("description_en", tinymce.get("kt_docs_tinymce_basic").getContent());
+        formData.append("description_ar", tinymce.get("description_ar").getContent());
         formData.append("avatar",document.getElementById('avatar').files[0]);
 
         formData.append("_method", "PUT");
@@ -279,11 +304,10 @@
 
     var options = {selector: "#kt_docs_tinymce_basic", height : "480"};
 
-    if ( KTThemeMode.getMode() === "dark" ) {
-    options["skin"] = "oxide-dark";
-    options["content_css"] = "dark";
-    }
-
     tinymce.init(options);
+
+     var optionsar = {selector: "#description_ar", height : "480"};
+
+    tinymce.init(optionsar);
 </script>
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,12 +13,16 @@ class ProfileController extends Controller
     public function showUser()
     {
         $user = auth()->user();
+        $data['user'] = $user->only('id', 'name', 'email', 'phone', 'avatar', 'avatar_url');
+        $data['followers_count'] = $user->followers()->count();
+        $data['following_count'] =  $user->following()->count();
+
         try {
             return response()->json([
                 'message' => 'user data details',
                 'code' => Response::HTTP_OK,
                 'error' => false,
-                'data' => $user
+                'data' => $data
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -29,17 +34,38 @@ class ProfileController extends Controller
         }
     }
 
-    public function followers()
+    public function followersData()
     {
         try {
-            $user = auth()->user;
-
-            $followersCount = $user->followers()->count();
+            $user = auth()->user();
+            $followers = $user->followers;
             return response()->json([
-                'message' => 'user followers count',
+                'message' => 'user followers data',
                 'code' => Response::HTTP_OK,
                 'error' => false,
-                'data' => $followersCount
+                'data' => $followers
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred' . $e,
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function followingData()
+    {
+        try {
+            $user = auth()->user();
+
+            $following = $user->following;
+            return response()->json([
+                'message' => 'user following data',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $following
             ]);
         } catch (Exception $e) {
             return response()->json([
@@ -51,21 +77,93 @@ class ProfileController extends Controller
         }
     }
 
-    public function following()
+    public function userPosts()
     {
         try {
-            $user = auth()->user;
+            $user = auth()->user();
 
-            $followingCount = $user->following()->count();
+            $posts = $user->posts;
             return response()->json([
-                'message' => 'user following count',
+                'message' => 'user posts',
                 'code' => Response::HTTP_OK,
                 'error' => false,
-                'data' => $followingCount
+                'data' => $posts
             ]);
         } catch (Exception $e) {
             return response()->json([
                 'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function userDiamonds()
+    {
+        try {
+            $user = auth()->user();
+
+            $data = $user->total_diamonds;
+            return response()->json([
+                'message' => 'user posts',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function userGold()
+    {
+        try {
+            $user = auth()->user();
+
+            $data = $user->total_gold;
+            return response()->json([
+                'message' => 'user posts',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function update(ProfileRequest $request)
+    {
+        try {
+            $user = auth()->user();
+
+            $validatedData = $request->validated();
+
+            $user->update($validatedData);
+            $user->updateAvatar($request);
+
+            $data = $user->only('id', 'name', 'email', 'phone', 'avatar', 'avatar_url');
+
+            return response()->json([
+                'message' => 'user posts',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred' . $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []

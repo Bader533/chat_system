@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -46,32 +47,41 @@ class Post extends Model
     public function updateAvatar($request)
     {
         if ($request->hasFile('avatar')) {
-            // Delete old avatar if exists
-            if ($this->avatar && Storage::exists($this->avatar)) {
-                Storage::delete($this->avatar);
+            // حذف الصورة القديمة إذا كانت موجودة
+            if ($this->avatar && File::exists(public_path($this->avatar))) {
+                File::delete(public_path($this->avatar));
             }
 
-            // Store new avatar
+            // التحقق من وجود المجلد "images"
+            $destinationPath = public_path('images');
+            if (!File::exists($destinationPath)) {
+                File::makeDirectory($destinationPath, 0755, true);
+            }
+
+            // تخزين الصورة الجديدة
             $file = $request->file('avatar');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file_name = time() . '.' . $file->getClientOriginalExtension();
 
-            // Store file in the 'public/avatars' directory
-            $path = $file->storeAs('avatars', $fileName, 'public');
+            try {
+                $file->move($destinationPath, $file_name);
+                $this->avatar = 'images/' . $file_name;
 
-            $this->avatar = $path;
-
-            // Save model
-            $this->save();
+                // حفظ النموذج
+                $this->save();
+            } catch (\Exception $e) {
+                // في حالة حدوث خطأ أثناء النقل
+                throw new \Exception('Failed to upload avatar: ' . $e->getMessage());
+            }
         }
     }
 
     /**
-     * get roomtype avatar
+     * get avatar
      */
     public function getAvatarUrlAttribute()
     {
         if ($this->avatar != null) {
-            return asset('storage/' . $this->avatar);
+            return asset($this->avatar);
         } else {
             return 'assets/media/svg/files/blank-image.svg';
         }
