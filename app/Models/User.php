@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
@@ -143,27 +144,29 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
     }
 
-    public function wallets()
+    public function wallet()
     {
-        return $this->hasMany(Wallet::class);
+        return $this->hasOne(Wallet::class);
     }
 
     public function getTotalDollarAttribute()
     {
-        // جمع جميع قيم 'dollar' في علاقة wallets
         return $this->wallets->sum('dollar');
     }
 
     public function getTotalDiamondsAttribute()
     {
-        // جمع جميع قيم 'diamonds' في علاقة wallets
         return $this->wallets->where('type', 'diamonds')->sum('quantity');
     }
 
     public function getTotalGoldAttribute()
     {
-        // جمع جميع قيم 'gold' في علاقة wallets
         return $this->wallets->where('type', 'gold')->sum('quantity');
+    }
+
+    public function getTotalSilverAttribute()
+    {
+        return $this->wallets->where('type', 'silver')->sum('quantity');
     }
 
     public function posts()
@@ -179,5 +182,25 @@ class User extends Authenticatable
     public function commentPosts()
     {
         return $this->belongsToMany(Post::class, 'comments', 'user_id', 'post_id');
+    }
+
+    public function levels(): BelongsToMany
+    {
+        return $this->belongsToMany(Level::class, 'user_levels')->withPivot('score', 'completed')->withTimestamps();
+    }
+
+    public function sentGifts()
+    {
+        return $this->hasMany(UserGift::class, 'sender_id');
+    }
+
+    public function receivedGifts()
+    {
+        return $this->hasMany(UserGift::class, 'receiver_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(GiftTransaction::class);
     }
 }

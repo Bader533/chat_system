@@ -5,7 +5,6 @@
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class="min-w-125px">{{__('site.user_id')}}</th>
             <th class="min-w-125px">{{__('site.recipient')}}</th>
-            <th class="min-w-125px">{{__('site.sender')}}</th>
             <th class="min-w-125px">{{__('site.type')}}</th>
             <th class="min-w-125px">{{__('site.quantity')}}</th>
             <th class="min-w-125px">{{__('site.dollar')}}</th>
@@ -23,35 +22,29 @@
         <tr>
             <!--begin::id=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->user->id }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->wallet->user->id }}</a>
             </td>
             <!--end::id=-->
 
             <!--begin::user name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->user->name }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->wallet->user->name }}</a>
             </td>
             <!--end::user name=-->
 
-            <!--begin::agency name=-->
-            <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->agency->name_ar }}</a>
-            </td>
-            <!--end::agency name=-->
-
             <!--begin::type=-->
             <td>
-                @if ($item->type == 'gold')
+                @if ($item->asset == 'gold')
                 <div class="badge badge-light-warning fw-bold">
-                    {{$item->type}}
+                    {{$item->asset}}
                 </div>
-                @elseif($item->type == 'diamonds')
+                @elseif($item->asset == 'diamonds')
                 <div class="badge badge-light-info fw-bold">
-                    {{$item->type}}
+                    {{$item->asset}}
                 </div>
-                @elseif($item->type == 'silver')
-                <div class="badge badge-light-light fw-bold">
-                    {{$item->type}}
+                @elseif($item->asset == 'silver')
+                <div class="badge badge-light-primary fw-bold">
+                    {{$item->asset}}
                 </div>
                 @endif
             </td>
@@ -59,7 +52,7 @@
 
             <!--begin::quantity=-->
             <td>
-                <a>{{$item->quantity}}</a>
+                <a>{{$item->amount}}</a>
             </td>
             <!--end::quantity=-->
 

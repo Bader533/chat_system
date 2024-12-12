@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WalletRequest;
 use App\Models\Conversion;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Services\WalletService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,7 +16,7 @@ class WalletController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($data = null)
+    public function index()
     {
         $this->authorize('Read-Wallets');
         return view('dashboard.wallet.index');
@@ -33,13 +35,15 @@ class WalletController extends Controller
         $kind = $request->input('kind');
 
         // Start building the query
-        $data = Wallet::query();
+        $data = Transaction::where('agency_id', auth()->user()->id);
 
         // Filter by search query if provided
         if (!empty($query)) {
             $data->where(function ($q) use ($query) {
-                $q->searchUser($query)->orWhereHas('agency', function ($q) use ($query) {
-                    $q->where('name', 'like', '%' . $query . '%');
+                $q->whereHas('wallet', function ($q) use ($query) {
+                    $q->whereHas('user', function ($q) use ($query) {
+                        $q->where('name', 'like', '%' . $query . '%');
+                    });
                 });
             });
         }
@@ -64,16 +68,18 @@ class WalletController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(WalletRequest $request)
+    public function store(WalletRequest $request, WalletService $walletService)
     {
         $this->authorize('Create-Wallet');
 
         $user = User::findOrFail($request->user_id);
         $validatedData = $request->validated();
         $validatedData['user_id'] = $user->id;
-        $validatedData['agency_id'] = 1;
-        $validatedData['dollar'] = $this->calculate($validatedData['type'], $validatedData['quantity']);
-        $data = Wallet::create($validatedData);
+        $wallet = $walletService->deposit(
+            $validatedData['user_id'],
+            $validatedData['type'], //asset
+            $validatedData['quantity']
+        );
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }
 

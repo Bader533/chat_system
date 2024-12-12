@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wallets', function (Blueprint $table) {
+        Schema::create('gift_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->decimal('diamonds', 15, 2)->default(0);
-            $table->decimal('gold', 15, 2)->default(0);
-            $table->decimal('silver', 15, 2)->default(0);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('gift_id')->constrained('gifts')->onDelete('cascade');
+            $table->integer('points');
+            $table->timestamp('transaction_date')->default(now());
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wallets');
+        Schema::dropIfExists('gift_transactions');
     }
 };

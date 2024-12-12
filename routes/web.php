@@ -12,10 +12,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DurationAgreementController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GlaEventController;
 use App\Http\Controllers\GlaTeamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LevelController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\RoomController;
@@ -142,7 +144,7 @@ Route::middleware('auth:web')->group(
         //end wallet
 
         // settings
-        Route::get('/settings/create', [SettingsController::class, 'create']);
+        Route::get('/settings/create', [SettingsController::class, 'create'])->name('settings.create');
         Route::post('/settings', [SettingsController::class, 'store']);
         //end settings
 
@@ -151,6 +153,16 @@ Route::middleware('auth:web')->group(
         Route::get('/getPost', [PostController::class, 'getPost'])->name('post.data');
         Route::get('/status/post', [PostController::class, 'changeStatus'])->name('post.status');
         //end post
+
+        // level
+        Route::resource('/level', LevelController::class);
+        Route::get('/get-levels', [LevelController::class, 'getLevels'])->name('level.data');
+        //end level
+
+        // gift
+        Route::resource('/gift', GiftController::class);
+        Route::get('/get-gifts', [GiftController::class, 'getGifts'])->name('gift.data');
+        //end gift
 
         // rule & permission
         Route::get('/rule', [AuthorizationController::class, 'Rules'])->name('rule.index');

@@ -434,4 +434,27 @@ return [
     'my_profil' => 'My Profile',
     'your_diamonds_should' => 'Your Diamonds Should be more than 25',
 
+    'all_levels' => 'All Levels',
+    'levels' => 'Levels',
+    'level' => 'Level',
+    'add_new_level' => 'Add New Level',
+    'diamonds' => 'Diamonds',
+    'gold' => 'Gold',
+    'silver' => 'Silver',
+    'point' => 'Points',
+    'point_status' => 'Point Status',
+
+    'all_gifts' => 'All Gifts',
+    'gifts' => 'Gifts',
+    'gift' => 'Gift',
+    'add_new_gift' => 'Add New Gift',
+    'type_points' => 'Point Type',
+    'value_points' => 'Point Value',
+    'transactions' => 'Transactions',
+    'dollor' => 'Dollor',
+    'percentage' => 'Percentage',
+    'settings' => 'Settings',
+
+
+
 ];

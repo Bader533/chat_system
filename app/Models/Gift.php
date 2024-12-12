@@ -5,27 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class Agency extends Model
+class Gift extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'id',
+        'slug',
         'name_en',
         'name_ar',
-        'description_en',
-        'description_ar',
-        'avatar',
         'status',
-        'is_home'
+        'type_points',
+        'value_points',
+        'avatar'
     ];
 
-    protected $appends = ['avatar_url'];
-
-
     protected $attributes = ['slug' => ''];
+
+    protected $appends = ['avatar_url'];
 
     protected static function boot()
     {
@@ -37,12 +36,12 @@ class Agency extends Model
     }
 
     /**
-     * generate slug
+     * create slug from name_en
      */
     private function generateSlug($data)
     {
         if (static::whereSlug($slug = Str::slug($data))->exists()) {
-            $max = static::where('name', $data)->latest('id')->skip(1)->value('slug');
+            $max = static::where('name_en', $data)->latest('id')->skip(1)->value('slug');
             if (isset($max[-1]) && is_numeric($max[-1])) {
                 return preg_replace_callback('/(\d+)$/', function ($mathces) {
                     return $mathces[1] + 1;
@@ -99,11 +98,6 @@ class Agency extends Model
         }
     }
 
-    public function scopeIsHome($query)
-    {
-        return $query->where('is_home', 1);
-    }
-
     public function scopeIsActive($query)
     {
         return $query->where('status', 1);
@@ -111,24 +105,6 @@ class Agency extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
-    }
-
-    public function getTotalDollarAttribute()
-    {
-        // جمع جميع قيم 'dollar' في علاقة wallets
-        return $this->wallets->sum('dollar');
-    }
-
-    public function getTotalDiamondsAttribute()
-    {
-        // جمع جميع قيم 'diamonds' في علاقة wallets
-        return $this->wallets->where('type', 'diamonds')->sum('quantity');
-    }
-
-    public function getTotalGoldAttribute()
-    {
-        // جمع جميع قيم 'gold' في علاقة wallets
-        return $this->wallets->where('type', 'gold')->sum('quantity');
+        return $this->hasMany(GiftTransaction::class);
     }
 }

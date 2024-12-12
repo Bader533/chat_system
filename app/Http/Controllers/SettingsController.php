@@ -17,30 +17,48 @@ class SettingsController extends Controller
 
     public function store(SettingsRequest $request)
     {
-        $this->changeStatusSettings();
-
         $validatedData = $request->validated();
 
-        $precentage = Percentage::create($validatedData);
+        // $precentage = Percentage::create($validatedData);
+
+        $precentage = Percentage::first();
+        $conversion = Conversion::first();
+
+        if (!$precentage) {
+            $created = Percentage::create($validatedData);
+        } else {
+            $updated = $precentage->update($validatedData);
+        }
 
         $types = ['diamonds', 'silver', 'gold'];
 
 
         foreach ($types as $type) {
-            Conversion::create([
-                'type' => $validatedData["type_{$type}"],
-                'quantity' => $validatedData["quantity_{$type}"],
-                'dollar' => $validatedData["dollar_{$type}"],
-                'status' => 1,
-            ]);
+            if (!$conversion) {
+                Conversion::create([
+                    'type' => $validatedData["type_{$type}"],
+                    'quantity' => $validatedData["quantity_{$type}"],
+                    'dollar' => $validatedData["dollar_{$type}"],
+                    'status' => 1,
+                ]);
+            } else {
+                $updated = $conversion->update(
+                    [
+                        'type' => $validatedData["type_{$type}"],
+                        'quantity' => $validatedData["quantity_{$type}"],
+                        'dollar' => $validatedData["dollar_{$type}"],
+                        'status' => 1,
+                    ]
+                );
+            }
         }
 
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }
 
-    private function changeStatusSettings()
-    {
-        Percentage::where('status', 1)->update(['status' => 0]);
-        Conversion::where('status', 1)->update(['status' => 0]);
-    }
+    // private function changeStatusSettings()
+    // {
+    //     Percentage::where('status', 1)->update(['status' => 0]);
+    //     Conversion::where('status', 1)->update(['status' => 0]);
+    // }
 }

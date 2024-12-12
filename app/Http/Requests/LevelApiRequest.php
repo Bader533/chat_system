@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class WalletRequest extends FormRequest
+class LevelApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class WalletRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'user_id' => 'required|numeric|exists:users,id',
-            'type' => 'required|string|in:diamonds,gold,silver',
-            'quantity' => 'required|numeric',
+            'levelId' => 'required|numeric',
+            'points' => 'required|numeric',
         ];
 
         return $rules;

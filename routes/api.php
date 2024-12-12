@@ -9,11 +9,13 @@ use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\DurationAgreementController;
 use App\Http\Controllers\Api\FirebaseController;
 use App\Http\Controllers\Api\FollowController;
+use App\Http\Controllers\Api\GiftController;
 use App\Http\Controllers\Api\GlaEventController;
 use App\Http\Controllers\Api\GlaTeamController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\HomeController;
+use App\Http\Controllers\Api\LevelController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoomController;
@@ -128,6 +130,19 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/post/like/{id}', [PostController::class, 'like']);
     Route::post('/post/comment/{id}', [PostController::class, 'comment']);
     Route::get('/post/comment/{id}', [PostController::class, 'getPostComment']);
-
     // end posts
+
+    // levels
+    Route::get('/levels', [LevelController::class, 'index']);
+    Route::get('/level/{id}', [LevelController::class, 'show']);
+    Route::get('/open-new-level/{id}', [LevelController::class, 'openNewLevel']);
+    Route::post('/level/increase-score', [LevelController::class, 'increaseScore']);
+    // end levels
+
+    // gifts
+    Route::get('/gifts', [GiftController::class, 'index']);
+    Route::post('/send-gift', [GiftController::class, 'sendGift']);
+    Route::post('/gift-conversion', [GiftController::class, 'giftConversion']);
+    // end levels
+
 });

@@ -575,4 +575,27 @@ return [
     'my_profile' => 'حسابى',
     'your_diamonds_should' => 'يجب ان يكون الماسات اكثر من 25',
 
+    'all_levels' => 'كل المراحل',
+    'levels' => 'مراحل',
+    'level' => 'مرحلة',
+    'add_new_level' => 'اضافة مرحلة جديدة',
+    'diamonds' => 'الماس',
+    'gold' => 'ذهب',
+    'silver' => 'فضة',
+
+    'point' => 'النقاط',
+    'point_status' => 'حالة النقاط',
+
+    'all_gifts' => 'كل الهدايا',
+    'gifts' => 'الهدايا',
+    'gift' => 'الهدية',
+    'add_new_gift' => 'اضافة هدية جديدة',
+    'type_points' => 'نوع النقاط',
+    'value_points' => 'قيمة النقاط',
+    'transactions' => 'المعاملات',
+
+    'dollor' => 'دولار',
+    'percentage' => 'النسبة المئوية',
+    'settings' => 'اعدادات',
+
 ];

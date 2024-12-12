@@ -10,44 +10,16 @@ class Wallet extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'id',
-        'slug',
-        'type',
-        'quantity',
-        'dollar',
-        'user_id',
-        'agency_id'
-    ];
-
-    protected $attributes = ['slug' => ''];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->name);
-            $data->save();
-        });
-    }
-
-    private function generateSlug()
-    {
-        $slug = Str::slug(uniqid('slug-', true)); // Generate a unique slug with a prefix
-        while (static::whereSlug($slug)->exists()) {
-            $slug = Str::slug(uniqid('slug-', true)); // Regenerate if the slug already exists
-        }
-        return $slug;
-    }
-
-    public function agency()
-    {
-        return $this->belongsTo(Agency::class);
-    }
+    protected $fillable = ['user_id', 'diamonds', 'gold', 'silver'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     public function scopeSearchUser($query, $data)
@@ -57,10 +29,10 @@ class Wallet extends Model
         });
     }
 
-    public function scopeSearchAgency($query, $data)
-    {
-        return $query->whereHas('agency', function ($q) use ($data) {
-            $q->where('name', 'like', '%' . $data . '%');
-        });
-    }
+    // public function scopeSearchAgency($query, $data)
+    // {
+    //     return $query->whereHas('agency', function ($q) use ($data) {
+    //         $q->where('name', 'like', '%' . $data . '%');
+    //     });
+    // }
 }
