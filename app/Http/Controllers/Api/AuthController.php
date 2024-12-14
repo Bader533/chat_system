@@ -44,6 +44,7 @@ class AuthController extends Controller
         try {
             $user = User::where('email', $request->get('email'))->first();
 
+
             if ($user && Hash::check($request->get('password'), $user->password) && $user->status == 1) {
                 $token = $user->createToken('user')->accessToken;
                 $user->setAttribute('token', $token);

@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoomController;
 use App\Http\Controllers\Api\RoomTypeController;
 use App\Http\Controllers\Api\SplashController;
+use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\Api\UserController as ApiUserController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -41,7 +42,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'loginPersonal']);
-    // Route::post('login', [FirebaseController::class, 'loginWithGoogle']);
+    Route::post('login-via-firebase', [FirebaseController::class, 'loginWithFirebase']);
 });
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {
@@ -55,6 +56,8 @@ Route::get('/check-maintenance', [SplashController::class, 'checkApp']);
 // end splash
 
 Route::get('/boarding', [BoardingController::class, 'index']);
+
+// Route::post('/refresh-token', [TokenController::class, 'refreshToken']);
 
 Route::middleware('auth:api')->group(function () {
 
