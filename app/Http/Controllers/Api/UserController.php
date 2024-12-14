@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         try {
             $query = $request->get('search');
-            $users = User::isActive()->where('name', 'like', '%' . $query . '%')->get();
+            $users = User::select('id', 'name', 'avatar')->isActive()->where('name', 'like', '%' . $query . '%')->get();
             return response()->json([
                 'message' => 'search result on user',
                 'code' => Response::HTTP_OK,
@@ -39,7 +39,7 @@ class UserController extends Controller
      * show current user data
      */
     public function show()
-    {   
+    {
         try {
 
             $user = User::getUser();

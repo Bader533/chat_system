@@ -93,7 +93,7 @@ class User extends Authenticatable
         if ($this->avatar != null) {
             return asset($this->avatar);
         } else {
-            return 'assets/media/svg/files/blank-image.svg';
+            return asset('assets/media/avatars/blank.png');
         }
     }
 
@@ -142,6 +142,25 @@ class User extends Authenticatable
     public function following()
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
+    }
+
+    public function follow(User $user)
+    {
+        if (!$this->isFollowing($user)) {
+            $this->following()->attach($user->id);
+        }
+    }
+
+    public function unfollow(User $user)
+    {
+        if ($this->isFollowing($user)) {
+            $this->following()->detach($user->id);
+        }
+    }
+
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('following_id', $user->id)->exists();
     }
 
     public function wallet()

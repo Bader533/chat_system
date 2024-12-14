@@ -4,18 +4,24 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Models\Comment;
+use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
+    /**
+     * get all posts.
+     */
     public function index()
     {
         try {
-            $posts = Post::isActive()
+            $posts = Post::with(['user:id,name'])->isActive()->select(['id', 'title_en', 'title_ar', 'description_en', 'description_ar', 'avatar', 'user_id'])
                 ->withCount([
                     'likeUsers as total_likes' => function ($query) {
                         $query->where('likes.status', 1);
@@ -25,6 +31,11 @@ class PostController extends Controller
                     },
                 ])
                 ->paginate(10);
+            $posts->getCollection()->transform(function ($post) {
+                $post->created_at_human = Carbon::parse($post->created_at)->diffForHumans();
+                return $post;
+            });
+
             // $posts = Post::isActive()
             //     ->withCount(['likeUsers as likes_count', 'commentUsers as comments_count'])
             //     ->toSql();
@@ -37,11 +48,11 @@ class PostController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'massege' => $e,
+                'massege' => 'Error' . $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []
-            ]);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -107,8 +118,18 @@ class PostController extends Controller
     {
         try {
 
-            $event = Post::findOrFail($id);
-            $event->delete();
+            $post = Post::find($id);
+
+            if (!$post) {
+                return response()->json([
+                    'message' => 'The post not exist',
+                    'code' => Response::HTTP_OK,
+                    'error' => false,
+                    'data' => []
+                ]);
+            }
+
+            $post->delete();
 
             return response()->json([
                 'message' => __('site.delete_successfully'),
@@ -129,20 +150,44 @@ class PostController extends Controller
     public function like($id)
     {
         try {
-            $post = Post::findOrFail($id);
+            $post = Post::find($id);
+            if (!$post) {
+                return response()->json([
+                    'message' => 'The post not exist',
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'error' => false,
+                    'data' => $post
+                ], Response::HTTP_BAD_REQUEST);
+            }
             $user = auth()->user();
 
+            // التحقق من وجود الإعجاب
+            $likeExists = $user->likePosts()->where('post_id', $post->id)->where('likes.status', 1)->exists();
+
+            if ($likeExists) {
+                // حذف الإعجاب
+                $user->likePosts()->detach($post->id);
+
+                return response()->json([
+                    'message' => 'Like removed successfully',
+                    'status' => Response::HTTP_OK,
+                    'error' => false,
+                    'data' => $post
+                ]);
+            }
+
+            // إضافة الإعجاب
             $user->likePosts()->attach($post->id, ['status' => 1]);
 
             return response()->json([
-                'massege' => 'liked',
+                'message' => 'Liked successfully',
                 'status' => Response::HTTP_OK,
                 'error' => false,
                 'data' => $post
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'massege' => 'An error occurred',
+                'message' => 'An error occurred' . $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []
@@ -150,24 +195,39 @@ class PostController extends Controller
         }
     }
 
-    public function comment(Request $request, $id)
+    public function getPostlikes(Request $request)
     {
         try {
-            $post = Post::findOrFail($id);
-            $user = auth()->user();
-            // $user = User::find(1);
+            $likesQuery = Like::with('user:id,name,avatar')->where('post_id', $request->postId);
 
-            $user->commentPosts()->attach($post->id, ['status' => 1, 'comment' => $request->input('comment')]);
+            if ($request->count && !$request->perpage) {
+                $likes = $likesQuery->take($request->count)->get();
+            } elseif (!$request->count && $request->perpage) {
+                $likes = $likesQuery->paginate($request->perpage);
+            } else {
+                $likes = $likesQuery->get();
+            }
+
+            if ($likes->isEmpty()) {
+                return response()->json([
+                    'message' => 'No Likes',
+                    'status' => Response::HTTP_BAD_REQUEST,
+                    'error' => false,
+                    'data' => []
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             return response()->json([
-                'massege' => 'commented',
+                'message' => 'user Like',
                 'status' => Response::HTTP_OK,
                 'error' => false,
-                'data' => $post
+                'data' => $likes
             ]);
+            //
         } catch (Exception $e) {
+
             return response()->json([
-                'massege' => 'An error occurred',
+                'message' => 'An error occurred',
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []
@@ -196,17 +256,73 @@ class PostController extends Controller
         }
     }
 
-    public function getPostComment($id)
+    /**
+     * add new comment
+     */
+    public function comment(Request $request, $id)
     {
         try {
-            // جلب المنشور مع التعليقات المفلترة والتقسيم
-            $post = Post::findOrFail($id);
+            $post = Post::find($id);
+            $user = auth()->user();
+            if (!$post) {
+                return response()->json([
+                    'message' => 'The post not exist',
+                    'code' => Response::HTTP_OK,
+                    'error' => false,
+                    'data' => []
+                ]);
+            }
 
-            $comments = $post->commentUsers()
-                ->where('comments.status', 1)
-                ->select('users.id', 'users.name', 'users.email', 'comments.comment', 'comments.created_at', 'comments.status')
-                ->orderBy('comments.created_at', 'desc')
-                ->get();
+            $user->commentPosts()->attach($post->id, ['status' => 1, 'comment' => $request->input('comment')]);
+
+            return response()->json([
+                'massege' => 'commented',
+                'status' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $post
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ], 500);
+        }
+    }
+
+    /**
+     * get post comments
+     */
+    public function getPostComment(Request $request)
+    {
+        try {
+
+            $commentsQuery = Comment::with('user:id,name,avatar')
+                ->where('post_id', $request->post_id)
+                ->where('status', 1);
+
+            if (!$commentsQuery) {
+                return response()->json([
+                    'message' => 'The post does not exist',
+                    'status' => Response::HTTP_NOT_FOUND,
+                    'error' => true,
+                    'data' => []
+                ]);
+            }
+
+            if ($request->count && !$request->perpage) {
+                $comments = $commentsQuery->take($request->count)->get();
+            } elseif (!$request->count && $request->perpage) {
+                $comments = $commentsQuery->paginate($request->perpage);
+            } else {
+                $comments = $commentsQuery->get();
+            }
+
+            $comments->transform(function ($comment) {
+                $comment->created_at_human = Carbon::parse($comment->created_at)->diffForHumans();
+                return $comment;
+            });
 
             return response()->json([
                 'message' => 'Post comments retrieved successfully.',
@@ -214,13 +330,46 @@ class PostController extends Controller
                 'error' => false,
                 'data' => $comments
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred: ' . $e->getMessage(),
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []
             ], 500);
+        }
+    }
+
+    /**
+     * delete comment
+     */
+    public function deleteComment($commentId)
+    {
+        try {
+            $comment = Comment::find('id', $commentId);
+
+            if (!$comment) {
+                return response()->json([
+                    'massege' => 'The comment not exist',
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'error' => true,
+                    'data' => []
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            return response()->json([
+                'message' => 'the comment deleted',
+                'code' => Response::HTTP_ACCEPTED,
+                'error' => false,
+                'data' => []
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
         }
     }
 }

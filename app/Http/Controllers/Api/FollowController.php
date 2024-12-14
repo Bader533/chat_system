@@ -48,4 +48,32 @@ class FollowController extends Controller
             ]);
         }
     }
+
+    public function followUser(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $currentUser = auth()->user();
+
+        if ($currentUser->isFollowing($user)) {
+            return response()->json(['message' => 'أنت تتابع هذا المستخدم بالفعل'], 400);
+        }
+
+        $currentUser->follow($user);
+
+        return response()->json(['message' => 'تمت المتابعة بنجاح']);
+    }
+
+    public function unfollowUser(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $currentUser = auth()->user();
+
+        if (!$currentUser->isFollowing($user)) {
+            return response()->json(['message' => 'أنت لا تتابع هذا المستخدم'], 400);
+        }
+
+        $currentUser->unfollow($user);
+
+        return response()->json(['message' => 'تم إلغاء المتابعة بنجاح']);
+    }
 }

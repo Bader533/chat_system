@@ -42,7 +42,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'loginPersonal']);
-    Route::post('login-via-firebase', [FirebaseController::class, 'loginWithFirebase']);
+    // Route::post('login-via-firebase', [FirebaseController::class, 'loginWithFirebase']);
+    Route::post('/login-via-firebase', [FirebaseController::class, 'verifyToken']);
 });
 
 Route::prefix('auth')->middleware('auth:api')->group(function () {
@@ -57,17 +58,16 @@ Route::get('/check-maintenance', [SplashController::class, 'checkApp']);
 
 Route::get('/boarding', [BoardingController::class, 'index']);
 
-// Route::post('/refresh-token', [TokenController::class, 'refreshToken']);
 
 Route::middleware('auth:api')->group(function () {
 
     Route::prefix('profile')->group(function () {
         Route::get('/user-data', [ProfileController::class, 'showUser']);
+        Route::get('/current-user-level', [ProfileController::class, 'currentUserLevel']);
         Route::get('/followers-data', [ProfileController::class, 'followersData']);
         Route::get('/following-data', [ProfileController::class, 'followingData']);
         Route::get('/user-posts', [ProfileController::class, 'userPosts']);
-        Route::get('/user-diamonds', [ProfileController::class, 'userDiamonds']);
-        Route::get('/user-gold', [ProfileController::class, 'userGold']);
+        Route::get('/user-wallet', [ProfileController::class, 'userWallet']);
         Route::post('/update', [ProfileController::class, 'update']);
     });
 
@@ -121,6 +121,8 @@ Route::middleware('auth:api')->group(function () {
 
     // follow
     Route::get('/follow', [FollowController::class, 'index']);
+    Route::post('/users/{id}/follow', [FollowController::class, 'followUser']);
+    Route::post('/users/{id}/unfollow', [FollowController::class, 'unfollowUser']);
     // end follow
 
     // posts
@@ -131,8 +133,9 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
     Route::get('/post/like/{id}', [PostController::class, 'like']);
+    Route::get('/post/like', [PostController::class, 'getPostlikes']);
     Route::post('/post/comment/{id}', [PostController::class, 'comment']);
-    Route::get('/post/comment/{id}', [PostController::class, 'getPostComment']);
+    Route::get('/post/comment', [PostController::class, 'getPostComment']);
     // end posts
 
     // levels

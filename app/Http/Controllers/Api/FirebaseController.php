@@ -3,117 +3,81 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Firebase\JWT\JWK;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Http\Request;
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Exception\Auth\FailedToVerifyToken;
+use GuzzleHttp\Client;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Http;
 
 class FirebaseController extends Controller
-{
-    protected $firebaseAuth;
+// {
+//     protected $firebaseAuth;
+//     public function verifyToken(Request $request)
+//     {
+//         $request->validate([
+//             'token' => 'required|string',
+//             'provider' => 'required|string|in:google,facebook,apple',
+//         ]);
 
-    // public function __construct()
-    // {
-    //     // إنشاء كائن Firebase باستخدام Factory
-    //     $firebase = (new Factory)
-    //         ->withServiceAccount('C:/wamp64/www/chat_system/storage/app/d9c4826a33.json') // استدعاء ملف الاعتماد من firebase.php
-    //         ->withProjectId(config('firebase.database.project_id')); // استدعاء projectId
+//         $token = $request->input('token');
+//         $provider = $request->input('provider');
 
-    //     // إنشاء كائن Auth من Firebase
-    //     $this->firebaseAuth = $firebase->createAuth();
-    // }
+//         switch ($provider) {
+//             case 'google':
+//                 return $this->verifyGoogleToken($token);
+//             case 'facebook':
+//                 return $this->verifyFacebookToken($token);
+//             case 'apple':
+//                 return $this->verifyAppleToken($token);
+//             default:
+//                 return response()->json(['error' => 'Invalid provider'], 400);
+//         }
+//     }
 
-    // public function loginWithGoogle(Request $request)
-    // {
-    //     $idToken = $request->header('Authorization') ?? $request->input('idToken');
+//     private function verifyGoogleToken($token)
+//     {
+//         $client = new \Google_Client(['client_id' => env('GOOGLE_CLIENT_ID')]);
+//         $payload = $client->verifyIdToken($token);
 
-    //     try {
-    //         $verifiedIdToken = $this->firebaseAuth->verifyIdToken($idToken);
-    //         $uid = $verifiedIdToken->claims()->get('sub');
-    //         $user = $this->firebaseAuth->getUser($uid);
+//         if ($payload) {
+//             return response()->json(['status' => 'valid', 'user' => $payload]);
+//         } else {
+//             return response()->json(['error' => 'Invalid Google token'], 401);
+//         }
+//     }
 
-    //         return response()->json([
-    //             'success' => true,
-    //             'user' => $user
-    //         ]);
-    //     } catch (FailedToVerifyToken $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Invalid token',
-    //         ], 401);
-    //     }
-    // }
+//     private function verifyFacebookToken($token)
+//     {
+//         $client = new Client();
+//         $response = $client->get("https://graph.facebook.com/debug_token", [
+//             'query' => [
+//                 'input_token' => $token,
+//                 'access_token' => env('FACEBOOK_APP_ACCESS_TOKEN'),
+//             ],
+//         ]);
 
-    // public function loginWithFirebase(Request $request)
-    // {
-    //     $idToken = $request->token;
+//         $data = json_decode($response->getBody(), true);
 
-    //     $googleKeys = json_decode(file_get_contents('https://www.googleapis.com/oauth2/v1/certs'), true);
-    //     try {
-    //         $decoded = JWT::decode($idToken, JWK::parseKeySet($googleKeys), ['RS256']);
+//         if (isset($data['data']['is_valid']) && $data['data']['is_valid']) {
+//             return response()->json(['status' => 'valid', 'user' => $data['data']]);
+//         } else {
+//             return response()->json(['error' => 'Invalid Facebook token'], 401);
+//         }
+//     }
 
-    //         // تحقق من وجود المستخدم
-    //         $user = \App\Models\User::updateOrCreate(
-    //             ['email' => $decoded->email],
-    //             [
-    //                 'name' => $decoded->name ?? $decoded->email,
-    //                 'provider_id' => $decoded->sub,
-    //                 'provider_name' => 'firebase',
-    //                 'avatar' => $decoded->picture ?? null,
-    //             ]
-    //         );
+//     private function verifyAppleToken($token)
+//     {
+//         try {
+//             $appleKeyUrl = 'https://appleid.apple.com/auth/keys';
+//             $client = new Client();
+//             $response = $client->get($appleKeyUrl);
+//             $keys = json_decode($response->getBody(), true)['keys'];
 
-    //         $token = $user->createToken('auth_token')->plainTextToken;
-
-    //         return response()->json([
-    //             'access_token' => $token,
-    //             'token_type' => 'Bearer',
-    //             'user' => $user,
-    //         ]);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['error' => 'Invalid token'], 401);
-    //     }
-    // }
-
-    public function loginWithFirebase(Request $request)
-    {
-        $idToken = $request->token;
-        $provider = $request->provider;
-
-        if (!$idToken || !$provider) {
-            return response()->json(['error' => 'Token and provider are required'], 400);
-        }
-
-        $googleKeys = cache()->remember('google_oauth_keys', 60, function () {
-            return json_decode(file_get_contents('https://www.googleapis.com/oauth2/v1/certs'), true);
-        });
-
-        try {
-            $decoded = JWT::decode($idToken, JWK::parseKeySet($googleKeys), ['RS256']);
-
-            $user = \App\Models\User::updateOrCreate(
-                ['email' => $decoded->email],
-                [
-                    'name' => $decoded->name,
-                    'email' => $decoded->email,
-                    // 'provider_id' => $decoded->sub,
-                    // 'provider_name' => $provider,
-                    // 'avatar' => $decoded->picture ?? null,
-                ]
-            );
-
-            $token = $user->createToken('auth_token')->plainTextToken;
-
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-                'user' => $user,
-            ]);
-        } catch (\Firebase\JWT\ExpiredException $e) {
-            return response()->json(['error' => 'Token expired'], 401);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Invalid token: ' . $e->getMessage()], 401);
-        }
-    }
-}
+//             $decoded = JWT::decode($token, new Key($keys[0]['n'], $keys[0]['kty']));
+//             return response()->json(['status' => 'valid', 'user' => $decoded]);
+//         } catch (\Exception $e) {
+//             return response()->json(['error' => 'Invalid Apple token'], 401);
+//         }
+//     }
+// }

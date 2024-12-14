@@ -13,17 +13,18 @@ class GlaEventController extends Controller
     public function index()
     {
         try {
-            $events = GlaEvent::isActive()->select('id', 'title', 'description')->take(10)->get();
+            $events = GlaEvent::isActive()->select('id', 'title_en', 'title_ar', 'description_en', 'description_ar', 'created_at')
+                ->paginate(10);
 
             return response()->json([
-                'message' => 'gla events data',
+                'message' => 'get all gla events',
                 'code' => Response::HTTP_ACCEPTED,
                 'error' => false,
                 'data' => $events
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'massege' => 'An error occurred',
+                'massege' => 'An error occurred' . $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []
@@ -34,7 +35,16 @@ class GlaEventController extends Controller
     public function show($id)
     {
         try {
-            $event = GlaEvent::isActive()->findOrFail($id);
+            $event = GlaEvent::isActive()->find($id);
+
+            if (!$event) {
+                return response()->json([
+                    'massege' => 'The event not exist',
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'error' => true,
+                    'data' => []
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
             return response()->json([
                 'message' => 'gla event data',
@@ -44,7 +54,7 @@ class GlaEventController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'massege' => 'An error occurred',
+                'massege' => 'An error occurred' . $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []

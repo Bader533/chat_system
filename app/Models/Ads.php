@@ -64,7 +64,7 @@ class Ads extends Model
         if ($this->avatar != null) {
             return asset($this->avatar);
         } else {
-            return 'assets/media/svg/files/blank-image.svg';
+            return asset('assets/media/avatars/blank.png');
         }
     }
 

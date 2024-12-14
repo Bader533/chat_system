@@ -13,9 +13,14 @@ class ProfileController extends Controller
     public function showUser()
     {
         $user = auth()->user();
-        $data['user'] = $user->only('id', 'name', 'email', 'phone', 'avatar', 'avatar_url');
+        $data['user'] = $user->only('id', 'name', 'email', 'phone', 'avatar_url');
         $data['followers_count'] = $user->followers()->count();
         $data['following_count'] =  $user->following()->count();
+        $data['posts'] =  $user->posts()->count();
+        $data['level_completed_count'] = $user->levels()->wherePivot('completed', '1')->count() ?? 0;
+        $data['diamond_count'] = $user->wallet->diamonds ?? 0;
+        $data['gold_count'] = $user->wallet->gold ?? 0;
+        $data['silver_count'] = $user->wallet->silver ?? 0;
 
         try {
             return response()->json([
@@ -99,14 +104,14 @@ class ProfileController extends Controller
         }
     }
 
-    public function userDiamonds()
+    public function userWallet()
     {
         try {
-            $user = auth()->user();
+            $user = auth()->user()->load('wallet.transactions.agency');
+            $data['wallet'] = $user->wallet ?? null;
 
-            $data = $user->total_diamonds;
             return response()->json([
-                'message' => 'user posts',
+                'message' => 'user wallet and transactions',
                 'code' => Response::HTTP_OK,
                 'error' => false,
                 'data' => $data
@@ -121,27 +126,49 @@ class ProfileController extends Controller
         }
     }
 
-    public function userGold()
-    {
-        try {
-            $user = auth()->user();
+    // public function userDiamonds()
+    // {
+    //     try {
+    //         $user = auth()->user();
 
-            $data = $user->total_gold;
-            return response()->json([
-                'message' => 'user posts',
-                'code' => Response::HTTP_OK,
-                'error' => false,
-                'data' => $data
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'massege' => 'An error occurred',
-                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'error' => true,
-                'data' => []
-            ]);
-        }
-    }
+    //         $data = $user->total_diamonds;
+    //         return response()->json([
+    //             'message' => 'user posts',
+    //             'code' => Response::HTTP_OK,
+    //             'error' => false,
+    //             'data' => $data
+    //         ]);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'massege' => 'An error occurred',
+    //             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+    //             'error' => true,
+    //             'data' => []
+    //         ]);
+    //     }
+    // }
+
+    // public function userGold()
+    // {
+    //     try {
+    //         $user = auth()->user();
+
+    //         $data = $user->total_gold;
+    //         return response()->json([
+    //             'message' => 'user posts',
+    //             'code' => Response::HTTP_OK,
+    //             'error' => false,
+    //             'data' => $data
+    //         ]);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'massege' => 'An error occurred',
+    //             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+    //             'error' => true,
+    //             'data' => []
+    //         ]);
+    //     }
+    // }
 
     public function update(ProfileRequest $request)
     {
@@ -164,6 +191,52 @@ class ProfileController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'massege' => 'An error occurred' . $e,
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function userDetails()
+    {
+        $user = auth()->user();
+        $data['user'] = $user->only('id', 'name', 'email', 'phone', 'avatar_url', 'created_at');
+
+        try {
+            return response()->json([
+                'message' => 'user data details',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function currentUserLevel()
+    {
+        $user = auth()->user();
+        $data['level'] = $user->levels()
+            ->wherePivot('completed', '0')
+            ->get(['levels.id as level_id', 'levels.name_en', 'levels.name_ar', 'avatar', 'user_levels.user_id']);
+
+        try {
+            return response()->json([
+                'message' => 'user data details',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $data
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []

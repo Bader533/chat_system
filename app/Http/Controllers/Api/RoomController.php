@@ -20,7 +20,7 @@ class RoomController extends Controller
     {
         try {
 
-            $rooms = Room::forCurrentUser()->isActive()->select(['id', 'name', 'avatar', 'country_id'])->paginate(10);
+            $rooms = Room::with(['roomType:id,name_en,name_ar,avatar'])->forCurrentUser()->isActive()->select(['id', 'name', 'avatar', 'description', 'country_id', 'room_type_id'])->paginate(10);
             return response()->json([
                 'message' => 'rooms for login user',
                 'code' => Response::HTTP_ACCEPTED,
@@ -134,7 +134,10 @@ class RoomController extends Controller
     {
         try {
             $query = $request->get('search');
-            $data = Room::where('name', 'like', '%' . $query . '%')->isActive()->paginate(10);
+            $data = Room::with(['roomType:id,name_en,name_ar,avatar'])
+                ->where('name', 'like', '%' . $query . '%')
+                ->isActive()->paginate(10);
+
             return response()->json([
                 'message' => 'search result for rooms',
                 'code' => Response::HTTP_OK,
@@ -158,7 +161,9 @@ class RoomController extends Controller
     {
         try {
             $count = $request->get('count');
-            $favoriteRooms = Room::isFavorite()->isActive()->take($count)->paginate(10);
+            $favoriteRooms = Room::with(['roomType:id,name_en,name_ar,avatar'])
+                ->isFavorite()->isActive()->take($count)->paginate(10);
+            //
             return response()->json([
                 'message' => 'favorite Rooms',
                 'code' => Response::HTTP_OK,
