@@ -72,7 +72,7 @@
         formData.append("description_en", document.getElementById('description_en').value);
         formData.append("description_ar", document.getElementById('description_ar').value);
         formData.append("status", document.getElementById('status').value);
-        // formData.append("avatar", document.getElementById('avatar').files[0]);
+        formData.append("avatar", document.getElementById('avatar').files[0]);
 
         axios.post('/gla-event',formData)
         .then(function (response) {

@@ -1,8 +1,8 @@
 @extends('dashboard.parent')
 
-@section('title',__('site.gla_event'))
+@section('title',__('site.category'))
 
-@section('page_name',__('site.edit').' '.$event->title)
+@section('page_name',__('site.edit').' '.$category->name_ar)
 
 @section('css')
 @endsection
@@ -20,7 +20,7 @@
     </li>
     <!--end::Item-->
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">{{__('site.gla_event')}}</li>
+    <li class="breadcrumb-item text-muted">{{__('site.category')}}</li>
     <!--end::Item-->
     <!--begin::Item-->
     <li class="breadcrumb-item">
@@ -44,7 +44,7 @@
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
             {{-- form --}}
-            @include('dashboard.gla-event._form', ['event' => $event ,'function' => 'update'])
+            @include('dashboard.matjar-category._form', ['category' => $category ,'function' => 'update'])
             {{-- end form --}}
         </div>
         <!--end::Content container-->
@@ -56,31 +56,31 @@
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
 <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+<script src="{{asset('assets/plugins/custom/tinymce/tinymce.bundle.js')}}"></script>
 <script>
     buttonSideBar()
 
     function buttonSideBar() {
-        const button = document.getElementById('articles');
+        const button = document.getElementById('matjar');
         button.classList.add('here', 'show');
     }
 
     function update() {
         let formData = new FormData();
 
-        formData.append("title_en", document.getElementById('title_en').value);
-        formData.append("title_ar", document.getElementById('title_ar').value);
-        formData.append("description_en", document.getElementById('description_en').value);
-        formData.append("description_ar", document.getElementById('description_ar').value);
+        formData.append("name_en", document.getElementById('name_en').value);
+        formData.append("name_ar", document.getElementById('name_ar').value);
         formData.append("status", document.getElementById('status').value);
         formData.append("avatar", document.getElementById('avatar').files[0]);
+
         formData.append("_method", "PUT");
-        axios.post('/gla-event/{{$event->slug}}', formData)
+        axios.post('/matjar-category/{{$category->slug}}', formData)
         .then(function (response) {
             toastr.options = {
                 positionClass: 'toast-top-left',
             };
             toastr.success(response.data.message);
-            window.location.href = '/gla-event';
+            window.location.href = '/matjar-category';
         }).catch(function (error) {
             // console.log(error);
             toastr.options = {

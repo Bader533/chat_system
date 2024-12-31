@@ -3,13 +3,11 @@
     <thead>
         <!--begin::Table row-->
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-            <th class="min-w-125px">{{__('site.user_id')}}</th>
-            <th class="min-w-125px">{{__('site.sender')}}</th>
-            <th class="min-w-125px">{{__('site.type')}}</th>
-            <th class="min-w-125px">{{__('site.quantity')}}</th>
-            <th class="min-w-125px">{{__('site.dollar')}}</th>
+            <th class="min-w-125px">{{__('site.name')}}</th>
+            <th class="min-w-125px">{{__('site.category')}}</th>
+            <th class="min-w-125px">{{__('site.type_points')}}</th>
+            <th class="min-w-125px">{{__('site.value_points')}}</th>
             <th class="min-w-125px">{{__('site.created_at')}}</th>
-            {{-- <th class="text-end min-w-70px">{{__('site.actions')}}</th> --}}
         </tr>
         <!--end::Table row-->
     </thead>
@@ -20,47 +18,29 @@
 
         @foreach ($contacts as $item)
         <tr>
-            <!--begin::id=-->
+            <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->wallet->user->id }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name_ar }}</a>
             </td>
-            <!--end::id=-->
+            <!--end::Name=-->
 
-            <!--begin::agency name=-->
+            <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->agency->name_ar }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->category->name_ar }}</a>
             </td>
-            <!--end::agency name=-->
+            <!--end::Name=-->
+
+            <!--begin::user=-->
+            <td>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->type_points }}</a>
+            </td>
+            <!--end::user=-->
 
             <!--begin::type=-->
             <td>
-                @if ($item->asset == 'gold')
-                <div class="badge badge-light-warning fw-bold">
-                    {{$item->asset}}
-                </div>
-                @elseif($item->asset == 'diamonds')
-                <div class="badge badge-light-info fw-bold">
-                    {{$item->asset}}
-                </div>
-                @elseif($item->asset == 'silver')
-                <div class="badge badge-light-light fw-bold">
-                    {{$item->asset}}
-                </div>
-                @endif
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->value_points }}</a>
             </td>
             <!--end::type=-->
-
-            <!--begin::quantity=-->
-            <td>
-                <a>{{$item->amount}}</a>
-            </td>
-            <!--end::quantity=-->
-
-            <!--begin::dollar=-->
-            <td>
-                <a>{{$item->dollar}}</a>
-            </td>
-            <!--end::dollar=-->
 
             <!--begin::Date=-->
             <td>{{ date('m/d/Y', strtotime($item->created_at)) }}</td>
@@ -89,7 +69,7 @@
                 <li class="page-item disabled"><span class="page-link">‹</span></li>
                 @else
                 <li class="page-item"><a class="page-link"
-                        onclick="getWallets('{{ $contacts->currentPage() - 1 }}')">‹</a>
+                        onclick="getRooms('{{ $contacts->currentPage() - 1 }}')">‹</a>
                 </li>
                 @endif
                 @php
@@ -104,7 +84,7 @@
 
                 <!-- عرض الصفحة الأولى إذا كانت الصفحة الحالية ليست قريبة منها -->
                 @if ($startPage > 1)
-                <li class="page-item"><a class="page-link" onclick="getWallets(1)">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="getRooms(1)">1</a></li>
                 @if ($startPage > 2)
                 <li class="page-item disabled"><span class="page-link">...</span></li>
                 @endif
@@ -113,7 +93,7 @@
                 <!-- عرض الصفحات الحالية -->
                 @for ($i = $startPage; $i <= $endPage; $i++) <li
                     class="page-item {{ $i == $contacts->currentPage() ? 'active' : '' }}">
-                    <a class="page-link" onclick="getWallets('{{ $i }}')">{{ $i }}</a>
+                    <a class="page-link" onclick="getRooms('{{ $i }}')">{{ $i }}</a>
                     </li>
                     @endfor
 
@@ -123,14 +103,14 @@
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item"><a class="page-link"
-                                    onclick="getWallets('{{ $contacts->lastPage() }}')">{{
+                                    onclick="getRooms('{{ $contacts->lastPage() }}')">{{
                                     $contacts->lastPage() }}</a></li>
                             @endif
 
                             <!-- زر الصفحة التالية -->
                             @if ($contacts->hasMorePages())
                             <li class="page-item"><a class="page-link"
-                                    onclick="getWallets('{{ $contacts->currentPage() + 1 }}')">›</a></li>
+                                    onclick="getRooms('{{ $contacts->currentPage() + 1 }}')">›</a></li>
                             @else
                             <li class="page-item disabled"><span class="page-link">›</span></li>
                             @endif

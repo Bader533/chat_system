@@ -19,7 +19,7 @@
                 <!--begin::Image input placeholder-->
                 <style>
                     .image-input-placeholder {
-                        background-image: url('{{asset($event->avatar_url ?? "assets/media/svg/files/blank-image.svg")}}');
+                        background-image: url('{{asset($product->avatar_url ?? "assets/media/svg/files/blank-image.svg")}}');
                     }
                 </style>
                 <!--end::Image input placeholder-->
@@ -64,30 +64,6 @@
         </div>
         <!--end::Thumbnail settings-->
 
-        <!--begin::status-->
-        <div class="card card-flush py-4">
-            <!--begin::Card header-->
-            <div class="card-header">
-                <!--begin::Card title-->
-                <div class="card-title">
-                    <h2>{{__('site.avatar')}}</h2>
-                </div>
-                <!--end::Card title-->
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body text-center pt-0">
-                <select class="form-select mb-2" data-control="select2" data-hide-search="true"
-                    data-placeholder="Select an option" id="status" required>
-                    <option></option>
-                    <option value="1" @selected(($event->status ?? null) == 1)>{{__('site.active')}}</option>
-                    <option value="0" @selected(($event->status ?? null) == 0)>{{__('site.non_active')}}</option>
-                </select>
-            </div>
-            <!--end::Card body-->
-        </div>
-        <!--end::status-->
-
     </div>
     <!--end::Aside column-->
 
@@ -104,64 +80,98 @@
             <!--end::Card header-->
             <!--begin::Card body-->
             <div class="card-body pt-0">
-                <!--begin::title-->
+                <!--begin::name-->
                 <div class="row">
                     <div class="col-6 mb-10 fv-row">
                         <!--begin::Label-->
-                        <label class="required form-label">{{__('site.title_en')}}</label>
+                        <label class="required form-label">{{__('site.name_en')}}</label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" name="title_en" id="title_en" value="{{$event->title_en ?? null}}"
-                            class="form-control mb-2" placeholder="{{__('site.title_en')}}" required />
+                        <input type="text" name="name_en" id="name_en" value="{{$product->name_en ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.name_en')}}" required />
                         <!--end::Input-->
                     </div>
                     <div class="col-6 mb-10 fv-row">
                         <!--begin::Label-->
-                        <label class="required form-label">{{__('site.title_ar')}}</label>
+                        <label class="required form-label">{{__('site.name_ar')}}</label>
                         <!--end::Label-->
                         <!--begin::Input-->
-                        <input type="text" name="title_ar" id="title_ar" value="{{$event->title_ar ?? null}}"
-                            class="form-control mb-2" placeholder="{{__('site.title_ar')}}" required />
+                        <input type="text" name="name_ar" id="name_ar" value="{{$product->name_ar ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.name_ar')}}" required />
                         <!--end::Input-->
                     </div>
-                    
                 </div>
-                <!--end::title-->
+                <!--end::name-->
 
-                <!--begin::description-->
+                <!--begin::status-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">{{__('site.description_en')}}</label>
+                    <label class="required form-label">{{__('site.status')}}</label>
                     <!--end::Label-->
-                    <!--begin::Input-->
-                    <textarea class="form-control mb-2" name="description_en" id="description_en" cols="30" rows="10">
-                        {{$event->description_en ?? null}}
-                    </textarea>
-                    <!--end::Input-->
+                    <select class="form-select mb-2" data-control="select2" data-hide-search="true"
+                        data-placeholder="Select an option" id="status" required>
+                        <option></option>
+                        <option value="1" @selected(($product->status ?? null) == 1)>{{__('site.active')}}</option>
+                        <option value="0" @selected(($product->status ?? null) == 0)>{{__('site.non_active')}}</option>
+                    </select>
                 </div>
-                <!--end::description-->
+                <!--end::status-->
 
-                <!--begin::description-->
+                <!--begin::status-->
                 <div class="mb-10 fv-row">
                     <!--begin::Label-->
-                    <label class="required form-label">{{__('site.description_ar')}}</label>
+                    <label class="required form-label">{{__('site.category')}}</label>
                     <!--end::Label-->
-                    <!--begin::Input-->
-                    <textarea class="form-control mb-2" name="description_ar" id="description_ar" cols="30" rows="10">
-                        {{$event->description_ar ?? null}}
-                    </textarea>
-                    <!--end::Input-->
+                    <select class="form-select mb-2" data-control="select2" data-hide-search="true"
+                        data-placeholder="Select an option" id="matjar_category_id" required>
+                        <option></option>
+                        @foreach($categories as $category)
+                            <option value="{{$category->id}}" @selected(($product->matjar_category_id ?? null) == $category->id)>{{$category->name_ar}}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <!--end::description-->
+                <!--end::status-->
 
-
+                <!--begin::point-->
+                <div class="row">
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.type_points')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <select class="form-select mb-2" data-control="select2" data-hide-search="true"
+                            data-placeholder="Select an option" id="type_points">
+                            <option></option>
+                            <option value="diamonds" @if(($product->type_points ?? null) == 'diamonds') selected="selected"
+                                @endif>Diamonds
+                            </option>
+                            <option value="gold" @if(($product->type_points ?? null) == 'gold') selected="selected"
+                                @endif>Gold
+                            </option>
+                            <option value="silver" @if(($product->type_points ?? null) == 'silver') selected="selected"
+                                @endif>Silver
+                            </option>
+                        </select>
+                        <!--end::Input-->
+                    </div>
+                    <div class="col-6 mb-10 fv-row">
+                        <!--begin::Label-->
+                        <label class="required form-label">{{__('site.value_points')}}</label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" name="value_points" id="value_points" value="{{$product->value_points ?? null}}" class="form-control mb-2"
+                            placeholder="{{__('site.value_points')}}" required />
+                        <!--end::Input-->
+                    </div>
+                </div>
+                <!--end::point-->
             </div>
             <!--end::Card header-->
         </div>
         <!--end::General options-->
         <div class="d-flex justify-content-end">
             <!--begin::Button-->
-            <a href="{{route('gla-event.index')}}" id="kt_ecommerce_add_product_cancel"
+            <a href="{{route('matjar-product.index')}}" id="kt_ecommerce_add_product_cancel"
                 class="btn btn-light me-5">{{__('site.cancel')}}</a>
             <!--end::Button-->
             <!--begin::Button-->

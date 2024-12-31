@@ -61,6 +61,7 @@ class GlaEventController extends Controller
         $this->authorize('Create-Event');
         $validatedData = $request->validated();
         $event = GlaEvent::create($validatedData);
+        $event->updateAvatar($request);
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }
 
@@ -91,6 +92,7 @@ class GlaEventController extends Controller
         $event = GlaEvent::where('slug', $slug)->firstOrFail();
         $validatedData = $request->validated();
         $event->update($validatedData);
+        $event->updateAvatar($request);
         return response()->json(['message' => __('site.update_successfully')], Response::HTTP_CREATED);
     }
 

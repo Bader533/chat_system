@@ -2,47 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PostRequest;
-use App\Models\Post;
+use App\Http\Requests\MatjarProductRequest;
+use App\Models\MatjarCategory;
+use App\Models\MatjarProduct;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PostController extends Controller
+class MatjarProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $this->authorize('Read-Posts');
+        // $this->authorize('Read-Posts');
 
-        return view('dashboard.post.index');
+        return view('dashboard.matjar-product.index');
     }
 
     /**
      * get all posts to show it using js
      */
-    public function getPost(Request $request)
+    public function getProducts(Request $request)
     {
-        $this->authorize('Read-Posts');
+        // $this->authorize('Read-Posts');
 
         // Retrieve input values with sensible defaults
         $query = $request->input('query');
         $perPage = $request->input('per_page', 10);
 
         // Start building the query
-        $eventsQuery = Post::query();
+        $eventsQuery = MatjarProduct::query();
 
         // Filter by search query if provided
         if (!empty($query)) {
-            $eventsQuery->where('title', 'like', '%' . $query . '%');
+            $eventsQuery->where('name_en', 'like', '%' . $query . '%')
+                ->orWhere('name_ar', 'like', '%' . $query . '%');
         }
 
         // Paginate the results
         $contacts = $eventsQuery->paginate($perPage);
 
         // Return the view with the data
-        return view('dashboard.post.post', ['contacts' => $contacts]);
+        return view('dashboard.matjar-product.products', ['contacts' => $contacts]);
     }
 
     /**
@@ -50,21 +52,21 @@ class PostController extends Controller
      */
     public function create()
     {
-        $this->authorize('Create-Post');
-
-        return view('dashboard.post.create');
+        // $this->authorize('Create-Post');
+        $categories = MatjarCategory::select('id', 'name_ar')->get();
+        return view('dashboard.matjar-product.create', ['categories' => $categories]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PostRequest $request)
+    public function store(MatjarProductRequest $request)
     {
-        $this->authorize('Create-Post');
+        // $this->authorize('Create-Post');
 
         $validatedData = $request->validated();
         $validatedData['user_id'] = 1;
-        $data = Post::create($validatedData);
+        $data = MatjarProduct::create($validatedData);
         $data->updateAvatar($request);
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }
@@ -82,24 +84,27 @@ class PostController extends Controller
      */
     public function edit($slug)
     {
-        $this->authorize('Update-Post');
+        // $this->authorize('Update-Post');
 
-        $post = Post::where('slug', $slug)->firstOrFail();
-        return view('dashboard.post.edit', ['post' => $post]);
+        $product = MatjarProduct::where('slug', $slug)->firstOrFail();
+        $categories = MatjarCategory::select('id', 'name_ar')->get();
+        return view('dashboard.matjar-product.edit', [
+            'product' => $product,
+            'categories' => $categories
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostRequest $request, $slug)
+    public function update(MatjarProductRequest $request, $slug)
     {
-        $this->authorize('Update-Post');
+        // $this->authorize('Update-Post');
 
-        $post = Post::where('slug', $slug)->firstOrFail();
+        $product = MatjarProduct::where('slug', $slug)->firstOrFail();
         $validatedData = $request->validated();
-        $validatedData['user_id'] = 1;
-        $post->update($validatedData);
-        $post->updateAvatar($request);
+        $product->update($validatedData);
+        $product->updateAvatar($request);
         return response()->json(['message' => __('site.update_successfully')], Response::HTTP_CREATED);
     }
 
@@ -108,28 +113,10 @@ class PostController extends Controller
      */
     public function destroy($slug)
     {
-        $this->authorize('Delete-Post');
+        // $this->authorize('Delete-Post');
 
-        $event = Post::where('slug', $slug)->firstOrFail();
-        $event->delete();
+        $product = MatjarProduct::where('slug', $slug)->firstOrFail();
+        $product->delete();
         return response()->json(['message' => __('site.delete_successfully')], Response::HTTP_CREATED);
-    }
-
-    /**
-     * change post status
-     */
-    public function changeStatus(Request $request)
-    {
-        $this->authorize('Update-Post-Status');
-
-        $post = Post::findOrFail($request->id);
-
-        $post->status = !$post->status;
-
-        $isSaved = $post->save();
-
-        $message = $isSaved ? __('site.saved_successfully') : __('site.failed_to_save');
-
-        return response()->json(['message' => $message], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
     }
 }

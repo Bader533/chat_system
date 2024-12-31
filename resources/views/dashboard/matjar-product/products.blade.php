@@ -3,11 +3,11 @@
     <thead>
         <!--begin::Table row-->
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-            <th class="min-w-125px">{{__('site.title')}}</th>
-            <th class="min-w-125px">{{__('site.employee')}}</th>
+            <th class="min-w-125px">{{__('site.name')}}</th>
             <th class="min-w-125px">{{__('site.status')}}</th>
+            <th class="min-w-125px">{{__('site.category')}}</th>
             <th class="min-w-125px">{{__('site.created_at')}}</th>
-            <th class="text-end">{{__('site.actions')}}</th>
+            <th class="text-end min-w-70px">{{__('site.actions')}}</th>
         </tr>
         <!--end::Table row-->
     </thead>
@@ -18,43 +18,42 @@
 
         @foreach ($contacts as $item)
         <tr>
-            <!--begin::tile=-->
+            <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->title }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name_ar }}</a>
             </td>
-            <!--end::tile=-->
-
-            <!--begin::user=-->
-            <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->user->name }}</a>
-            </td>
-            <!--end::user=-->
-
+            <!--end::Name=-->
 
             <!--begin::status=-->
             <td>
-                <div class="checkbox-wrapper-10">
-                    <input @if ($item->status == 1) checked value="1" @else value="0" @endif type="checkbox"
-                    id="cb_{{$item->id}}"
-                    class="tgl tgl-flip">
-                    <label onclick="changeStatus('{{$item->id}}')" for="cb_{{$item->id}}"
-                        data-tg-on="{{__('site.active')}}" data-tg-off="{{__('site.non_active')}}"
-                        class="tgl-btn"></label>
+                @if ($item->status == 1)
+                <div class="badge badge-light-success fw-bold">
+                    {{__('site.active')}}
                 </div>
+                @else
+                <div class="badge badge-light-danger fw-bold">
+                    {{__('site.non_active')}}
+                </div>
+                @endif
             </td>
             <!--end::status=-->
+
+            <!--begin::Name=-->
+            <td>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->category->name_ar }}</a>
+            </td>
+            <!--end::Name=-->
 
             <!--begin::Date=-->
             <td>{{ date('m/d/Y', strtotime($item->created_at)) }}</td>
             <!--end::Date=-->
-
             <!--begin::Action=-->
 
             <td class="text-end">
 
                 <!--begin::Edit-->
 
-                <a href="{{route('post.edit',$item->slug)}}"
+                <a href="{{route('matjar-product.edit',$item->slug)}}"
                     class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
                     <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="{{ __('site.edit') }}">
                         <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
@@ -76,7 +75,7 @@
                 <!--end::Edit-->
 
                 <!--begin::Delete-->
-                <a onclick="confirmDelete('{{$item->slug}}',this)"
+                {{-- <a onclick="confirmDelete('{{$item->id}}',this)"
                     class="btn btn-icon btn-active-light-danger w-30px h-30px me-3" data-bs-toggle="tooltip"
                     title="Delete" data-kt-customer-payment-method="delete">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
@@ -93,7 +92,7 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                </a>
+                </a> --}}
                 <!--end::Delete-->
 
             </td>
@@ -123,7 +122,7 @@
                 <li class="page-item disabled"><span class="page-link">‹</span></li>
                 @else
                 <li class="page-item"><a class="page-link"
-                        onclick="getRooms('{{ $contacts->currentPage() - 1 }}')">‹</a>
+                        onclick="getProducts('{{ $contacts->currentPage() - 1 }}')">‹</a>
                 </li>
                 @endif
                 @php
@@ -138,7 +137,7 @@
 
                 <!-- عرض الصفحة الأولى إذا كانت الصفحة الحالية ليست قريبة منها -->
                 @if ($startPage > 1)
-                <li class="page-item"><a class="page-link" onclick="getRooms(1)">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="getProducts(1)">1</a></li>
                 @if ($startPage > 2)
                 <li class="page-item disabled"><span class="page-link">...</span></li>
                 @endif
@@ -147,7 +146,7 @@
                 <!-- عرض الصفحات الحالية -->
                 @for ($i = $startPage; $i <= $endPage; $i++) <li
                     class="page-item {{ $i == $contacts->currentPage() ? 'active' : '' }}">
-                    <a class="page-link" onclick="getRooms('{{ $i }}')">{{ $i }}</a>
+                    <a class="page-link" onclick="getProducts('{{ $i }}')">{{ $i }}</a>
                     </li>
                     @endfor
 
@@ -157,14 +156,14 @@
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item"><a class="page-link"
-                                    onclick="getRooms('{{ $contacts->lastPage() }}')">{{
+                                    onclick="getProducts('{{ $contacts->lastPage() }}')">{{
                                     $contacts->lastPage() }}</a></li>
                             @endif
 
                             <!-- زر الصفحة التالية -->
                             @if ($contacts->hasMorePages())
                             <li class="page-item"><a class="page-link"
-                                    onclick="getRooms('{{ $contacts->currentPage() + 1 }}')">›</a></li>
+                                    onclick="getProducts('{{ $contacts->currentPage() + 1 }}')">›</a></li>
                             @else
                             <li class="page-item disabled"><span class="page-link">›</span></li>
                             @endif

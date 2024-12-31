@@ -56,7 +56,7 @@ class UserController extends Controller
         $query = $request->input('query');
 
         $user = User::find($userId);
-
+        // dd($user->wallet->transactions);
         switch ($type) {
             case 'followers':
                 $data = $user->followers()->where('name', 'like', '%' . $query . '%')->paginate($perPage);
@@ -65,8 +65,11 @@ class UserController extends Controller
                 $data = $user->following()->where('name', 'like', '%' . $query . '%')->paginate($perPage);
                 return view('dashboard.user.table.user', ['users' => $data]);
             case 'wallets':
-                $data = $user->wallets()->paginate($perPage);
+                $data = $user->wallet->transactions()->paginate($perPage);
                 return view('dashboard.user.table.wallet', ['contacts' => $data]);
+            case 'products':
+                $data = $user->matjarProducts()->paginate($perPage);
+                return view('dashboard.user.table.products', ['contacts' => $data]);
             case 'rooms':
                 $data = $user->rooms()->where('name', 'like', '%' . $query . '%')->paginate($perPage);
                 return view('dashboard.user.table.room', ['contacts' => $data]);

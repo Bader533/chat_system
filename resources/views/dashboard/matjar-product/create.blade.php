@@ -1,8 +1,8 @@
 @extends('dashboard.parent')
 
-@section('title',__('site.gla_event'))
+@section('title',__('site.product'))
 
-@section('page_name',__('site.edit').' '.$event->title)
+@section('page_name',__('site.add_new_product'))
 
 @section('css')
 @endsection
@@ -20,7 +20,7 @@
     </li>
     <!--end::Item-->
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">{{__('site.gla_event')}}</li>
+    <li class="breadcrumb-item text-muted">{{__('site.product')}}</li>
     <!--end::Item-->
     <!--begin::Item-->
     <li class="breadcrumb-item">
@@ -28,7 +28,7 @@
     </li>
     <!--end::Item-->
     <!--begin::Item-->
-    <li class="breadcrumb-item text-muted">{{__('site.edit')}}</li>
+    <li class="breadcrumb-item text-muted">{{__('site.create')}}</li>
     <!--end::Item-->
 </ul>
 @endsection
@@ -44,7 +44,7 @@
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
             {{-- form --}}
-            @include('dashboard.gla-event._form', ['event' => $event ,'function' => 'update'])
+            @include('dashboard.matjar-product._form', ['categories' => $categories ,'function' => 'store'])
             {{-- end form --}}
         </div>
         <!--end::Content container-->
@@ -60,27 +60,28 @@
     buttonSideBar()
 
     function buttonSideBar() {
-        const button = document.getElementById('articles');
+        const button = document.getElementById('matjar');
         button.classList.add('here', 'show');
     }
 
-    function update() {
+    function store() {
         let formData = new FormData();
 
-        formData.append("title_en", document.getElementById('title_en').value);
-        formData.append("title_ar", document.getElementById('title_ar').value);
-        formData.append("description_en", document.getElementById('description_en').value);
-        formData.append("description_ar", document.getElementById('description_ar').value);
+        formData.append("name_en", document.getElementById('name_en').value);
+        formData.append("name_ar", document.getElementById('name_ar').value);
+        formData.append("type_points", document.getElementById('type_points').value);
+        formData.append("value_points", document.getElementById('value_points').value);
+        formData.append("matjar_category_id", document.getElementById('matjar_category_id').value);
         formData.append("status", document.getElementById('status').value);
         formData.append("avatar", document.getElementById('avatar').files[0]);
-        formData.append("_method", "PUT");
-        axios.post('/gla-event/{{$event->slug}}', formData)
+
+        axios.post('/matjar-product',formData)
         .then(function (response) {
             toastr.options = {
                 positionClass: 'toast-top-left',
             };
             toastr.success(response.data.message);
-            window.location.href = '/gla-event';
+            window.location.href = '/matjar-product';
         }).catch(function (error) {
             // console.log(error);
             toastr.options = {

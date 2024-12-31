@@ -44,9 +44,11 @@ class RoomController extends Controller
     {
         try {
 
-            $data = auth()->user()->wallets()
-                ->where('type', 'diamonds')
-                ->sum('quantity');
+            // $data = auth()->user()->wallets()
+            //     ->where('type', 'diamonds')
+            //     ->sum('quantity');
+
+            $data = auth()->user()->wallets()->sum('diamonds');
 
             if ($data < 25) {
                 return response()->json([
@@ -192,6 +194,27 @@ class RoomController extends Controller
                 'code' => Response::HTTP_OK,
                 'error' => false,
                 'data' => []
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'massege' => 'An error occurred',
+                'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => true,
+                'data' => []
+            ]);
+        }
+    }
+
+    public function getSpecificRooms(Request $request)
+    {
+        try {
+            $Rooms = Room::isActive()->where('room_type', $request->room_type)->paginate(10);
+            //
+            return response()->json([
+                'message' => 'get Rooms',
+                'code' => Response::HTTP_OK,
+                'error' => false,
+                'data' => $Rooms
             ]);
         } catch (Exception $e) {
             return response()->json([

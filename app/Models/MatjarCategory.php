@@ -5,14 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class Post extends Model
+class MatjarCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'slug', 'title', 'description', 'status', 'avatar', 'user_id'];
+    protected $fillable = [
+        'id',
+        'slug',
+        'name_en',
+        'name_ar',
+        'status',
+        'avatar'
+    ];
 
     protected $attributes = ['slug' => ''];
 
@@ -22,15 +28,18 @@ class Post extends Model
     {
         parent::boot();
         static::created(function ($data) {
-            $data->slug = $data->generateSlug($data->title);
+            $data->slug = $data->generateSlug($data->name_en);
             $data->save();
         });
     }
 
-    private function generateSlug($title)
+    /**
+     * create slug from name_en
+     */
+    private function generateSlug($data)
     {
-        if (static::whereSlug($slug = Str::slug($title))->exists()) {
-            $max = static::where('title', $title)->latest('id')->skip(1)->value('slug');
+        if (static::whereSlug($slug = Str::slug($data))->exists()) {
+            $max = static::where('name_en', $data)->latest('id')->skip(1)->value('slug');
             if (isset($max[-1]) && is_numeric($max[-1])) {
                 return preg_replace_callback('/(\d+)$/', function ($mathces) {
                     return $mathces[1] + 1;
@@ -92,18 +101,8 @@ class Post extends Model
         return $query->where('status', 1);
     }
 
-    public function user()
+    public function products()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    public function likeUsers()
-    {
-        return $this->belongsToMany(User::class, 'likes', 'post_id', 'user_id');
-    }
-
-    public function commentUsers()
-    {
-        return $this->belongsToMany(User::class, 'comments', 'post_id', 'user_id');
+        return $this->hasMany(MatjarProduct::class, 'matjar_category_id');
     }
 }

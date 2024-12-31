@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class PostApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,20 +22,8 @@ class PostRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'title' => 'required|string|max:200',
-            // 'title_ar' => 'required|string|max:200',
             'description' => 'required|string',
-            // 'description_ar' => 'required|string',
-            // 'status' => 'required|numeric|in:0,1',
         ];
-
-        if ($this->isMethod('put')) {
-            $rules['title'] = 'nullable|string|max:200';
-            // $rules['title_ar'] = 'nullable|string|max:200';
-            $rules['description'] = 'nullable|string';
-            // $rules['description_ar'] = 'nullable|string';
-            // $rules['status'] = 'nullable|numeric|in:0,1';
-        }
 
         // if the avatar not null
         if ($this->hasFile('avatar')) {

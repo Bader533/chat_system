@@ -18,6 +18,8 @@ use App\Http\Controllers\GlaTeamController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\MatjarCategoryController;
+use App\Http\Controllers\MatjarProductController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\RoomController;
@@ -25,6 +27,7 @@ use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -170,6 +173,16 @@ Route::middleware('auth:web')->group(
         Route::get('/permission', [AuthorizationController::class, 'Permissions'])->name('permission.index');
         Route::get('/getpermission', [AuthorizationController::class, 'getPermissions']);
         //end rule & permission
+
+        // matjar category
+        Route::resource('/matjar-category', MatjarCategoryController::class);
+        Route::get('/get-categories', [MatjarCategoryController::class, 'getCategories'])->name('category.data');
+        //end matjar category
+
+        // matjar product
+        Route::resource('/matjar-product', MatjarProductController::class);
+        Route::get('/get-products', [MatjarProductController::class, 'getProducts'])->name('product.data');
+        //end matjar product
 
         // logout
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');

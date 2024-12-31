@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\PrivacyController;
 use App\Http\Controllers\Api\HomeController;
 use App\Http\Controllers\Api\LevelController;
+use App\Http\Controllers\Api\MatjarController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RoomController;
@@ -99,6 +100,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/favorite/room', [RoomController::class, 'favorite']);
     Route::get('/add-favorite/room', [RoomController::class, 'setFavoriteRoom']);
     Route::get('/room-type', [RoomTypeController::class, 'index']);
+    Route::get('/rooms', [RoomController::class, 'search']);
+
     //end room
 
     Route::resource('/group', GroupController::class);
@@ -131,6 +134,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/posts', [PostController::class, 'store']);
     Route::post('/posts/{id}', [PostController::class, 'update']);
     Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+    // Route::post('/post/update/{id}', [PostController::class, 'updateDescription']);
 
     Route::get('/post/like/{id}', [PostController::class, 'like']);
     Route::get('/post/like', [PostController::class, 'getPostlikes']);
@@ -149,6 +153,18 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/gifts', [GiftController::class, 'index']);
     Route::post('/send-gift', [GiftController::class, 'sendGift']);
     Route::post('/gift-conversion', [GiftController::class, 'giftConversion']);
-    // end levels
+    // end gifts
+
+    // matjar
+    Route::get('/matjar/categories', [MatjarController::class, 'getCategories']);
+    Route::get('/matjar/category/{id}', [MatjarController::class, 'showCategory']);
+    Route::get('/matjar/category/{id}/products', [MatjarController::class, 'getCategoryProducts']);
+    //
+    Route::get('/matjar/products', [MatjarController::class, 'getProducts']);
+    Route::get('/matjar/product/{id}', [MatjarController::class, 'showProduct']);
+    Route::get('/matjar/user/product', [MatjarController::class, 'userProducts']);
+    //
+    Route::post('/matjar/buy-product', [MatjarController::class, 'BuyProduct']);
+    // end matjar
 
 });

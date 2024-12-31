@@ -598,4 +598,8 @@ return [
     'percentage' => 'النسبة المئوية',
     'settings' => 'اعدادات',
 
+    'add_new_category' => 'اضافة فئة جديدة',
+    'add_new_product' => 'اضافة منتج جديدة',
+    'matjar' => 'متجر',
+
 ];

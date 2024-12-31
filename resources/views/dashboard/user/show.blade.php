@@ -258,13 +258,12 @@
                                             </span>
                                             <!--end::Svg Icon-->
                                             <div class="fs-2 fw-bold" data-kt-countup="true"
-                                                data-kt-countup-value="{{$user->total_dollar}}"
-                                                data-kt-countup-prefix="$">0
+                                                data-kt-countup-value="{{$user->total_silver}}">0
                                             </div>
                                         </div>
                                         <!--end::Number-->
                                         <!--begin::Label-->
-                                        <div class="fw-semibold fs-6 text-gray-400">@lang('site.dollar')</div>
+                                        <div class="fw-semibold fs-6 text-gray-400">Silver</div>
                                         <!--end::Label-->
                                     </div>
                                     <!--end::Stat-->
@@ -348,6 +347,13 @@
                     <li class="nav-item">
                         <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab"
                             href="#kt_customer_view_overview_wallets">{{ __('site.wallet') }}</a>
+                    </li>
+                    <!--end:::Tab item-->
+
+                    <!--begin:::Tab item-->
+                    <li class="nav-item">
+                        <a class="nav-link text-active-primary pb-4" data-kt-countup-tabs="true" data-bs-toggle="tab"
+                            href="#kt_customer_view_overview_products">{{ __('site.products') }}</a>
                     </li>
                     <!--end:::Tab item-->
 
@@ -490,6 +496,39 @@
             </div>
             {{-- end wallets --}}
 
+            {{-- products --}}
+            <div class="tab-pane fade show" id="kt_customer_view_overview_products" role="tab-panel">
+                <div class="d-flex flex-column gap-7 gap-lg-10">
+
+                    <!--begin::Users options-->
+                    <div class="card card-flush py-4">
+                        <!--begin::Card header-->
+                        <div class="card-header border-0 pt-6">
+                            <!--begin::Card title-->
+                            <div class="card-title">
+                                <h2>{{ __('site.product') }}</h2>
+                            </div>
+                            <!--begin::Card title-->
+                        </div>
+                        <!--end::Card header-->
+
+                        <!--begin::Card body-->
+                        <div class="card-body pt-0">
+                            <div class="container">
+                                <div class="row row-cols-2" id="table-content-products">
+                                    {{-- branch users --}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end::Card header-->
+
+                    </div>
+                    <!--end::Users options-->
+                </div>
+            </div>
+            {{-- end products --}}
+
         </div>
         <!--end::Row-->
 
@@ -508,6 +547,7 @@
     showFollowers();
     showFollowing();
     showWallets();
+    showProducts();
     showRooms();
 
     buttonSideBar();

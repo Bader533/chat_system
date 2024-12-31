@@ -168,24 +168,19 @@ class User extends Authenticatable
         return $this->hasOne(Wallet::class);
     }
 
-    public function getTotalDollarAttribute()
-    {
-        return $this->wallets->sum('dollar');
-    }
-
     public function getTotalDiamondsAttribute()
     {
-        return $this->wallets->where('type', 'diamonds')->sum('quantity');
+        return $this->wallet()->sum('diamonds');
     }
 
     public function getTotalGoldAttribute()
     {
-        return $this->wallets->where('type', 'gold')->sum('quantity');
+        return $this->wallet()->sum('gold');
     }
 
     public function getTotalSilverAttribute()
     {
-        return $this->wallets->where('type', 'silver')->sum('quantity');
+        return $this->wallet()->sum('silver');
     }
 
     public function posts()
@@ -221,5 +216,11 @@ class User extends Authenticatable
     public function transactions()
     {
         return $this->hasMany(GiftTransaction::class);
+    }
+
+    public function matjarProducts()
+    {
+        return $this->belongsToMany(MatjarProduct::class, 'user_products', 'user_id', 'matjar_product_id')
+            ->withPivot(['created_at', 'updated_at']);
     }
 }

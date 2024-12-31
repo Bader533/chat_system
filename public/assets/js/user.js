@@ -15,6 +15,10 @@ function showWallets() {
     getData('wallets', 1, null, '#table-content-wallets');
 }
 
+function showProducts() {
+    getData('products', 1, null, '#table-content-products');
+}
+
 function showRooms() {
     getData('rooms', 1, null, '#table-content-rooms');
 }

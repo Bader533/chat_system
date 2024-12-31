@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostApiRequest;
 use App\Http\Requests\PostRequest;
 use App\Models\Comment;
 use App\Models\Like;
@@ -75,7 +76,7 @@ class PostController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'massege' => 'An error occurred',
+                'massege' => 'An error occurred' . $e,
                 'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'error' => true,
                 'data' => []
@@ -372,4 +373,29 @@ class PostController extends Controller
             ]);
         }
     }
+
+    // public function updateDescription(PostApiRequest $request, $id)
+    // {
+    //     try {
+    //         $post = Post::findOrFail($id);
+    //         $validatedData = $request->validated();
+    //         $validatedData['user_id'] = auth()->user()->id;
+    //         $post->update($validatedData);
+    //         $post->updateAvatar($request);
+
+    //         return response()->json([
+    //             'message' => __('site.update_successfully'),
+    //             'code' => Response::HTTP_CREATED,
+    //             'error' => false,
+    //             'data' => $post
+    //         ]);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'massege' => 'An error occurred',
+    //             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
+    //             'error' => true,
+    //             'data' => []
+    //         ]);
+    //     }
+    // }
 }

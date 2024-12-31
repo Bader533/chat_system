@@ -455,6 +455,9 @@ return [
     'percentage' => 'Percentage',
     'settings' => 'Settings',
 
+    'add_new_category' => 'Add New Category',
+    'add_new_product' => 'Add New Product',
+    'matjar' => 'Matjar',
 
 
 ];

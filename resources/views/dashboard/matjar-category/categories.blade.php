@@ -3,13 +3,10 @@
     <thead>
         <!--begin::Table row-->
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-            <th class="min-w-125px">{{__('site.user_id')}}</th>
-            <th class="min-w-125px">{{__('site.sender')}}</th>
-            <th class="min-w-125px">{{__('site.type')}}</th>
-            <th class="min-w-125px">{{__('site.quantity')}}</th>
-            <th class="min-w-125px">{{__('site.dollar')}}</th>
+            <th class="min-w-125px">{{__('site.name')}}</th>
+            <th class="min-w-125px">{{__('site.status')}}</th>
             <th class="min-w-125px">{{__('site.created_at')}}</th>
-            {{-- <th class="text-end min-w-70px">{{__('site.actions')}}</th> --}}
+            <th class="text-end">{{__('site.actions')}}</th>
         </tr>
         <!--end::Table row-->
     </thead>
@@ -20,51 +17,60 @@
 
         @foreach ($contacts as $item)
         <tr>
-            <!--begin::id=-->
+            <!--begin::tile=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->wallet->user->id }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name_ar }}</a>
             </td>
-            <!--end::id=-->
+            <!--end::tile=-->
 
-            <!--begin::agency name=-->
+            <!--begin::status=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->agency->name_ar }}</a>
-            </td>
-            <!--end::agency name=-->
-
-            <!--begin::type=-->
-            <td>
-                @if ($item->asset == 'gold')
-                <div class="badge badge-light-warning fw-bold">
-                    {{$item->asset}}
+                @if ($item->status == 1)
+                <div class="badge badge-light-success fw-bold">
+                    {{__('site.active')}}
                 </div>
-                @elseif($item->asset == 'diamonds')
-                <div class="badge badge-light-info fw-bold">
-                    {{$item->asset}}
-                </div>
-                @elseif($item->asset == 'silver')
-                <div class="badge badge-light-light fw-bold">
-                    {{$item->asset}}
+                @else
+                <div class="badge badge-light-danger fw-bold">
+                    {{__('site.non_active')}}
                 </div>
                 @endif
             </td>
-            <!--end::type=-->
-
-            <!--begin::quantity=-->
-            <td>
-                <a>{{$item->amount}}</a>
-            </td>
-            <!--end::quantity=-->
-
-            <!--begin::dollar=-->
-            <td>
-                <a>{{$item->dollar}}</a>
-            </td>
-            <!--end::dollar=-->
+            <!--end::status=-->
 
             <!--begin::Date=-->
             <td>{{ date('m/d/Y', strtotime($item->created_at)) }}</td>
             <!--end::Date=-->
+
+            <!--begin::Action=-->
+
+            <td class="text-end">
+
+                <!--begin::Edit-->
+
+                <a href="{{route('matjar-category.edit',$item->slug)}}"
+                    class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
+                    <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="{{ __('site.edit') }}">
+                        <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
+                        <span class="svg-icon svg-icon-3">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path opacity="0.3"
+                                    d="M21.4 8.35303L19.241 10.511L13.485 4.755L15.643 2.59595C16.0248 2.21423 16.5426 1.99988 17.0825 1.99988C17.6224 1.99988 18.1402 2.21423 18.522 2.59595L21.4 5.474C21.7817 5.85581 21.9962 6.37355 21.9962 6.91345C21.9962 7.45335 21.7817 7.97122 21.4 8.35303ZM3.68699 21.932L9.88699 19.865L4.13099 14.109L2.06399 20.309C1.98815 20.5354 1.97703 20.7787 2.03189 21.0111C2.08674 21.2436 2.2054 21.4561 2.37449 21.6248C2.54359 21.7934 2.75641 21.9115 2.989 21.9658C3.22158 22.0201 3.4647 22.0084 3.69099 21.932H3.68699Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M5.574 21.3L3.692 21.928C3.46591 22.0032 3.22334 22.0141 2.99144 21.9594C2.75954 21.9046 2.54744 21.7864 2.3789 21.6179C2.21036 21.4495 2.09202 21.2375 2.03711 21.0056C1.9822 20.7737 1.99289 20.5312 2.06799 20.3051L2.696 18.422L5.574 21.3ZM4.13499 14.105L9.891 19.861L19.245 10.507L13.489 4.75098L4.13499 14.105Z"
+                                    fill="currentColor" />
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </span>
+                </a>
+
+                <!--end::Edit-->
+
+            </td>
+
+            <!--end::Action=-->
         </tr>
         @endforeach
         @else
@@ -89,7 +95,7 @@
                 <li class="page-item disabled"><span class="page-link">‹</span></li>
                 @else
                 <li class="page-item"><a class="page-link"
-                        onclick="getWallets('{{ $contacts->currentPage() - 1 }}')">‹</a>
+                        onclick="getCategories('{{ $contacts->currentPage() - 1 }}')">‹</a>
                 </li>
                 @endif
                 @php
@@ -104,7 +110,7 @@
 
                 <!-- عرض الصفحة الأولى إذا كانت الصفحة الحالية ليست قريبة منها -->
                 @if ($startPage > 1)
-                <li class="page-item"><a class="page-link" onclick="getWallets(1)">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="getCategories(1)">1</a></li>
                 @if ($startPage > 2)
                 <li class="page-item disabled"><span class="page-link">...</span></li>
                 @endif
@@ -113,7 +119,7 @@
                 <!-- عرض الصفحات الحالية -->
                 @for ($i = $startPage; $i <= $endPage; $i++) <li
                     class="page-item {{ $i == $contacts->currentPage() ? 'active' : '' }}">
-                    <a class="page-link" onclick="getWallets('{{ $i }}')">{{ $i }}</a>
+                    <a class="page-link" onclick="getCategories('{{ $i }}')">{{ $i }}</a>
                     </li>
                     @endfor
 
@@ -123,14 +129,14 @@
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item"><a class="page-link"
-                                    onclick="getWallets('{{ $contacts->lastPage() }}')">{{
+                                    onclick="getCategories('{{ $contacts->lastPage() }}')">{{
                                     $contacts->lastPage() }}</a></li>
                             @endif
 
                             <!-- زر الصفحة التالية -->
                             @if ($contacts->hasMorePages())
                             <li class="page-item"><a class="page-link"
-                                    onclick="getWallets('{{ $contacts->currentPage() + 1 }}')">›</a></li>
+                                    onclick="getCategories('{{ $contacts->currentPage() + 1 }}')">›</a></li>
                             @else
                             <li class="page-item disabled"><span class="page-link">›</span></li>
                             @endif
