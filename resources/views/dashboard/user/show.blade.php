@@ -547,8 +547,8 @@
     showFollowers();
     showFollowing();
     showWallets();
-    showProducts();
     showRooms();
+    showProducts();
 
     buttonSideBar();
 
