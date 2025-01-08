@@ -135,7 +135,7 @@
                 <!--end:authorization-->
 
                 <!--begin:users-->
-                @role(['User','Employee'])
+                @role(['User','Employee','Agency Host'])
                 <div data-kt-menu-trigger="click" id="users" class="menu-item menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -189,6 +189,21 @@
                                     <span class="bullet bullet-dot"></span>
                                 </span>
                                 <span class="menu-title">{{__('site.users')}}</span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+                        @endrole
+                        <!--end:Menu item-->
+
+                        <!--begin:Menu item-->
+                        @role('Agency Host')
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link" href="{{route('agency-hosts.index')}}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">{{__('site.agency_hosts')}}</span>
                             </a>
                             <!--end:Menu link-->
                         </div>
@@ -997,7 +1012,7 @@
                             <!--end:Menu link-->
                         </div>
                         <!--end:Menu item-->
-                       
+
                     </div>
                     <!--end:Menu sub-->
                 </div>

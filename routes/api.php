@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AgencyHostController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BoardingController;
 use App\Http\Controllers\Api\CityController;
@@ -163,6 +164,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/matjar/products', [MatjarController::class, 'getProducts']);
     Route::get('/matjar/product/{id}', [MatjarController::class, 'showProduct']);
     Route::get('/matjar/user/product', [MatjarController::class, 'userProducts']);
+    //
+    Route::get('/agency-hosts', [AgencyHostController::class, 'index']);
+    Route::get('/agency-hosts/{id}', [AgencyHostController::class, 'show']);
+    Route::post('/agency-hosts/{id}', [AgencyHostController::class, 'beAgencyHost']);
     //
     Route::post('/matjar/buy-product', [MatjarController::class, 'BuyProduct']);
     // end matjar

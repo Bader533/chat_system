@@ -602,4 +602,11 @@ return [
     'add_new_product' => 'اضافة منتج جديدة',
     'matjar' => 'متجر',
 
+    'agency_hosts' => 'مضيفو الوكالة',
+    'add_agency_host' => 'إضافة مضيف وكالة',
+    'agent_ratio' => 'نسبة وكالة',
+    'host_ratio' => 'نسبة المضيف',
+    'management_ratio' => 'نسبة الادارة',
+
+
 ];

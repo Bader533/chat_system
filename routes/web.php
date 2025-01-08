@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\AgencyHostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\BoardingController;
@@ -72,6 +73,12 @@ Route::middleware('auth:web')->group(
         Route::resource('/employee', EmployeeController::class);
         Route::get('/getEmployee', [EmployeeController::class, 'getEmplyees'])->name('employee.data');
         Route::get('/status/employee', [EmployeeController::class, 'changeStatus'])->name('employee.status');
+        //end employee
+
+        // employee
+        Route::resource('/agency-hosts', AgencyHostController::class);
+        Route::get('/get-agency-hosts', [AgencyHostController::class, 'getAgencyHosts'])->name('agency.hosts.data');
+        // Route::get('/status/employee', [EmployeeController::class, 'changeStatus'])->name('employee.status');
         //end employee
 
         // privacy

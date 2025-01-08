@@ -459,5 +459,10 @@ return [
     'add_new_product' => 'Add New Product',
     'matjar' => 'Matjar',
 
+    'agency_hosts' => 'Agency Hosts',
+
+    'agent_ratio' => 'Agent Ratio',
+    'host_ratio' => 'Host Ratio',
+    'management_ratio' => 'Management Ratio',
 
 ];

@@ -223,4 +223,16 @@ class User extends Authenticatable
         return $this->belongsToMany(MatjarProduct::class, 'user_products', 'user_id', 'matjar_product_id')
             ->withPivot(['created_at', 'updated_at']);
     }
+
+    public function agencyHost()
+    {
+        return $this->hasOne(AgencyHost::class);
+    }
+
+    public function agencyHosts()
+    {
+        return $this->belongsToMany(AgencyHost::class, 'agency_host_users')
+            ->withPivot('status') // Include the `status` column from the pivot table
+            ->withTimestamps(); // Include timestamps from the pivot table
+    }
 }
