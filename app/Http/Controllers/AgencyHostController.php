@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AgencyHostRequest;
 use App\Models\AgencyHost;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +59,16 @@ class AgencyHostController extends Controller
     public function store(AgencyHostRequest $request)
     {
         // $this->authorize('Create-Egency');
+        $existingUser = AgencyHost::where('user_id', $request->user_id)->first();
+
+        if ($existingUser) {
+            return response()->json(['message' => __('site.user_already_exists')], Response::HTTP_CONFLICT);
+        }
+
+        $task = Task::orderBy('id', 'asc')->first();
         $validatedData = $request->validated();
+        $validatedData['task_id'] = $task->id;
+
         $agencyHost = AgencyHost::create($validatedData);
         return response()->json(['message' => __('site.create_successfully')], Response::HTTP_CREATED);
     }

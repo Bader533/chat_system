@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('agency_points', function (Blueprint $table) {
             $table->id();
             $table->foreignId('agency_host_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->decimal('diamonds', 15, 2)->default(0);
             $table->decimal('gold', 15, 2)->default(0);
             $table->decimal('silver', 15, 2)->default(0);

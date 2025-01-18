@@ -4,10 +4,6 @@
         <!--begin::Table row-->
         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
             <th class="min-w-125px">{{__('site.name')}}</th>
-            <th class="min-w-125px">{{__('site.email')}}</th>
-            <th class="min-w-125px">{{__('site.agent_ratio')}}</th>
-            <th class="min-w-125px">{{__('site.host_ratio')}}</th>
-            <th class="min-w-125px">{{__('site.management_ratio')}}</th>
             <th class="min-w-125px">{{__('site.status')}}</th>
             <th class="min-w-125px">{{__('site.created_at')}}</th>
             <th class="text-end min-w-70px">{{__('site.actions')}}</th>
@@ -19,33 +15,17 @@
     <tbody class="fw-semibold text-gray-600" id="table_data">
         @if (!$contacts->isEmpty())
 
-        @foreach ($contacts as $user)
+        @foreach ($contacts as $item)
         <tr>
             <!--begin::Name=-->
             <td>
-                <a class="text-gray-800 text-hover-primary mb-1">{{ $user->user->name ?? 'N/A' }}</a>
+                <a class="text-gray-800 text-hover-primary mb-1">{{ $item->name_ar }}</a>
             </td>
             <!--end::Name=-->
 
-            <!--begin::email=-->
-            <td>{{ $user->user->email ?? 'N/A'}}</td>
-            <!--end::email=-->
-
-            <!--begin::email=-->
-            <td>{{ $user->agent_ratio }}</td>
-            <!--end::email=-->
-
-            <!--begin::email=-->
-            <td>{{ $user->host_ratio }}</td>
-            <!--end::email=-->
-
-            <!--begin::email=-->
-            <td>{{ $user->management_ratio }}</td>
-            <!--end::email=-->
-
-            <!--begin::price=-->
+            <!--begin::status=-->
             <td>
-                @if ($user->status == 1)
+                @if ($item->status == 1)
                 <div class="badge badge-light-success fw-bold">
                     {{__('site.active')}}
                 </div>
@@ -55,10 +35,10 @@
                 </div>
                 @endif
             </td>
-            <!--end::price=-->
+            <!--end::status=-->
 
             <!--begin::Date=-->
-            <td>{{ date('m/d/Y', strtotime($user->created_at)) }}</td>
+            <td>{{ date('m/d/Y', strtotime($item->created_at)) }}</td>
             <!--end::Date=-->
             <!--begin::Action=-->
 
@@ -66,7 +46,7 @@
 
                 <!--begin::Edit-->
 
-                <a href="{{route('agency-hosts.edit',$user->id)}}"
+                <a href="{{route('task.edit',$item->slug)}}"
                     class="btn btn-icon btn-active-light-primary w-30px h-30px me-3">
                     <span data-bs-toggle="tooltip" data-bs-trigger="hover" title="{{ __('site.edit') }}">
                         <!--begin::Svg Icon | path: icons/duotune/art/art005.svg-->
@@ -88,7 +68,7 @@
                 <!--end::Edit-->
 
                 <!--begin::Delete-->
-                {{-- <a onclick="confirmDelete('{{$user->id}}',this)"
+                {{-- <a onclick="confirmDelete('{{$item->id}}',this)"
                     class="btn btn-icon btn-active-light-danger w-30px h-30px me-3" data-bs-toggle="tooltip"
                     title="Delete" data-kt-customer-payment-method="delete">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen027.svg-->
@@ -135,7 +115,7 @@
                 <li class="page-item disabled"><span class="page-link">‹</span></li>
                 @else
                 <li class="page-item"><a class="page-link"
-                        onclick="getAgencyHosts('{{ $contacts->currentPage() - 1 }}')">‹</a>
+                        onclick="getTasks('{{ $contacts->currentPage() - 1 }}')">‹</a>
                 </li>
                 @endif
                 @php
@@ -150,7 +130,7 @@
 
                 <!-- عرض الصفحة الأولى إذا كانت الصفحة الحالية ليست قريبة منها -->
                 @if ($startPage > 1)
-                <li class="page-item"><a class="page-link" onclick="getAgencyHosts(1)">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="getTasks(1)">1</a></li>
                 @if ($startPage > 2)
                 <li class="page-item disabled"><span class="page-link">...</span></li>
                 @endif
@@ -159,7 +139,7 @@
                 <!-- عرض الصفحات الحالية -->
                 @for ($i = $startPage; $i <= $endPage; $i++) <li
                     class="page-item {{ $i == $contacts->currentPage() ? 'active' : '' }}">
-                    <a class="page-link" onclick="getAgencyHosts('{{ $i }}')">{{ $i }}</a>
+                    <a class="page-link" onclick="getTasks('{{ $i }}')">{{ $i }}</a>
                     </li>
                     @endfor
 
@@ -169,14 +149,14 @@
                             <li class="page-item disabled"><span class="page-link">...</span></li>
                             @endif
                             <li class="page-item"><a class="page-link"
-                                    onclick="getAgencyHosts('{{ $contacts->lastPage() }}')">{{
+                                    onclick="getTasks('{{ $contacts->lastPage() }}')">{{
                                     $contacts->lastPage() }}</a></li>
                             @endif
 
                             <!-- زر الصفحة التالية -->
                             @if ($contacts->hasMorePages())
                             <li class="page-item"><a class="page-link"
-                                    onclick="getAgencyHosts('{{ $contacts->currentPage() + 1 }}')">›</a></li>
+                                    onclick="getTasks('{{ $contacts->currentPage() + 1 }}')">›</a></li>
                             @else
                             <li class="page-item disabled"><span class="page-link">›</span></li>
                             @endif

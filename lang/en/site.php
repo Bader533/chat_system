@@ -465,4 +465,13 @@ return [
     'host_ratio' => 'Host Ratio',
     'management_ratio' => 'Management Ratio',
 
+    'task' => 'Task',
+    'all_tasks' => 'All Tasks',
+    'tasks' => 'Tasks',
+    'add_new_task' => 'Add New Task',
+
+    'days' => 'Days',
+
+    'user_already_exists' => 'User Already Exists',
+
 ];

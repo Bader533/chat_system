@@ -26,6 +26,7 @@ use App\Http\Controllers\PrivacyController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 
@@ -167,6 +168,11 @@ Route::middleware('auth:web')->group(
         // level
         Route::resource('/level', LevelController::class);
         Route::get('/get-levels', [LevelController::class, 'getLevels'])->name('level.data');
+        //end level
+
+        // level
+        Route::resource('/task', TaskController::class);
+        Route::get('/get-tasks', [TaskController::class, 'getTesks'])->name('task.data');
         //end level
 
         // gift

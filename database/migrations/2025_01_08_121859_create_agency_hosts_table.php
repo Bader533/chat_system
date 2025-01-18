@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('agency_hosts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->integer('task_id')->nullable()->constrained();
             $table->integer('status')->default(1)->comment('1-active , 0-non active');
             $table->integer('agent_ratio');
             $table->integer('host_ratio');

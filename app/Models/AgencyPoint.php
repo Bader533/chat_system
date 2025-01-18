@@ -11,6 +11,7 @@ class AgencyPoint extends Model
 
     protected $fillable = [
         'agency_host_id',
+        'user_id',
         'diamonds',
         'gold',
         'silver'

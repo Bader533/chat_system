@@ -60,6 +60,12 @@ Route::get('/check-maintenance', [SplashController::class, 'checkApp']);
 
 Route::get('/boarding', [BoardingController::class, 'index']);
 
+Route::middleware('firebase.auth')->get('/user-firebase', function (Request $request) {
+    $firebaseUser = $request->attributes->get('firebase_user');
+    return response()->json(['user' => $firebaseUser]);
+});
+
+
 
 Route::middleware('auth:api')->group(function () {
 
@@ -168,6 +174,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/agency-hosts', [AgencyHostController::class, 'index']);
     Route::get('/agency-hosts/{id}', [AgencyHostController::class, 'show']);
     Route::post('/agency-hosts/{id}', [AgencyHostController::class, 'beAgencyHost']);
+    Route::post('/send-points/agency-hosts', [AgencyHostController::class, 'sendPoitsToAgencyHost']);
+    Route::get('/distribution-of-profits', [AgencyHostController::class, 'DistributionOfProfits']);
     //
     Route::post('/matjar/buy-product', [MatjarController::class, 'BuyProduct']);
     // end matjar

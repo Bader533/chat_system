@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LevelRequest extends FormRequest
+class TaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,6 +26,7 @@ class LevelRequest extends FormRequest
             'name_ar' => 'required|string|max:100',
             'description_en' => 'required|string',
             'description_ar' => 'required|string',
+            'days' => 'required|numeric',
             'status' => 'required|numeric|in:0,1',
             'point_status' => 'required|numeric|in:0,1',
             'point' => 'required|numeric',
@@ -39,6 +40,7 @@ class LevelRequest extends FormRequest
         //     $rules['name_ar'] = 'nullable|string|max:100';
         //     $rules['description_en'] = 'nullable|string';
         //     $rules['description_ar'] = 'nullable|string';
+        //     $rules['days'] = 'nullable|numeric';
         //     $rules['status'] = 'nullable|numeric|in:0,1';
         //     $rules['point_status'] = 'nullable|numeric|in:0,1';
         //     $rules['point'] = 'nullable|numeric';

@@ -11,6 +11,7 @@ class AgencyHost extends Model
 
     protected $fillable = [
         'user_id',
+        'task_id',
         'status',
         'agent_ratio',
         'host_ratio',
@@ -22,9 +23,9 @@ class AgencyHost extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function agencyPoint()
+    public function agencyPoints()
     {
-        return $this->hasOne(AgencyPoint::class);
+        return $this->hasMany(AgencyPoint::class);
     }
 
     public function scopeIsActive($query)
@@ -37,5 +38,10 @@ class AgencyHost extends Model
         return $this->belongsToMany(User::class, 'agency_host_users')
             ->withPivot('status') // Include the `status` column from the pivot table
             ->withTimestamps(); // Include timestamps from the pivot table
+    }
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 }

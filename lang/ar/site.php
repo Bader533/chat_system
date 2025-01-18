@@ -608,5 +608,13 @@ return [
     'host_ratio' => 'نسبة المضيف',
     'management_ratio' => 'نسبة الادارة',
 
+    'task' => 'المهمة',
+    'all_tasks' => 'كل المهام',
+    'tasks' => 'المهام',
+    'add_new_task' => 'اضافة مهمة جديدة',
+
+    'days' => 'الايام',
+
+    'user_already_exists' => 'المستخدم مسجل مسبقا',
 
 ];
